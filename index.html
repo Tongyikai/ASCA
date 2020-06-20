@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>標會PLUS - 登入或註冊</title>
+        <link rel="stylesheet" href="public/stylesheets/index.css">
+    </head>
+    <body>
+        <header>
+            <h2 class="white-text">標會PLUS
+                <button class="signUpBtn" onclick="gotoSignUp()">註冊</button>
+            </h2>
+            <div class="formLogIn">
+                <table>
+                    <tr>
+                        <td style="font-size: 12px; color: white;">電子郵件</td>
+                        <td style="font-size: 12px; color: white;">密碼</td >
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><input type="email" name="email"></td>
+                        <td><input type="password" name="password"></td>
+                        <td><button class="logInBtn" onclick="gotoLogIn()">登入</button></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><a href="http://google.com" style="font-size: 11px;">忘記密碼?</a></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </header>
+
+        <section class="sec1"></section>
+
+        <section class="sec2">
+            <h2>1234567890</h2>
+            <p>Pure CSS Sticky Header - Navbar Fixed Top After Scrolling - No Javascript</p>
+        </section>
+
+        <script>
+            function gotoSignUp() {
+                // window.location.href="///Users/tongyikai/Documents/Git/AWEB/signUp.html";
+                window.location.href = "http://127.0.0.1:8888/signUp";
+            }
+            function gotoLogIn() {
+
+            }
+        </script>
+    </body>
+</html>
