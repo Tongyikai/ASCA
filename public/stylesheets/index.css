@@ -1,0 +1,33 @@
+@import "common.css";
+
+div.formLogIn {
+  position: absolute;
+  width: 350px;
+  height: 90px;
+  /* border: 1px solid red; */
+  top: 0%;
+  left: 60%;
+}
+
+/* input {
+  -webkit-appearance: none;
+  border-radius:0;
+} */
+
+button.logInBtn {
+  display: inline-block;
+  /* border-radius: 10px; */
+  border: 1px double #cccccc;
+  text-align: center;
+  transition: all 0.5s;
+  width: 50px;
+  height: 20px;
+  font-size: 11px;
+  -webkit-appearance: none;
+  text-decoration-color: white;
+  background-color: #3b5998;
+}
+
+a {
+  color: #90aeee;
+}

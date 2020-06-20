@@ -1,0 +1,56 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background: #3b5998;
+  }
+
+  header {
+    padding: 10px 100px;
+    box-sizing: border-box;
+  }
+  
+  header img {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .white-text {
+    color: white;
+  }
+
+  button.signUpBtn {
+    background-color: green;
+    border: green;
+    color: white;
+  }
+  
+  section {
+    width: 100%;
+    height: 100vh;
+  }
+  
+  section.sec1 {
+    background-color: rgb(250, 250, 250);
+    background-size: cover;
+  }
+  
+  section.sec2 {
+    padding: 100px;
+    box-sizing: border-box;
+    height: auto;
+  }
+  
+  section.sec2 h2 {
+    font-size: 3em;
+    margin: 0;
+    padding: 0 0 20px;
+    color: black;
+  }
+  
+  section.sec2 p {
+    font-size: 1.2em;
+    margin: 0;
+    padding: 0;
+    color: black;
+  }
