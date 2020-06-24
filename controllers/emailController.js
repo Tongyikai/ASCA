@@ -1,4 +1,4 @@
-var email = require('../json/email.json');
+var email = require('../public/json/email.json');
 
 function searchExistEmail(searchEmail) {
     var isExist = false;
