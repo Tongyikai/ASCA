@@ -21,7 +21,7 @@ const client = new MongoClient(uri, { useUnifiedTopology: true });
 //     gender = "00"
 // }
 
-function createMember(familyName, givenName, email, password, birthYear, birthMonth, birthDay, gender) {
+function createMember(familyName, givenName, email, password, birthYear, birthMonth, birthDay, gender, callback) {
     client.connect(err => {
         if (err) throw err;
         const memberCounters = client.db("ASCA_DB").collection("memberCounters");
@@ -48,7 +48,9 @@ function createMember(familyName, givenName, email, password, birthYear, birthMo
                 memberCounters.updateOne({ _id: "memberID"}, {$set: { sequence_value: memberID }}, function(err, res) { 
                     if (err) throw err;
                     console.log("update success");
+                    
                     client.close();
+                    callback();
                 });
             });
         });

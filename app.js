@@ -43,7 +43,12 @@ http.createServer(function(request, response) {
 									 post.bMonth,
 									 post.bDay,
 									 post.gender,
-			);
+									 function () {
+										console.log("資料存入資料庫");
+										response.writeHead(200, { "Content-Type": "application/json" });
+										response.write(JSON.stringify({ createMember: "success" }));
+										response.end();
+			});
 		}
 	});
 

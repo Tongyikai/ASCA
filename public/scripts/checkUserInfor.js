@@ -51,6 +51,10 @@ httpRequest.onload = function() {
         } else {
             isAvailable = false;
         }
+
+        if (jsonObject.createMember == "success") {
+            console.log("收到Server註冊成功的回應");
+        }
     }
 }
 
