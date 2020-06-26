@@ -3,7 +3,7 @@ var fs = require("fs");
 var url = require("url");
 var querystring = require("querystring");
 
-var emailContr = require("./controllers/emailController");
+// var emailContr = require("./controllers/emailController");
 var memberContr = require("./controllers/memberController");
 
 http.createServer(function(request, response) {
@@ -106,7 +106,7 @@ function sendFileContent(response, fileName, contentType) {
 }
 
 function checkEmail(response, email) {
-	if (emailContr.searchExistEmail(email)) { 
+	if (memberContr.emailExist(email)) { 
 		response.writeHead(200, { "Content-Type": "application/json" });
 		response.write(JSON.stringify({ emailAvailable: "false" })); //如果電子郵件已經存在，就給 false 不能使用 
 

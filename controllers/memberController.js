@@ -5,21 +5,27 @@ Update Operations
 Delete Operations
 */
 
+var email = require('../public/json/email.json');
+var jsonOperations = require("../public/scripts/jsonOperations");
+
 const MongoClient = require("mongodb").MongoClient;
 const uri = "mongodb://testAdmin:testAdmin123@localhost:27017/ASCA_DB";
 const client = new MongoClient(uri, { useUnifiedTopology: true });
 
-// userInfo = {
-//     id = "00",
-//     familyName = "00",
-//     givenName = "00",
-//     email = "00",
-//     password = "00",
-//     birthYear = "00",
-//     birthMonth = "00",
-//     birthDay = "00",
-//     gender = "00"
-// }
+function emailExist(searchEmail) {
+    var isExist = false;
+
+    for (var i = 0; i < email.EmailList.length; i++) {
+
+        // console.log("email: " + email.EmailList[i].email + "-----search: " + searchEmail);
+
+        if (email.EmailList[i].email == searchEmail) {
+            console.log("電子郵件已經註冊: " + email.EmailList[i].email);
+            isExist = true;
+        }
+    }
+    return isExist;
+}
 
 function createMember(familyName, givenName, email, password, birthYear, birthMonth, birthDay, gender, callback) {
     client.connect(err => {
@@ -49,6 +55,7 @@ function createMember(familyName, givenName, email, password, birthYear, birthMo
                     if (err) throw err;
                     console.log("update success");
                     
+                    jsonOperations.writeJSON("./public/json/email.json", { memberID: memberID, email: email });
                     client.close();
                     callback();
                 });
@@ -59,5 +66,6 @@ function createMember(familyName, givenName, email, password, birthYear, birthMo
 }
 
 module.exports = {
+    emailExist,
     createMember
 }
