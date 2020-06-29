@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+    <head name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>註冊 標會PLUS 帳號</title>
+        <link rel="stylesheet" type="text/css" href="public/stylesheets/signUp.css">
+    </head>
+    <body>
+        <header>
+            <a href="http://127.0.0.1:8888" style="text-decoration:none">
+                <h2 class="white-text">標會PLUS</h2>
+            </a>
+        </header>
+        <section class="sec1">
+            <div class="formProfile">
+                <form>
+                    <input class="familyName" type="text" name="familyName" id="familyName" placeholder="姓氏" onchange="if(this.value.match(/[^\u4e00-\u9fa5]/)){alert('請輸入中文姓名');}">
+                    <input class="givenName" type="text" name="givenName" id="givenName" placeholder="名字" onchange="if(this.value.match(/[^\u4e00-\u9fa5]/)){alert('請輸入中文姓名');}"><p>
+                    <input class="email" type="email" name="email" id="email" placeholder="E-mail"><p>
+                    <input class="password" type="password" name="password" id="password" placeholder="設定密碼"><p>
+                    <h5>出生日期</h5>
+                    <div id="birthday">
+                        <select id="yearBox" class="year" name="year">
+                            <option value="year">年</option>
+                        </select>
+
+                        <select id="monthBox" class="month" name="month">
+                            <option value="month">月</option>
+                        </select>
+
+                        <select id="dayBox" class="day" name="day">
+                            <option value="day">日</option>
+                        </select>
+                    </div>
+                    <h5>性別</h5>
+                    <div id="gender">
+                        <table>
+                            <tr>
+                                <td><input class="female" id="female" type="radio" name="gender" value="female" checked></td>
+                                <td>女性</td>
+                                <td><input class="male" id="male" type="radio" name="gender" value="male"></td>
+                                <td>男性</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <p style="font-size: 12px;">點擊「註冊」即表示你同意我們的使用條款、資料政策和 Cookie 政策。你可能會收到我們的簡訊通知，而且可以隨時選擇停止接收。</p>
+                    <button class="confirmBtn" type="button" onclick="registerBtn()">註冊</button>
+                </form>
+            </div>
+        </section>
+        <section class="sec2">
+            <h2>1234567890</h2>
+            <p>Pure CSS Sticky Header - Navbar Fixed Top After Scrolling - No Javascript</p>
+        </section>
+        <script type="text/javascript" src="public/scripts/checkUserInfor.js"></script>
+        <script>
+            var isFamilyNameCorrect, isGiveNameCorrect, isEmailCorrect, isBirthdayCorrect, isGenderCorrect;
+
+            showYear();
+            showMonth();
+            showDay();
+            
+            function showYear() {
+                var options = "<option>年</option>";
+                for (var i = 1900; i <= 2020; i++) {
+                    options += ("<option>" + i + "</option>");
+                }
+                document.getElementById("yearBox").innerHTML = options;
+            }
+
+            function showMonth() {
+                var options = "<option>月</option>";
+                for (var i = 1; i <= 12; i++) {
+                    options += ("<option>" + i + "</option>");
+                }
+                document.getElementById("monthBox").innerHTML = options;
+            }
+
+            function showDay() {
+                var options = "<option>日</option>";
+                for (var i = 1; i <= 31; i++) {
+                    options += ("<option>" + i + "</option>");
+                }
+                document.getElementById("dayBox").innerHTML = options;
+            }
+
+            function registerBtn() {
+                isFamilyNameCorrect = true;
+                isGiveNameCorrect = true;
+                isEmailCorrect = true;
+                isPasswordCorrect = true;
+                isBirthdayCorrect = true;
+
+                var funCheckNameLength = checkNameLength;
+                var funCheckBlank = checkBlank;
+                var funCheckName = checkNameIsChinese;
+                var funCheckEmail = checkEmail;
+                var funCheckEmailAvailable = checkEmailAvailable;
+                var funCheckPassword = checkPassword;
+                var funCheckDate = checkDateOfBirth;
+                var funRegister = registerForUser;
+
+                var familyName = document.getElementById("familyName").value;
+                var givenName = document.getElementById("givenName").value;
+                var email = document.getElementById("email").value;
+                var password = document.getElementById("password").value;
+                var year = document.getElementById("yearBox").value;
+                var month = document.getElementById("monthBox").value;
+                var day = document.getElementById("dayBox").value;
+                var gender = document.querySelector('input[name="gender"]:checked').value
+
+                safeCount = 7;
+
+                if (!funCheckNameLength(familyName) || !funCheckNameLength(givenName)) {
+                    isFamilyNameCorrect = false;
+                    isGiveNameCorrect = false;
+                    safeCount -= 1;
+                }
+
+                if (funCheckBlank(familyName) || funCheckBlank(givenName)) {
+                    // alert("有空白字元");
+                    isFamilyNameCorrect = false;
+                    isGiveNameCorrect = false;
+                    safeCount -= 1;
+                }
+
+                if (!funCheckName(familyName)) {
+                    // alert("姓名不是中文");
+                    isFamilyNameCorrect = false;
+                    isGiveNameCorrect = false;
+                    safeCount -= 1;
+                }
+
+                //密碼必須包含至少 8 個字元，可以混合使用英文字母、數字和符號 (僅限 ASCII 標準字元)
+                if (!funCheckPassword(password)) {
+                    isPasswordCorrect = false;
+                    safeCount -= 1;
+                }
+
+                if (!funCheckEmail(email)) {
+                    isEmailCorrect = false;
+                    safeCount -= 1;
+                }
+
+                //檢查email是否存在
+                if (!funCheckEmailAvailable(email)) {
+                    isEmailCorrect = false;
+                    safeCount -= 1;
+                }
+
+                if (!funCheckDate(year, month, day)) {
+                    isBirthdayCorrect = false;
+                    safeCount -= 1;
+                }
+
+                //檢查安全值小於7，代表有資訊輸入錯誤
+                if (safeCount < 7) {
+                    alert("姓名: " + isFamilyNameCorrect + "\n" +
+                      "名字: " + isGiveNameCorrect + "\n" +
+                      "Email: " + (isEmailCorrect ? "可以使用" : "已註冊或錯誤的電子郵件") + "\n" +
+                      "密碼: " + isPasswordCorrect + "\n" +
+                      "生日: " + isBirthdayCorrect + "\n" +
+                      "性別: " + gender + "\n");
+                } else {
+                    var yes = confirm("確認加入");
+                    if (yes) {
+                        //確認
+                        funRegister(familyName,
+                                    givenName,
+                                    email,
+                                    password,
+                                    year,
+                                    month,
+                                    day,
+                                    gender
+                        );
+                    } else {
+                        //取消
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>

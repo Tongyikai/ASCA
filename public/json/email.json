@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
     "EmailList":[
        {
@@ -10,3 +11,6 @@
        }
     ]
 }
+=======
+{"EmailList":[{"memberID":1,"email":"tongyikai@gmail.com"},{"memberID":2,"email":"tongyikai332@gmail.com"}]}
+>>>>>>> develop
