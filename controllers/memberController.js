@@ -10,9 +10,10 @@ var fs = require("fs");
 
 const { json } = require('body-parser');
 const UNDEFINED = "undefined";
+const config = require("../config/development_config");
 
 const MongoClient = require("mongodb").MongoClient;
-const uri = "mongodb://testAdmin:testAdmin123@localhost:27017/ASCA_DB";
+const uri = "mongodb://" + config.mongodb.user + ":" + config.mongodb.password + "@localhost:27017/" + config.mongodb.database;
 const client = new MongoClient(uri, { useUnifiedTopology: true });
 
 function emailExist(searchEmail) {
@@ -51,8 +52,9 @@ function writeJSON(newData) {
 function createMember(familyName, givenName, email, password, birthYear, birthMonth, birthDay, gender, callback) {
     client.connect(err => {
         if (err) throw err;
-        const memberCounters = client.db("ASCA_DB").collection("memberCounters");
-        const member = client.db("ASCA_DB").collection("member");
+        const memberCounters = client.db(config.mongodb.database).collection(config.mongodb.memberCountersCollection);
+        const member = client.db(config.mongodb.database).collection(config.mongodb.memberCollection);
+
         const dateTime = new Date().toLocaleString("zh-TW", { timeZone: "Asia/Taipei" }); //取得目前的時間+台北的時區(存入資料庫才是會當地的時間)
     
         memberCounters.find({ _id: "memberID" }).toArray(function(err, result) {

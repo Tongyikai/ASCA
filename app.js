@@ -2,9 +2,8 @@ var http = require("http");
 var fs = require("fs");
 var url = require("url");
 var querystring = require("querystring");
-
-// var emailContr = require("./controllers/emailController");
 var memberContr = require("./controllers/memberController");
+
 
 http.createServer(function(request, response) {
 	var params = url.parse(request.url, true).query; //parse將字符串轉成對象，request.url = "/?email=tong"， true表示params是{ email:"tong" }， false表示params是 email=tong
