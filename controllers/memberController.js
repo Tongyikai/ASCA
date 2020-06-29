@@ -6,7 +6,10 @@ Delete Operations
 */
 
 var email = require('../public/json/email.json');
-var jsonOperations = require("../public/scripts/jsonOperations");
+var fs = require("fs");
+
+const { json } = require('body-parser');
+const UNDEFINED = "undefined";
 
 const MongoClient = require("mongodb").MongoClient;
 const uri = "mongodb://testAdmin:testAdmin123@localhost:27017/ASCA_DB";
@@ -27,11 +30,33 @@ function emailExist(searchEmail) {
     return isExist;
 }
 
+function writeJSON(newData) {
+    fs.readFile("./public/json/email.json", function(err, fileData) { //先將原本的json檔讀出來
+        if (err) {
+            return console.error(err);
+        }
+
+        var data = fileData.toString(); //將二進制數據轉換為字串符
+        data = JSON.parse(data); //將字串符轉為 json 對象
+
+        data.EmailList.push(newData);
+
+        var str = JSON.stringify(data); //因為寫入文件 json 只認識字符串或二進制數 需要將json對象轉換成字符串
+        fs.writeFile("./public/json/email.json", str, function(err) {
+            if (err) {
+                console.log(err);
+            }
+            console.log("Add data to ./public/json/email.json");
+        });
+    });
+}
+
 function createMember(familyName, givenName, email, password, birthYear, birthMonth, birthDay, gender, callback) {
     client.connect(err => {
         if (err) throw err;
         const memberCounters = client.db("ASCA_DB").collection("memberCounters");
         const member = client.db("ASCA_DB").collection("member");
+        const dateTime = new Date().toLocaleString("zh-TW", { timeZone: "Asia/Taipei" });
     
         memberCounters.find({ _id: "memberID" }).toArray(function(err, result) {
             if (err) throw err;
@@ -43,19 +68,23 @@ function createMember(familyName, givenName, email, password, birthYear, birthMo
                               givenName: givenName,
                                   email: email,
                                password: password,
-                              birthYear: birthYear,
-                             birthMonth: birthMonth,
-                               birthDay: birthDay,
-                                 gender: gender 
+                              birth_year: birthYear,
+                             birth_month: birthMonth,
+                               birth_day: birthDay,
+                                 gender: gender,
+                                    img: UNDEFINED,
+                               img_name: UNDEFINED,
+                            update_date: UNDEFINED,
+                            create_date: dateTime
             }, function(err, res) { 
                 if (err) throw err;
-                console.log("insert success");
+                console.log("member insert success");
     
-                memberCounters.updateOne({ _id: "memberID"}, {$set: { sequence_value: memberID }}, function(err, res) { 
+                memberCounters.updateOne({ _id: "memberID" }, { $set: { sequence_value: memberID } }, function(err, res) { 
                     if (err) throw err;
-                    console.log("update success");
+                    console.log("memberCounters update success");
                     
-                    jsonOperations.writeJSON("./public/json/email.json", { memberID: memberID, email: email });
+                    writeJSON({ memberID: memberID, email: email });
                     client.close();
                     callback();
                 });
