@@ -5,7 +5,7 @@ Update Operations
 Delete Operations
 */
 
-var email = require('../public/json/email.json');
+var email = require("../public/json/email.json");
 var fs = require("fs");
 
 const { json } = require('body-parser');
@@ -19,9 +19,6 @@ function emailExist(searchEmail) {
     var isExist = false;
 
     for (var i = 0; i < email.EmailList.length; i++) {
-
-        // console.log("email: " + email.EmailList[i].email + "-----search: " + searchEmail);
-
         if (email.EmailList[i].email == searchEmail) {
             console.log("電子郵件已經註冊: " + email.EmailList[i].email);
             isExist = true;
@@ -56,7 +53,7 @@ function createMember(familyName, givenName, email, password, birthYear, birthMo
         if (err) throw err;
         const memberCounters = client.db("ASCA_DB").collection("memberCounters");
         const member = client.db("ASCA_DB").collection("member");
-        const dateTime = new Date().toLocaleString("zh-TW", { timeZone: "Asia/Taipei" });
+        const dateTime = new Date().toLocaleString("zh-TW", { timeZone: "Asia/Taipei" }); //取得目前的時間+台北的時區(存入資料庫才是會當地的時間)
     
         memberCounters.find({ _id: "memberID" }).toArray(function(err, result) {
             if (err) throw err;
@@ -76,7 +73,7 @@ function createMember(familyName, givenName, email, password, birthYear, birthMo
                                img_name: UNDEFINED,
                             update_date: UNDEFINED,
                             create_date: dateTime
-            }, function(err, res) { 
+                }, function(err, res) {     
                 if (err) throw err;
                 console.log("member insert success");
     
