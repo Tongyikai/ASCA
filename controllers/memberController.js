@@ -13,8 +13,10 @@ const UNDEFINED = "undefined";
 const config = require("../config/development_config");
 
 const MongoClient = require("mongodb").MongoClient;
-const uri = "mongodb://" + config.mongodb.user + ":" + config.mongodb.password + "@localhost:27017/" + config.mongodb.database;
+const uri = "mongodb://" + config.mongodb.user + ":" + config.mongodb.password + "@" + config.mongodb.host + "/" + config.mongodb.database;
 const client = new MongoClient(uri, { useUnifiedTopology: true });
+
+const encryption = require("../models/encryption");
 
 function emailExist(searchEmail) {
     var isExist = false;
@@ -56,6 +58,8 @@ function createMember(familyName, givenName, email, password, birthYear, birthMo
         const member = client.db(config.mongodb.database).collection(config.mongodb.memberCollection);
 
         const dateTime = new Date().toLocaleString("zh-TW", { timeZone: "Asia/Taipei" }); //取得目前的時間+台北的時區(存入資料庫才是會當地的時間)
+
+        const encryptionPassword = encryption(password); //加密
     
         memberCounters.find({ _id: "memberID" }).toArray(function(err, result) {
             if (err) throw err;
@@ -66,7 +70,7 @@ function createMember(familyName, givenName, email, password, birthYear, birthMo
                              familyName: familyName, 
                               givenName: givenName,
                                   email: email,
-                               password: password,
+                               password: encryptionPassword,
                               birth_year: birthYear,
                              birth_month: birthMonth,
                                birth_day: birthDay,

@@ -36,7 +36,7 @@ function checkEmail(email) {
 
 //AJAX
 var httpRequest = new XMLHttpRequest();
-var isAvailable;
+var isEmailAvailable;
 
 httpRequest.onload = function() {
     if (httpRequest.status >= 200 && httpRequest.status < 400) {
@@ -47,9 +47,9 @@ httpRequest.onload = function() {
         console.log("emailAvailable is: " + jsonObject.emailAvailable);
 
         if (jsonObject.emailAvailable == "true") {
-            isAvailable = true;
+            isEmailAvailable = true;
         } else {
-            isAvailable = false;
+            isEmailAvailable = false;
         }
 
         if (jsonObject.createMember == "success") {
@@ -69,7 +69,7 @@ function checkEmailAvailable(searchEmail) {
     httpRequest.open("GET", "http://127.0.0.1:8888/signUp/check?email=" + searchEmail, false);
     httpRequest.send();
 
-    return isAvailable;
+    return isEmailAvailable;
 }
 
 //檢查密碼必須包含至少 8 個字元，可以混合使用英文字母、數字和符號 (僅限 ASCII 標準字元)
