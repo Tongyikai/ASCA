@@ -1,16 +1,1 @@
-<<<<<<< HEAD
-{
-    "EmailList":[
-       {
-           "index":0,
-           "email":"tongyikai@gmail.com"
-       },
-       {
-           "index":1,
-           "email":"derek7815@gmail.com"
-       }
-    ]
-}
-=======
-{"EmailList":[{"memberID":1,"email":"tongyikai@gmail.com"},{"memberID":2,"email":"tongyikai332@gmail.com"}]}
->>>>>>> develop
+{"EmailList":[{"memberID":1,"email":"tongyikai@gmail.com"},{"memberID":2,"email":"amen579@gmail.com"}]}

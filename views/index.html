@@ -8,7 +8,7 @@
     <body>
         <header>
             <h2 class="white-text">標會PLUS
-                <button class="signUpBtn" onclick="gotoSignUp()">註冊</button>
+                <button class="signUpBtn" onclick="signUp()">註冊</button>
             </h2>
             <div class="formLogIn">
                 <table>
@@ -18,9 +18,9 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td><input type="email" name="email"></td>
-                        <td><input type="password" name="password"></td>
-                        <td><button class="logInBtn" onclick="gotoLogIn()">登入</button></td>
+                        <td><input class="email" type="email" name="email" id="email"></td>
+                        <td><input class="password" type="password" name="password" id="password"></td>
+                        <td><button class="logInBtn" onclick="logIn()">登入</button></td>
                     </tr>
                     <tr>
                         <td></td>
@@ -38,13 +38,19 @@
             <p>Pure CSS Sticky Header - Navbar Fixed Top After Scrolling - No Javascript</p>
         </section>
 
+        <script type="text/javascript" src="public/scripts/logInUserInfor.js"></script>
         <script>
-            function gotoSignUp() {
+            var funLogIn = logInForUser;
+
+            function signUp() {
                 // window.location.href="///Users/tongyikai/Documents/Git/AWEB/signUp.html";
                 window.location.href = "http://127.0.0.1:8888/signUp";
             }
-            function gotoLogIn() {
-
+            
+            function logIn() {
+                var userEmail = document.getElementById("email").value;
+                var userPassword = document.getElementById("password").value;
+                funLogIn(userEmail, userPassword);
             }
         </script>
     </body>
