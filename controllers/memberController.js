@@ -5,8 +5,8 @@ Update Operations
 Delete Operations
 */
 
-var email = require("../public/json/email.json");
-var fs = require("fs");
+let email = require("../public/json/email.json");
+let fs = require("fs");
 
 const { json } = require('body-parser');
 const UNDEFINED = "undefined";
@@ -18,17 +18,7 @@ const client = new MongoClient(uri, { useUnifiedTopology: true });
 
 const encryption = require("../models/encryption");
 
-function emailExist(searchEmail) {
-    var isExist = false;
-
-    for (var i = 0; i < email.EmailList.length; i++) {
-        if (email.EmailList[i].email == searchEmail) {
-            console.log("電子郵件已經註冊: " + email.EmailList[i].email);
-            isExist = true;
-        }
-    }
-    return isExist;
-}
+let userMemberID;
 
 function writeJSON(newData) {
     fs.readFile("./public/json/email.json", function(err, fileData) { //先將原本的json檔讀出來
@@ -36,12 +26,12 @@ function writeJSON(newData) {
             return console.error(err);
         }
 
-        var data = fileData.toString(); //將二進制數據轉換為字串符
+        let data = fileData.toString(); //將二進制數據轉換為字串符
         data = JSON.parse(data); //將字串符轉為 json 對象
 
         data.EmailList.push(newData);
 
-        var str = JSON.stringify(data); //因為寫入文件 json 只認識字符串或二進制數 需要將json對象轉換成字符串
+        let str = JSON.stringify(data); //因為寫入文件 json 只認識字符串或二進制數 需要將json對象轉換成字符串
         fs.writeFile("./public/json/email.json", str, function(err) {
             if (err) {
                 console.log(err);
@@ -49,6 +39,19 @@ function writeJSON(newData) {
             console.log("Add data to ./public/json/email.json");
         });
     });
+}
+
+function emailExist(searchEmail) {
+    let isExist = false;
+
+    for (var i = 0; i < email.EmailList.length; i++) {
+        if (email.EmailList[i].email == searchEmail) {
+            console.log("電子郵件已經註冊: " + email.EmailList[i].email);
+            userMemberID = email.EmailList[i].memberID;
+            isExist = true;
+        }
+    }
+    return isExist;
 }
 
 function createMember(familyName, givenName, email, password, birthYear, birthMonth, birthDay, gender, callback) {
@@ -97,7 +100,17 @@ function createMember(familyName, givenName, email, password, birthYear, birthMo
     console.log("createMember finish.");
 }
 
+function logInMember(email, password, callback) {
+    if (emailExist(email)) { // 判斷有這組電子郵件
+        // 取得memberID
+        console.log("會員的ID: " + userMemberID);
+        console.log(password);
+        callback();
+    }
+}
+
 module.exports = {
     emailExist,
-    createMember
+    createMember,
+    logInMember
 }

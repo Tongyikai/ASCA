@@ -48,6 +48,13 @@ http.createServer(function(request, response) {
 										response.write(JSON.stringify({ createMember: "success" }));
 										response.end();
 			});
+		} else if (request.url === "/logIn") {
+			console.log("收到一個 POST 請求 " + post);
+			post = querystring.parse(post);
+			console.log("PARSE POST 請求 " + post.email + "\n" + post.password);
+			memberContr.logInMember(post.email, post.password, function() {
+				console.log("準備回傳token");
+			});
 		}
 	});
 
@@ -69,6 +76,9 @@ http.createServer(function(request, response) {
 
 	} else if (request.url === "/userRegister") {
 		console.log("Method:POST, Request: /userRegister " + post);
+
+	} else if (request.url === "/logIn") {
+		console.log("會員登入");
 
 	} else if (/^\/[a-zA-Z0-9\/]*.js$/.test(request.url.toString())) {
 		sendFileContent(response, request.url.toString().substring(1), "text/javascript");

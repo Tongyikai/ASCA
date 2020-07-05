@@ -35,8 +35,8 @@ function checkEmail(email) {
 }
 
 //AJAX
-var httpRequest = new XMLHttpRequest();
-var isEmailAvailable;
+const httpRequest = new XMLHttpRequest();
+let isEmailAvailable;
 
 httpRequest.onload = function() {
     if (httpRequest.status >= 200 && httpRequest.status < 400) {
@@ -79,8 +79,8 @@ function checkPassword(password) {
 
 //檢查出生年月日是否正確
 function checkDateOfBirth(year, month, day) {
-    var limitInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    var isLeap = new Date(year, 1, 29).getDate() === 29;
+    let limitInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    let isLeap = new Date(year, 1, 29).getDate() === 29;
 
     if (isLeap) {
         limitInMonth[1] = 29;
