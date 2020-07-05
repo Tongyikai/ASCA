@@ -63,36 +63,27 @@ http.createServer(function(request, response) {
 	************************************************ */
 	if (request.url === "/index") {
 		sendFileContent(response, "views/index.html", "text/html");
-
 	} else if (request.url === "/") {
         sendFileContent(response, "views/index.html", "text/html");
-
 	} else if (request.url === "/signUp") {
 		sendFileContent(response, "views/signUp.html", "text/html");
-
 	} else if (action === "/signUp/check") { //action 只要判斷網域後面的URL，後面帶參數不需要考慮
 		checkEmail(response, params.email);
 		console.log("/signUp/check GET Request: " + params.email);
-
 	} else if (request.url === "/userRegister") {
 		console.log("Method:POST, Request: /userRegister " + post);
-
 	} else if (request.url === "/logIn") {
 		console.log("會員登入");
-
 	} else if (/^\/[a-zA-Z0-9\/]*.js$/.test(request.url.toString())) {
 		sendFileContent(response, request.url.toString().substring(1), "text/javascript");
 		console.log("Need File: Request --> " + request.url.toString().substring(1) + " .js");
-
 	} else if (/^\/[a-zA-Z0-9\/]*.css$/.test(request.url.toString())) {
 		sendFileContent(response, request.url.toString().substring(1), "text/css");
 		console.log("Need File: Request --> " + request.url.toString().substring(1) + ".css");
-
 	} else {
 		console.log("找不到對應的 -- Requested URL is: " + request.url);
 		response.end();
 	}
-	
 }).listen(8888);
 console.log("Server running at: http://127.0.0.1:8888/ \nNow time: " + new Date());
 
@@ -104,11 +95,9 @@ function sendFileContent(response, fileName, contentType) {
 		if(err) {
 			response.writeHead(404);
 			response.write("Not Found!");
-
 		} else {
 			response.writeHead(200, { "Content-Type": contentType });
 			response.write(data);
-
 		}
 		response.end();
 	});
@@ -118,7 +107,6 @@ function checkEmail(response, email) {
 	if (memberContr.emailExist(email)) { 
 		response.writeHead(200, { "Content-Type": "application/json" });
 		response.write(JSON.stringify({ emailAvailable: "false" })); //如果電子郵件已經存在，就給 false 不能使用 
-
 	} else {
 		response.writeHead(200, { "Content-Type": "application/json" });
 		response.write(JSON.stringify({ emailAvailable: "true" }));

@@ -31,7 +31,7 @@ function checkNameIsChinese(name) {
 //檢查電子郵件格式是否正確
 function checkEmail(email) {
     if (email.search(emailRule)!= -1) return true;
-        return false;
+    return false;
 }
 
 //AJAX
@@ -51,14 +51,11 @@ httpRequest.onload = function() {
         } else {
             isEmailAvailable = false;
         }
-<<<<<<< HEAD
-=======
 
         if (jsonObject.createMember == "success") {
             console.log("收到Server註冊成功的回應");
             window.location.href = "http://127.0.0.1:8888/index";
         }
->>>>>>> develop
     }
 }
 
@@ -71,7 +68,6 @@ httpRequest.onerror = function() {
 function checkEmailAvailable(searchEmail) {
     httpRequest.open("GET", "http://127.0.0.1:8888/signUp/check?email=" + searchEmail, false);
     httpRequest.send();
-
     return isEmailAvailable;
 }
 
@@ -88,18 +84,13 @@ function checkDateOfBirth(year, month, day) {
     if (isLeap) {
         limitInMonth[1] = 29;
     }
-
     return day <= limitInMonth[month - 1];
 }
 
 //傳送使用者註冊的基本資料
 function registerForUser(familyName, givenName, email, password, bYear, bMonth, bDay, gender) {
     // console.log("客戶端註冊資訊準備用POST傳給伺服器");
-<<<<<<< HEAD
-    httpRequest.open("POST", "http://127.0.0.1:8888/userRegister", true);
-=======
     httpRequest.open("POST", "http://127.0.0.1:8888/userRegister", false);
->>>>>>> develop
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     httpRequest.send("familyName=" + familyName + 
                      "&givenName=" + givenName +
@@ -108,6 +99,5 @@ function registerForUser(familyName, givenName, email, password, bYear, bMonth, 
                      "&bYear=" + bYear + 
                      "&bMonth=" + bMonth +
                      "&bDay=" + bDay +
-                     "&gender=" + gender
-                     );
+                     "&gender=" + gender);
 }

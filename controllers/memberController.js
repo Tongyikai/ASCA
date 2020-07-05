@@ -10,13 +10,14 @@ let fs = require("fs");
 
 const { json } = require('body-parser');
 const UNDEFINED = "undefined";
-const config = require("../config/development_config");
+const config = require("../config/developmentConfig");
 
 const MongoClient = require("mongodb").MongoClient;
 const uri = "mongodb://" + config.mongodb.user + ":" + config.mongodb.password + "@" + config.mongodb.host + "/" + config.mongodb.database;
 const client = new MongoClient(uri, { useUnifiedTopology: true });
 
 const encryption = require("../models/encryption");
+const jwt = require("jsonwebtoken");
 
 let userMemberID;
 
@@ -104,7 +105,10 @@ function logInMember(email, password, callback) {
     if (emailExist(email)) { // 判斷有這組電子郵件
         // 取得memberID
         console.log("會員的ID: " + userMemberID);
-        console.log(password);
+        console.log("會員的password: " + password);
+
+        const token = jwt.sign({ algorithm: "HS256", exp: Math.floor(Date.now() / 1000) + (60 * 60), data: userMemberID }, config.secret);
+        console.log("token: " + token);
         callback();
     }
 }
