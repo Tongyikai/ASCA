@@ -51,11 +51,14 @@ httpRequest.onload = function() {
         } else {
             isEmailAvailable = false;
         }
+<<<<<<< HEAD
+=======
 
         if (jsonObject.createMember == "success") {
             console.log("收到Server註冊成功的回應");
             window.location.href = "http://127.0.0.1:8888/index";
         }
+>>>>>>> develop
     }
 }
 
@@ -92,7 +95,11 @@ function checkDateOfBirth(year, month, day) {
 //傳送使用者註冊的基本資料
 function registerForUser(familyName, givenName, email, password, bYear, bMonth, bDay, gender) {
     // console.log("客戶端註冊資訊準備用POST傳給伺服器");
+<<<<<<< HEAD
+    httpRequest.open("POST", "http://127.0.0.1:8888/userRegister", true);
+=======
     httpRequest.open("POST", "http://127.0.0.1:8888/userRegister", false);
+>>>>>>> develop
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     httpRequest.send("familyName=" + familyName + 
                      "&givenName=" + givenName +
