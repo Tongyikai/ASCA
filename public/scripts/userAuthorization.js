@@ -14,3 +14,13 @@ function logInForUser(email, password) {
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     httpRequest.send("email=" + email + "&password=" + password);
 }
+
+function checkAuthorization() {
+    var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)authorization\s*\=\s*([^;]*).*s)|^.*s/, "$1");
+    // console.log("authorization=" + cookieValue);
+    console.log("location.pathname: " + location.pathname);
+
+    if (cookieValue !== "") { // 如果有值，傳給伺服器認證
+        console.log("authorization=" + cookieValue);
+    }
+}

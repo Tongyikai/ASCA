@@ -38,9 +38,11 @@
             <p>Pure CSS Sticky Header - Navbar Fixed Top After Scrolling - No Javascript</p>
         </section>
 
-        <script type="text/javascript" src="public/scripts/logInUserInfor.js"></script>
+        <script type="text/javascript" src="public/scripts/userAuthorization.js"></script>
         <script>
             var funLogIn = logInForUser;
+            let funToken = checkAuthorization;
+            funToken();            
 
             function signUp() {
                 // window.location.href="///Users/tongyikai/Documents/Git/AWEB/signUp.html";
