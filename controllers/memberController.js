@@ -15,15 +15,12 @@ const config = require("../config/developmentConfig");
 
 const MongoClient = require("mongodb").MongoClient;
 const uri = "mongodb://" + config.mongodb.user + ":" + config.mongodb.password + "@" + config.mongodb.host + "/" + config.mongodb.database;
-const client = new MongoClient(uri, { useUnifiedTopology: true });
+// const client = new MongoClient(uri, { useUnifiedTopology: true });
 
 const encryption = require("../models/encryption");
 const jwt = require("jsonwebtoken");
 
 let userMemberID;
-let userMember = {
-    password: UNDEFINED
-}
 
 function updateJSON() {
     fs.readFile(EMAIL_LIST_PATH, (err, fileData) => {
@@ -58,19 +55,11 @@ function writeJSON(newData) {
     });
 }
 
-function readMember(memberID) {
-    client.connect(err => {
-        if (err) throw err;
-
-        const member = client.db(config.mongodb.database).collection(config.mongodb.memberCollection);
-        let whereStr = { "memberID": memberID };
-
-        member.find(whereStr).toArray(function(err, result) {
-            if (err) throw err;
-            console.log(result);
-            client.close();
-        });
-    });
+function parseToken(token) {
+    const decoded = jwt.verify(token, config.secret);
+    console.log("----- parse token -----");
+    console.log(decoded);
+    console.log("會員ID: " + decoded.memberID);
 }
 
 /* ************************************************
@@ -90,6 +79,8 @@ function emailExist(searchEmail) {
 }
 
 function createMember(familyName, givenName, email, password, birthYear, birthMonth, birthDay, gender, callback) {
+    const client = new MongoClient(uri, { useUnifiedTopology: true });
+
     client.connect(err => {
         if (err) throw err;
         const memberCounters = client.db(config.mongodb.database).collection(config.mongodb.memberCountersCollection);
@@ -140,18 +131,41 @@ function logInMember(email, password, callback) {
         console.log("會員的password: " + password);
 
         // 驗證密碼
+        const client = new MongoClient(uri, { useUnifiedTopology: true });
+        client.connect(err => {
+            if (err) throw err;
+            const member = client.db(config.mongodb.database).collection(config.mongodb.memberCollection);
+            member.find({ "memberID": userMemberID}).toArray((err, result) => {
+                if (err) throw err;
+                // console.log(result);
+                console.log("資料庫的密碼: " + result[0].password);
 
+                if (encryption(password) == result[0].password) {
+                    console.log("密碼一樣");
+                    const token = jwt.sign({ algorithm: "HS256", exp: Math.floor(Date.now() / 1000) + (60 * 60), memberID: userMemberID }, config.secret);
+                    client.close();
+                    callback(token);
 
-        // readMember(userMemberID); // 先把使用者的資料找出來
+                } else {
+                    // 密碼錯誤
+                    callback("passwordIncorrect");
+                }
+            });
+        });
 
-        // const token = jwt.sign({ algorithm: "HS256", exp: Math.floor(Date.now() / 1000) + (60 * 60), data: userMemberID }, config.secret);
-        // console.log("token: " + token);
-        // callback();
+    } else {
+        // email不存在
+        callback("emailIncorrect");
     }
+}
+
+function LogInWithTokenMember(token, callback) {
+    parseToken(token);
 }
 
 module.exports = {
     emailExist,
     createMember,
-    logInMember
+    logInMember,
+    LogInWithTokenMember
 }

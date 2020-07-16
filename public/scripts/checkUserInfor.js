@@ -90,7 +90,7 @@ function checkDateOfBirth(year, month, day) {
 // 傳送使用者註冊的基本資料
 function registerForUser(familyName, givenName, email, password, bYear, bMonth, bDay, gender) {
     // console.log("客戶端註冊資訊準備用POST傳給伺服器");
-    httpRequest.open("POST", "http://127.0.0.1:8888/userRegister", false);
+    httpRequest.open("POST", "http://127.0.0.1:8888/register", false);
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     httpRequest.send("familyName=" + familyName + 
                      "&givenName=" + givenName +

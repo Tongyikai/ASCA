@@ -25,7 +25,7 @@
                     <tr>
                         <td></td>
                         <td><a href="http://google.com" style="font-size: 11px;">忘記密碼?</a></td>
-                        <td></td>
+                        <td><button onclick="resetToken()">清除Cookie</button></td> 
                     </tr>
                 </table>
             </div>
@@ -53,6 +53,12 @@
                 var userEmail = document.getElementById("email").value;
                 var userPassword = document.getElementById("password").value;
                 funLogIn(userEmail, userPassword);
+            }
+
+            //Test function
+            function resetToken() {
+                document.cookie = "authorization=";
+                alert(document.cookie);
             }
         </script>
     </body>
