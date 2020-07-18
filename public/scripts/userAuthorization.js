@@ -15,6 +15,14 @@ httpRequest.onload = function() {
                 alert("entered incorrect");
                 break;
 
+            case "false":
+                alert("Token incorrect!!");
+                break;
+
+            case "true":
+                window.location.href = "http://127.0.0.1:8888/profile";
+                break;
+
             default:
                 console.log("把token存在cookie裡");
                 document.cookie = "authorization=" + jsonObject.authorization;
@@ -46,9 +54,8 @@ function checkAuthorization() {
     console.log("location.pathname: " + location.pathname);
     console.log("authorization: " + cookieValue);
 
-
-    if (cookieValue !== "") { // 如果有值，傳給伺服器認證
-        httpRequest.open("POST", "http://127.0.0.1:8888/LogInWithToken", false);
+    if (cookieValue !== "") { // 如果authorization有值，傳給伺服器認證
+        httpRequest.open("POST", "http://127.0.0.1:8888/logInWithToken", false);
         httpRequest.setRequestHeader("Authorization", "Bearer " + cookieValue);
         httpRequest.send();
     }

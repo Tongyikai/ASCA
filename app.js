@@ -52,7 +52,8 @@ http.createServer(function(request, response) {
 		} else if (request.url === "/logIn") {
 			console.log("收到--- logIn --- POST 請求: " + post + " 驗證.....");
 			post = querystring.parse(post);
-			console.log("PARSE POST 請求 " + post.email + "\n" + post.password);
+			console.log("email: " + post.email + "\n" + "password: " + post.password);
+
 			memberContr.logInMember(post.email, post.password, function(message) {
 				// 判斷回傳的參數, message=emailIncorrect, message=passwordIncorrect, 都不是代表是一個token
 				if (message == "emailIncorrect") {
@@ -72,11 +73,24 @@ http.createServer(function(request, response) {
 				response.end();
 			});
 
-		} else if (request.url === "/LogInWithToken") {
+		} else if (request.url === "/logInWithToken") {
 			console.log("收到--- token --- POST 請求: " + post + " 驗證.....");
 			const token = request.headers["authorization"].replace("Bearer ", "");
-			memberContr.LogInWithTokenMember(token, () => {
+			memberContr.logInWithTokenMember(token, (message) => {
 				// 回傳給Client
+				if (message == "true") {
+					console.log("1: " + message);
+					response.writeHead(200, { "Content-Type": "application/json" });
+					response.write(JSON.stringify({ authorization: message }));
+					response.end();
+
+				} else if (message == "false") {
+					console.log("2: " + message);
+					response.writeHead(200, { "Content-Type": "application/json" });
+					response.write(JSON.stringify({ authorization: message }));
+					response.end();
+
+				}
 			});
 		}
 	});
@@ -103,8 +117,11 @@ http.createServer(function(request, response) {
 	} else if (request.url === "/logIn") {
 		console.log("會員沒鑰匙");
 
-	} else if (request.url === "/LogInWithToken") {
+	} else if (request.url === "/logInWithToken") {
 		console.log("會員帶token");
+
+	} else if (request.url === "/profile") {
+		sendFileContent(response, "views/profile.html", "text/html");
 
 	} else if (/^\/[a-zA-Z0-9\/]*.js$/.test(request.url.toString())) {
 		sendFileContent(response, request.url.toString().substring(1), "text/javascript");

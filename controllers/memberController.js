@@ -55,27 +55,37 @@ function writeJSON(newData) {
     });
 }
 
-function parseToken(token) {
-    const decoded = jwt.verify(token, config.secret);
+function tokenExist(token) {
     console.log("----- parse token -----");
-    console.log(decoded);
-    console.log("會員ID: " + decoded.memberID);
+    let decoded;
+    let tokenCorrect;
+    jwt.verify(token, config.secret, err => {
+        if (err) {
+            console.log("err: " + err);
+            tokenCorrect = false;
+        } else {   
+            decoded = jwt.verify(token, config.secret);
+            console.log(decoded);
+            console.log("會員ID: " + decoded.memberID);
+            userMemberID = decoded.memberID; // 驗證token正確同時取得memberID
+            tokenCorrect = true;
+        }
+    });
+    return tokenCorrect;
 }
 
 /* ************************************************
 *	exports methods 
 ************************************************ */
 function emailExist(searchEmail) { 
-    let isExist = false;
-
     for (var i = 0; i < email.EmailList.length; i++) {
         if (email.EmailList[i].email == searchEmail) {
             console.log("電子郵件已經註冊: " + email.EmailList[i].email);
             userMemberID = email.EmailList[i].memberID; // 查尋email存在的同時也取得memberID
-            isExist = true;
+            return true;
         }
     }
-    return isExist;
+    return false;
 }
 
 function createMember(familyName, givenName, email, password, birthYear, birthMonth, birthDay, gender, callback) {
@@ -148,6 +158,7 @@ function logInMember(email, password, callback) {
 
                 } else {
                     // 密碼錯誤
+                    console.log("密碼錯誤");
                     callback("passwordIncorrect");
                 }
             });
@@ -155,17 +166,25 @@ function logInMember(email, password, callback) {
 
     } else {
         // email不存在
+        console.log("email不存在");
         callback("emailIncorrect");
     }
 }
 
-function LogInWithTokenMember(token, callback) {
-    parseToken(token);
+function logInWithTokenMember(token, callback) {
+    if (tokenExist(token)) {
+        console.log("1");
+        callback("true");
+    } else {
+        console.log("2");
+        callback("false");
+    }
+    console.log("3");
 }
 
 module.exports = {
     emailExist,
     createMember,
     logInMember,
-    LogInWithTokenMember
+    logInWithTokenMember
 }
