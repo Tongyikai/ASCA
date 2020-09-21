@@ -20,7 +20,8 @@ httpRequest.onload = function() {
                 break;
 
             case "true":
-                window.location.href = "http://127.0.0.1:8888/profile";
+                // window.location.href = "http://127.0.0.1:8888/profile";
+                window.location.href = "http://127.0.0.1:8888/asca";
                 break;
 
             default:
@@ -50,9 +51,11 @@ function logInForUser(email, password) {
 }
 
 function checkAuthorization() {
-    var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)authorization\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    console.log("開始檢查 Autorization");
     console.log("location.pathname: " + location.pathname);
     console.log("authorization: " + cookieValue);
+    
+    var cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)authorization\s*\=\s*([^;]*).*$)|^.*$/, "$1");
 
     if (cookieValue !== "") { // 如果authorization有值，傳給伺服器認證
         httpRequest.open("POST", "http://127.0.0.1:8888/logInWithToken", false);

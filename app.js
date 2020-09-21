@@ -79,13 +79,11 @@ http.createServer(function(request, response) {
 			memberContr.logInWithTokenMember(token, (message) => {
 				// 回傳給Client
 				if (message == "true") {
-					console.log("1: " + message);
 					response.writeHead(200, { "Content-Type": "application/json" });
 					response.write(JSON.stringify({ authorization: message }));
 					response.end();
 
 				} else if (message == "false") {
-					console.log("2: " + message);
 					response.writeHead(200, { "Content-Type": "application/json" });
 					response.write(JSON.stringify({ authorization: message }));
 					response.end();
@@ -120,8 +118,9 @@ http.createServer(function(request, response) {
 	} else if (request.url === "/logInWithToken") {
 		console.log("會員帶token");
 
-	} else if (request.url === "/profile") {
-		sendFileContent(response, "views/profile.html", "text/html");
+	} else if (request.url === "/asca") {
+		// sendFileContent(response, "views/profile.html", "text/html");
+		sendFileContent(response, "views/asca.html", "text/html");
 
 	} else if (/^\/[a-zA-Z0-9\/]*.js$/.test(request.url.toString())) {
 		sendFileContent(response, request.url.toString().substring(1), "text/javascript");
@@ -130,6 +129,10 @@ http.createServer(function(request, response) {
 	} else if (/^\/[a-zA-Z0-9\/]*.css$/.test(request.url.toString())) {
 		sendFileContent(response, request.url.toString().substring(1), "text/css");
 		console.log("Response File: " + request.url.toString().substring(1) + ".css");
+
+	} else if (/^\/[a-zA-Z0-9\/]*.png$/.test(request.url.toString())) {
+		sendFileContent(response, request.url.toString().substring(1), "text/png");
+		console.log("Response File: " + request.url.toString().substring(1) + ".png");
 
 	} else {
 		console.log("找不到對應的 --- Requested URL is: " + request.url);

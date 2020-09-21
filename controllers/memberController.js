@@ -151,7 +151,7 @@ function logInMember(email, password, callback) {
                 console.log("資料庫的密碼: " + result[0].password);
 
                 if (encryption(password) == result[0].password) {
-                    console.log("密碼一樣");
+                    console.log("密碼正確");
                     const token = jwt.sign({ algorithm: "HS256", exp: Math.floor(Date.now() / 1000) + (60 * 60), memberID: userMemberID }, config.secret);
                     client.close();
                     callback(token);
@@ -173,13 +173,14 @@ function logInMember(email, password, callback) {
 
 function logInWithTokenMember(token, callback) {
     if (tokenExist(token)) {
-        console.log("1");
         callback("true");
     } else {
-        console.log("2");
         callback("false");
     }
-    console.log("3");
+}
+
+function updateProfileMember() {
+
 }
 
 module.exports = {
