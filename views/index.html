@@ -2,12 +2,12 @@
 <html>
     <head name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>標會PLUS - 登入或註冊</title>
+        <title>互助會PLUS - 登入或註冊</title>
         <link rel="stylesheet" href="public/stylesheets/index.css">
     </head>
     <body>
         <header>
-            <h2 class="white-text">標會PLUS
+            <h2 class="white-text">互助會PLUS
                 <button class="signUpBtn" onclick="signUp()">註冊</button>
             </h2>
             <div class="formLogIn">
@@ -25,7 +25,7 @@
                     <tr>
                         <td></td>
                         <td><a href="http://google.com" style="font-size: 11px;">忘記密碼?</a></td>
-                        <td></td>
+                        <td><button onclick="resetToken()">清除Cookie</button></td> 
                     </tr>
                 </table>
             </div>
@@ -38,9 +38,11 @@
             <p>Pure CSS Sticky Header - Navbar Fixed Top After Scrolling - No Javascript</p>
         </section>
 
-        <script type="text/javascript" src="public/scripts/logInUserInfor.js"></script>
+        <script type="text/javascript" src="public/scripts/userAuthorization.js"></script>
         <script>
             var funLogIn = logInForUser;
+            let funToken = checkAuthorization;
+            funToken();
 
             function signUp() {
                 // window.location.href="///Users/tongyikai/Documents/Git/AWEB/signUp.html";
@@ -51,6 +53,12 @@
                 var userEmail = document.getElementById("email").value;
                 var userPassword = document.getElementById("password").value;
                 funLogIn(userEmail, userPassword);
+            }
+
+            //Test function
+            function resetToken() {
+                document.cookie = "authorization=";
+                alert(document.cookie);
             }
         </script>
     </body>

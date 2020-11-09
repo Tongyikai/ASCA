@@ -2,13 +2,13 @@
 <html>
     <head name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>註冊 標會PLUS 帳號</title>
+        <title>註冊 互助會PLUS 帳號</title>
         <link rel="stylesheet" type="text/css" href="public/stylesheets/signUp.css">
     </head>
     <body>
         <header>
             <a href="http://127.0.0.1:8888" style="text-decoration:none">
-                <h2 class="white-text">標會PLUS</h2>
+                <h2 class="white-text">互助會PLUS</h2>
             </a>
         </header>
         <section class="sec1">
@@ -160,7 +160,8 @@
                       "Email: " + (isEmailCorrect ? "可以使用" : "已註冊或錯誤的電子郵件") + "\n" +
                       "密碼: " + isPasswordCorrect + "\n" +
                       "生日: " + isBirthdayCorrect + "\n" +
-                      "性別: " + gender + "\n");
+                      "性別: " + gender + "\n"
+                    );
                 } else {
                     var yes = confirm("確認加入");
                     if (yes) {

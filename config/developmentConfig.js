@@ -10,5 +10,6 @@ module.exports = {
         database: process.env.DATABASE,
         memberCollection: process.env.MEMBER_TABLE,
         memberCountersCollection: process.env.MEMBER_COUNTERS_TABLE
-    }
+    },
+    secret: process.env.SECRET
 }
