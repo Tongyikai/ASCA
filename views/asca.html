@@ -169,6 +169,24 @@
 				text-decoration: none;
 				cursor: pointer;
 			}
+
+			.edit_Content {
+				padding-bottom: 300px;
+			}
+
+			.edit_Footer {
+				background-color: #3b5998;
+				height: 65px;
+				position: relative;
+			}
+
+			.edit_Update_Button {
+				width: 100px;
+				height: 30px;
+				margin-left: 300px;
+				padding-bottom: 15px;
+				font-size: 14px;
+			}
 		</style>
 	</head>
 	<body>
@@ -268,7 +286,7 @@
 				<span class="closeButton">&times;</span>
 			</div>
 
-			<div>
+			<div class="edit_Content">
 				<form>
 					<label for="avatar">上傳頭像</label>
 					<input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg"><br>
@@ -321,6 +339,10 @@
 				</form>
 			</div>
 
+			<div class="edit_Footer">
+				<button class="edit_Update_Button">更新</button>
+			</div>
+
 		</div>
 
 		<div id="footer" style="background-color:#FFA500;clear:both;text-align:center;margin-top:1200px;height:100px;">
@@ -344,12 +366,6 @@
 			editSpan.onclick = function() {
 				edit.style.display = "none";
 			}
-
-			// window.onclick = function(event) {
-			// 	if (event.target == edit) {
-			// 		edit.style.display = "none";
-			// 	}
-			// }
 
 	</script>
 	</body>
