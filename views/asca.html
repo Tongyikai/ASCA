@@ -114,6 +114,7 @@
 			}
 
 			.edit {
+				display: none;
 				background: white;
 				border-top-left-radius: 15px;
 				border-bottom-left-radius: 15px;
@@ -121,11 +122,20 @@
 				border-bottom-right-radius: 15px;
 				margin-left: 30%;
 				margin-right: 30%;
-				/* padding: 0 285px; */
-
 				height: 650px;
 				width: 700px;
 				margin-top: 10px;
+
+				/* The (background) */
+				/* position: fixed; */
+				z-index: 1;
+				/* padding-top: 100px; */
+				left: 0;
+				top: 0;
+				/* width: 100%; */
+				/* height: 100%; */
+				overflow: auto;
+				background-color: rgba(0, 0, 0, 0.4);
 			}
 
 			.edit_Title {
@@ -143,72 +153,55 @@
 				float: left;
 				padding-left: 10%;
 				padding-top: 1%;
+			}
+
+			.closeButton {
+				color: #aaaaaa;
+				float: right;
+				font-size: 28px;
+				font-weight: bold;
+				padding-right: 50%;
+			}
+
+			.closeButton:hover,
+			.closeButton:focus {
+				color: #000;
+				text-decoration: none;
 				cursor: pointer;
-			}
-
-			.edit_CloseButton_Style {
-				width: 50%;
-				height: 0;
-				padding-bottom: 50%;
-				/* padding-top: 100%; */
-				/* border-left: 100px; */
-				/* padding-left: 10%; */
-				border-radius: 15%;
-				border: 1px solid #a6a6a7;
-				overflow: hidden;
-				background: #ebebeb;
-				box-shadow: 0 0 3px #ebebeb;
-			}
-
-			.edit_CloseButton_Style:hover {
-				background: #a6a6a7;
-			}
-
-			.edit_CloseButton a {
-				display: block;
-				float: left;
-				width: 100%;
-				padding-top: 50%;
-				padding-bottom: 50%;
-                line-height: 1em;
-                margin-top: -0.5em;
-				text-align:center;
-                color: #060b11;
-                font-family: Verdana;
-                font-size: 1.2em;
-                font-weight: normal;
-                text-decoration: none;
 			}
 		</style>
 	</head>
 	<body>
 		<div class="navigation_bar">
+			
 			<div class="navigation_logo">
 				<a href="http://google.com">互助會PLUS</a>
 			</div>
+
 			<div class="navigation_right">
 				<ul>
 					<li class="nr_li avatar_Menu">
 						<img class="small_Avatar" src="123.png" alt="avatarImg">
-						<!-- <i>目錄</i> -->
-						<!-- <i class="fas fa-envelope-open-text"></i> -->
 
 						<div class="menu">
 							<div class="menu_item">
 								<ul>
-									<li class="location">編輯</li>
+									<li id= "edit_profile_btn" class="edit_profile">編輯</li>
 									<li>好友</li>
 									<li>設定</li>
 									<li>登出</li>
 								</ul>
 							</div>
 						</div>
+
 					</li>
 				</ul>
 			</div>
+
 		</div>
 
 		<div class="profile" id="container" style="width:360px;float:left">
+
 			<img class="big_Avatar" src="123.png" alt="avatarImg">
 			<div class="profile_Details" id="header" style="background-color: white; border-radius: 10px;">
 				<table>
@@ -262,17 +255,19 @@
 					</tbody>
 				</table>
 			</div>
+
 		</div>
 
-		<div class="edit">
+		<div id="edit" class="edit">
+
 			<div class="edit_Title">
 				<a><h2>編輯個人檔案</h2></a>
 			</div>
+
 			<div class="edit_CloseButton">
-				<div class="edit_CloseButton_Style">
-					<a>X</a>
-				</div>
+				<span class="closeButton">&times;</span>
 			</div>
+
 			<div>
 				<form>
 					<label for="avatar">上傳頭像</label>
@@ -325,26 +320,37 @@
 					<input type="text">
 				</form>
 			</div>
+
 		</div>
 
-		<div id="footer" style="background-color:#FFA500;clear:both;text-align:center;margin-top:500px;height:100px;">
+		<div id="footer" style="background-color:#FFA500;clear:both;text-align:center;margin-top:1200px;height:100px;">
 			版權所有 © ASCA
 		</div>
+
 	<script>
 			var avatarMenu = document.querySelector(".avatar_Menu");
-			avatarMenu.addEventListener("click", function(){
+			avatarMenu.addEventListener("click", function() {
 				this.classList.toggle("active");
 			});
 
-			var l = document.querySelector(".location");
-			l.addEventListener("click", function() {
-				// window.location.href="http://google.com"
-				window.open("http://google.com", "new", config="height=800,width=600");
-			});
-			
-			function myFunction(parameter) {
+			var edit = document.getElementById("edit");
+			var editProfileButton = document.getElementById("edit_profile_btn");
+			var editSpan = document.getElementsByClassName("closeButton")[0];
 
+			editProfileButton.onclick = function() {
+				edit.style.display = "block";
 			}
+
+			editSpan.onclick = function() {
+				edit.style.display = "none";
+			}
+
+			// window.onclick = function(event) {
+			// 	if (event.target == edit) {
+			// 		edit.style.display = "none";
+			// 	}
+			// }
+
 	</script>
 	</body>
 </html>
