@@ -1,12 +1,12 @@
 
 nameRule = /[^\u4e00-\u9fa5]/; // 只能輸入中文
 emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
-blankRule = /(^s*)|(s*$)/;
+blankRule = /(^s*)|(s*$)/g;
 passwordRule = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\w\s]).{8,16}$/;
 
-// 檢查是否輸入了空白
+// 檢查是否輸入了空白 (沒有輸入或輸入空白可以正確判斷，文字包含空白失效)
 function checkBlank(input) {
-    if (input.replace(/(^s*)|(s*$)/g, "").length == 0) {
+    if (input.replace(blankRule, "").length == 0) {
         return true;
     }
 
@@ -14,6 +14,18 @@ function checkBlank(input) {
     var regulation = "^[ ]+$";
     var re = new RegExp(regulation);
     return re.test(input);
+}
+
+// 檢查文字中是否包含空白
+function checkBlankInTheWord(input) {
+    let str = input.split("");
+
+    for (i = 0; i < str.length; i++) {
+        if (str[i] == " ") {
+            return true;
+        }
+    }
+    return false;
 }
 
 // 檢查姓氏與名字長度
@@ -40,7 +52,7 @@ let isEmailAvailable;
 
 httpRequest.onload = function() {
     if (httpRequest.status >= 200 && httpRequest.status < 400) {
-        var jsonObject = JSON.parse(httpRequest.responseText);
+        let jsonObject = JSON.parse(httpRequest.responseText);
 
         console.log("處理回應: " + httpRequest.responseText);
         console.log("JSON: " + jsonObject);

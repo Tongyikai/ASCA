@@ -109,6 +109,7 @@
 				margin-left: 100px;
 			}
 
+			/* 框框框框框 */ 
 			table, th, td {
 				border: 1px solid black;
 			}
@@ -135,7 +136,7 @@
 				/* width: 100%; */
 				/* height: 100%; */
 				overflow: auto;
-				background-color: rgba(0, 0, 0, 0.4);
+				background-color: rgba(0, 0, 0, 0.4); /* 背景灰色的原因 */
 			}
 
 			.edit_Title {
@@ -156,7 +157,7 @@
 			}
 
 			.closeButton {
-				color: #aaaaaa;
+				color: #b2e43d;
 				float: right;
 				font-size: 28px;
 				font-weight: bold;
@@ -171,7 +172,18 @@
 			}
 
 			.edit_Content {
-				padding-bottom: 300px;
+				padding-bottom: 52px;
+			}
+
+			.edit_Content table {
+				/* display: table;
+				border-collapse: separate;
+				border-spacing: 2px;
+				border-color: blue; */
+			}
+
+			.edit_Content td {
+				padding: 8px;
 			}
 
 			.edit_Footer {
@@ -219,8 +231,8 @@
 		</div>
 
 		<div class="profile" id="container" style="width:360px;float:left">
-
 			<img class="big_Avatar" src="123.png" alt="avatarImg">
+
 			<div class="profile_Details" id="header" style="background-color: white; border-radius: 10px;">
 				<table>
 					<thead>
@@ -287,56 +299,114 @@
 			</div>
 
 			<div class="edit_Content">
-				<form>
-					<label for="avatar">上傳頭像</label>
-					<input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg"><br>
-
-					<label>姓氏</label>
-					<input type="text">
-
-					<label>名字</label>
-					<input type="text"><br>
-
-					<label>E-mail</label>
-					<input type="text"><br>
-
-					<label>出生日期</label>
-					<select id="yearBox" class="year" name="year">
-						<option value="year">年</option>
-					</select>
-
-					<select id="monthBox" class="month" name="month">
-						<option value="month">月</option>
-					</select>
-
-					<select id="dayBox" class="day" name="day">
-						<option value="day">日</option>
-					</select><br>
-
-					<label>性別</label>
-					<input class="female" id="female" type="radio" name="gender" value="female" checked>女性
-					<input class="male" id="male" type="radio" name="gender" value="male">男性<br>
-
-					<label>現居</label>
-					<select id="currentCity">
-						<option value="livesIn">目前居住地</option>
-					</select><br>
-
-					<label>家鄉</label>
-					<select id="hometown">
-						<option value="placeOfBirth">出生地</option>
-					</select><br>
-
-					<label>電話</label>
-					<input type="text">
-					<input type="text"><br>
-
-					<label>手機</label>
-					<input type="text"><br>
-
-					<label>臉書</label>
-					<input type="text">
-				</form>
+				<table>
+					<tbody>
+						<tr>
+							<td style="width:150px">
+								<label for="avatar">上傳頭像</label>
+							</td>
+							<td style="width:200px">
+								<input type="file" id="uploadAvatar" name="avatar" accept="image/png, image/jpeg" onchange="loadFile(event)">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>姓氏</label>
+							</td>
+							<td>
+								<input type="text">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>名字</label>
+							</td>
+							<td>
+								<input type="text"><br>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>E-mail</label>
+							</td>
+							<td>
+								<input type="text" style="width: 200px;"><br>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>出生日期</label>
+							</td>
+							<td>
+								<select id="yearBox" class="year" name="year">
+									<option value="year">年</option>
+								</select>
+								<select id="monthBox" class="month" name="month">
+									<option value="month">月</option>
+								</select>
+								<select id="dayBox" class="day" name="day">
+									<option value="day">日</option>
+								</select><br>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>性別</label>
+							</td>
+							<td>
+								<input class="female" id="female" type="radio" name="gender" value="female" checked>女性
+								<input class="male" id="male" type="radio" name="gender" value="male">男性
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>現居</label>
+							</td>
+							<td>
+								<select id="currentCity">
+									<option value="livesIn">目前居住地</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>家鄉</label>
+							</td>
+							<td>
+								<select id="hometown">
+									<option value="placeOfBirth">出生地</option>
+								</select><br>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>電話</label>
+							</td>
+							<td>
+								<select id="telephoneAreaCode">
+									<option value="telephoneAreaCode">區碼</option>
+								</select>
+								<input type="text">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>手機</label>
+							</td>
+							<td>
+								<input type="text">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>臉書</label>
+							</td>
+							<td>
+								<input type="text" style="width: 200px;">
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 
 			<div class="edit_Footer">
@@ -349,23 +419,36 @@
 			版權所有 © ASCA
 		</div>
 
+	<script type="text/javascript" src="public/scripts/checkUserInfor.js"></script>
 	<script>
+			// 人像目錄
 			var avatarMenu = document.querySelector(".avatar_Menu");
 			avatarMenu.addEventListener("click", function() {
 				this.classList.toggle("active");
 			});
 
+			// 編輯視窗，開啟"編輯視窗"按鈕，關閉"編輯視窗"按鈕
 			var edit = document.getElementById("edit");
 			var editProfileButton = document.getElementById("edit_profile_btn");
-			var editSpan = document.getElementsByClassName("closeButton")[0];
+			var editCloseButton = document.getElementsByClassName("closeButton")[0];
 
 			editProfileButton.onclick = function() {
 				edit.style.display = "block";
 			}
 
-			editSpan.onclick = function() {
+			editCloseButton.onclick = function() {
 				edit.style.display = "none";
 			}
+
+			// 限制上傳圖片的大小
+			let maxSize = 2*1024*1024;//2M 
+			let errorMessage = "上傳的附件檔案不能超過 2 Mega Byte";
+			
+			var loadFile = function(event) {
+				let uploadAvatar = document.getElementById("uploadAvatar");
+				console.log("圖片的大小: " + uploadAvatar.files[0].size);
+			}
+			
 
 	</script>
 	</body>
