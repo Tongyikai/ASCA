@@ -410,7 +410,7 @@
 			</div>
 
 			<div class="edit_Footer">
-				<button class="edit_Update_Button">更新</button>
+				<button class="edit_Update_Button" onclick="changesToYourProfile()">更新</button>
 			</div>
 
 		</div>
@@ -441,14 +441,22 @@
 			}
 
 			// 限制上傳圖片的大小
-			let maxSize = 2*1024*1024;//2M 
-			let errorMessage = "上傳的附件檔案不能超過 2 Mega Byte";
+			let uploadAvatarMaxSize = 1*1024*1024; 
+			let errorMessage = "上傳的附件檔案不能超過 1 Mega Byte";
 			
 			var loadFile = function(event) {
 				let uploadAvatar = document.getElementById("uploadAvatar");
-				console.log("圖片的大小: " + uploadAvatar.files[0].size);
+
+				// 上傳的檔案如果大於限制顯示警告
+				if (uploadAvatar.files[0].size > uploadAvatarMaxSize) {
+					alert(errorMessage);
+				}
 			}
-			
+
+			// 您的個人資料更改
+			function changesToYourProfile() {
+				
+			}
 
 	</script>
 	</body>
