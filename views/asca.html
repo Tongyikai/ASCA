@@ -453,6 +453,46 @@
 				}
 			}
 
+			// 出生年月日參數
+			function showYear() {
+                let options = "<option>年</option>";
+                for (var i = 1900; i <= 2020; i++) {
+                    options += ("<option>" + i + "</option>");
+                }
+                document.getElementById("yearBox").innerHTML = options;
+            }
+
+            function showMonth() {
+                let options = "<option>月</option>";
+                for (var i = 1; i <= 12; i++) {
+                    options += ("<option>" + i + "</option>");
+                }
+                document.getElementById("monthBox").innerHTML = options;
+            }
+
+            function showDay() {
+                let options = "<option>日</option>";
+                for (var i = 1; i <= 31; i++) {
+                    options += ("<option>" + i + "</option>");
+                }
+                document.getElementById("dayBox").innerHTML = options;
+			}
+			showYear();
+            showMonth();
+			showDay();
+			
+			// 所有城市參數
+			const city = ["台北市", "新北市", "基隆市", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "台南市", "高雄市", "屏東縣", "宜蘭縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
+			function showCity() {
+				let options = "<option>城市</option>";
+				for (var i = 0; i < 21; i++) {
+					options += ("<option>" + city[i] + "</option>");
+				}
+				document.getElementById("currentCity").innerHTML = options;
+				document.getElementById("hometown").innerHTML = options;
+			}
+			showCity();
+
 			// 您的個人資料更改
 			function changesToYourProfile() {
 				

@@ -55,10 +55,6 @@
         <script type="text/javascript" src="public/scripts/checkUserInfor.js"></script>
         <script>
             var isFamilyNameCorrect, isGiveNameCorrect, isEmailCorrect, isBirthdayCorrect, isGenderCorrect;
-
-            showYear();
-            showMonth();
-            showDay();
             
             function showYear() {
                 var options = "<option>年</option>";
@@ -83,6 +79,9 @@
                 }
                 document.getElementById("dayBox").innerHTML = options;
             }
+            showYear();
+            showMonth();
+            showDay();
 
             function registerBtn() {
                 isFamilyNameCorrect = true;
@@ -163,7 +162,7 @@
                       "性別: " + gender + "\n"
                     );
                 } else {
-                    var yes = confirm("確認加入");
+                    let yes = confirm("確認加入");
                     if (yes) {
                         //確認
                         funRegister(familyName,
