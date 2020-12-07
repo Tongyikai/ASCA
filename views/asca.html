@@ -109,6 +109,7 @@
 				margin-left: 100px;
 			}
 
+			/* 框框框框框 */ 
 			table, th, td {
 				border: 1px solid black;
 			}
@@ -135,7 +136,7 @@
 				/* width: 100%; */
 				/* height: 100%; */
 				overflow: auto;
-				background-color: rgba(0, 0, 0, 0.4);
+				background-color: rgba(0, 0, 0, 0.4); /* 背景灰色的原因 */
 			}
 
 			.edit_Title {
@@ -146,7 +147,7 @@
 				padding-left: 280px;
 			}
 
-			.edit_CloseButton {
+			.edit_closeButtonArea {
 				background-color: #3f9197;
 				height: 60px;
 				width: 20%;
@@ -155,19 +156,48 @@
 				padding-top: 1%;
 			}
 
-			.closeButton {
-				color: #aaaaaa;
+			.edit_closeButton {
+				color: #b2e43d;
 				float: right;
 				font-size: 28px;
 				font-weight: bold;
 				padding-right: 50%;
 			}
 
-			.closeButton:hover,
-			.closeButton:focus {
+			.edit_closeButton:hover,
+			.edit_closeButton:focus {
 				color: #000;
 				text-decoration: none;
 				cursor: pointer;
+			}
+
+			.edit_Content {
+				padding-bottom: 110px;
+			}
+
+			.edit_Content table {
+				/* display: table;
+				border-collapse: separate;
+				border-spacing: 2px;
+				border-color: blue; */
+			}
+
+			.edit_Content td {
+				padding: 8px;
+			}
+
+			.edit_Footer {
+				background-color: #3b5998;
+				height: 50px;
+				position: relative;
+			}
+
+			.edit_Update_Button {
+				width: 100px;
+				height: 30px;
+				margin-left: 300px;
+				padding-bottom: 15px;
+				font-size: 14px;
 			}
 		</style>
 	</head>
@@ -197,12 +227,11 @@
 					</li>
 				</ul>
 			</div>
-
 		</div>
 
 		<div class="profile" id="container" style="width:360px;float:left">
-
 			<img class="big_Avatar" src="123.png" alt="avatarImg">
+
 			<div class="profile_Details" id="header" style="background-color: white; border-radius: 10px;">
 				<table>
 					<thead>
@@ -255,7 +284,6 @@
 					</tbody>
 				</table>
 			</div>
-
 		</div>
 
 		<div id="edit" class="edit">
@@ -264,92 +292,326 @@
 				<a><h2>編輯個人檔案</h2></a>
 			</div>
 
-			<div class="edit_CloseButton">
-				<span class="closeButton">&times;</span>
+			<div class="edit_closeButtonArea">
+				<span class="edit_closeButton">&times;</span>
 			</div>
 
-			<div>
-				<form>
-					<label for="avatar">上傳頭像</label>
-					<input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg"><br>
-
-					<label>姓氏</label>
-					<input type="text">
-
-					<label>名字</label>
-					<input type="text"><br>
-
-					<label>E-mail</label>
-					<input type="text"><br>
-
-					<label>出生日期</label>
-					<select id="yearBox" class="year" name="year">
-						<option value="year">年</option>
-					</select>
-
-					<select id="monthBox" class="month" name="month">
-						<option value="month">月</option>
-					</select>
-
-					<select id="dayBox" class="day" name="day">
-						<option value="day">日</option>
-					</select><br>
-
-					<label>性別</label>
-					<input class="female" id="female" type="radio" name="gender" value="female" checked>女性
-					<input class="male" id="male" type="radio" name="gender" value="male">男性<br>
-
-					<label>現居</label>
-					<select id="currentCity">
-						<option value="livesIn">目前居住地</option>
-					</select><br>
-
-					<label>家鄉</label>
-					<select id="hometown">
-						<option value="placeOfBirth">出生地</option>
-					</select><br>
-
-					<label>電話</label>
-					<input type="text">
-					<input type="text"><br>
-
-					<label>手機</label>
-					<input type="text"><br>
-
-					<label>臉書</label>
-					<input type="text">
-				</form>
+			<div class="edit_Content">
+				<table>
+					<tbody>
+						<tr>
+							<td style="width:150px">
+								<label for="avatar">上傳頭像</label>
+							</td>
+							<td style="width:200px">
+								<input type="file" id="edit_uploadAvatar" name="avatar" accept="image/png, image/jpeg" onchange="loadFile(event)">
+							</td>
+							<td>
+								<button onclick="cancelUploadAvatar()" style="width: 20px;">x</button>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>姓氏</label>
+							</td>
+							<td>
+								<input type="text" id="edit_familyName">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>名字</label>
+							</td>
+							<td>
+								<input type="text" id="edit_givenName">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>出生日期</label>
+							</td>
+							<td>
+								<select id="edit_yearBox" class="year" name="year">
+									<option value="year">年</option>
+								</select>
+								<select id="edit_monthBox" class="month" name="month">
+									<option value="month">月</option>
+								</select>
+								<select id="edit_dayBox" class="day" name="day">
+									<option value="day">日</option>
+								</select><br>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>性別</label>
+							</td>
+							<td>
+								<input class="female" id="edit_female" type="radio" name="gender" value="female" checked>女性
+								<input class="male" id="edit_male" type="radio" name="gender" value="male">男性
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>現居</label>
+							</td>
+							<td>
+								<select id="edit_currentCity">
+									<option value="livesIn">目前居住地</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>家鄉</label>
+							</td>
+							<td>
+								<select id="edit_hometown">
+									<option value="placeOfBirth">出生地</option>
+								</select><br>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>電話</label>
+							</td>
+							<td>
+								<select id="edit_telephoneAreaCode">
+									<option value="telephoneAreaCode">區碼</option>
+								</select>
+								<input type="text" id="edit_telephoneNumber">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>手機</label>
+							</td>
+							<td>
+								<input type="text" id="edit_mobileNumber">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>臉書</label>
+							</td>
+							<td>
+								<input type="text" id="edit_facebook" style="width: 200px;">
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 
+			<div class="edit_Footer">
+				<button class="edit_Update_Button" onclick="changesToYourProfile()">更新</button>
+			</div>
 		</div>
 
 		<div id="footer" style="background-color:#FFA500;clear:both;text-align:center;margin-top:1200px;height:100px;">
 			版權所有 © ASCA
 		</div>
 
+	<script type="text/javascript" src="public/scripts/checkUserInfor.js"></script>
 	<script>
-			var avatarMenu = document.querySelector(".avatar_Menu");
+			// 人像目錄
+			let avatarMenu = document.querySelector(".avatar_Menu");
 			avatarMenu.addEventListener("click", function() {
 				this.classList.toggle("active");
 			});
 
-			var edit = document.getElementById("edit");
-			var editProfileButton = document.getElementById("edit_profile_btn");
-			var editSpan = document.getElementsByClassName("closeButton")[0];
+			// 編輯視窗，開啟"編輯視窗"按鈕，關閉"編輯視窗"按鈕
+			let edit = document.getElementById("edit");
+			let editProfileButton = document.getElementById("edit_profile_btn");
+			let editCloseButton = document.getElementsByClassName("edit_closeButton")[0];
 
 			editProfileButton.onclick = function() {
 				edit.style.display = "block";
 			}
 
-			editSpan.onclick = function() {
+			editCloseButton.onclick = function() {
 				edit.style.display = "none";
 			}
 
-			// window.onclick = function(event) {
-			// 	if (event.target == edit) {
-			// 		edit.style.display = "none";
-			// 	}
-			// }
+			// 限制上傳圖片的大小
+			let uploadAvatarMaxSize = 1*1024*1024; 
+			let errorMessage = "上傳的附件檔案不能超過 1 Mega Byte";
+			let uploadAvatar = "none";
+			let isUploadAvatarMaxSizeCorrect = true;
+			
+			var loadFile = function(event) {
+				uploadAvatar = document.getElementById("edit_uploadAvatar");
+
+				// 上傳的檔案如果大於限制顯示警告
+				if (uploadAvatar.files[0].size > uploadAvatarMaxSize) {
+					isUploadAvatarMaxSizeCorrect = false;
+					alert(errorMessage);
+				} else {
+					isUploadAvatarMaxSizeCorrect = true;
+				}
+			}
+
+			function cancelUploadAvatar() {
+				document.getElementById("edit_uploadAvatar").value = "";
+				isUploadAvatarMaxSizeCorrect = true;
+				uploadAvatar = "none";
+			}
+
+			// 出生年月日參數
+			function showYear() {
+                let options = "<option>年</option>";
+                for (var i = 1900; i <= 2020; i++) {
+                    options += ("<option>" + i + "</option>");
+                }
+                document.getElementById("edit_yearBox").innerHTML = options;
+            }
+
+            function showMonth() {
+                let options = "<option>月</option>";
+                for (var i = 1; i <= 12; i++) {
+                    options += ("<option>" + i + "</option>");
+                }
+                document.getElementById("edit_monthBox").innerHTML = options;
+            }
+
+            function showDay() {
+                let options = "<option>日</option>";
+                for (var i = 1; i <= 31; i++) {
+                    options += ("<option>" + i + "</option>");
+                }
+                document.getElementById("edit_dayBox").innerHTML = options;
+			}
+			showYear();
+            showMonth();
+			showDay();
+			
+			// 所有城市參數
+			const city = ["台北市", "新北市", "基隆市", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "台南市", "高雄市", "屏東縣", "宜蘭縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
+			function showCity() {
+				let options = "<option>城市</option>";
+				for (var i = 0; i < 21; i++) {
+					options += ("<option>" + city[i] + "</option>");
+				}
+				document.getElementById("edit_currentCity").innerHTML = options;
+				document.getElementById("edit_hometown").innerHTML = options;
+			}
+			showCity();
+
+			// 市內電話區域參數
+			const telephoneAreaCode = ["02", "03", "037", "04", "049", "05", "06", "07", "08", "089", "082", "0826", "0836"];
+			function showTelephoneAreaCode() {
+				let options = "<option>區碼</option>"
+				for (var i = 0; i < 13; i++) {
+					options += ("<option>" + telephoneAreaCode[i] + "</option>");
+				}
+				document.getElementById("edit_telephoneAreaCode").innerHTML = options;
+			}
+			showTelephoneAreaCode();
+
+			// 您的個人資料更改
+			function changesToYourProfile() {
+				const DoNotModify = "none";
+
+				isFamilyNameCorrect = true;
+				isGiveNameCorrect = true;
+				isBirthdayCorrect = true;
+				isTelephoneNumberCorrect = true;
+				isMobileNumberCorrect = true;
+				isFacebookCorrect = true;
+
+				let funCheckBlank = checkBlank;
+				let funCheckNameLength = checkNameLength;
+				let funCheckNameIsChinese = checkNameIsChinese;
+				let funCheckDateOfBirth = checkDateOfBirth;
+				let funCheckTelephoneNumber = checkTelephoneNumber;
+				let funCheckMobileNumber = checkMobileNumber;
+
+				let familyName = document.getElementById("edit_familyName").value;
+				let givenName = document.getElementById("edit_givenName").value;
+				let year = document.getElementById("edit_yearBox").value;
+				let month = document.getElementById("edit_monthBox").value;
+				let day = document.getElementById("edit_dayBox").value;
+				let gender = document.querySelector('input[name="gender"]:checked').value;
+				let currentCity = document.getElementById("edit_currentCity").value;
+				let hometown = document.getElementById("edit_hometown").value;
+				let telephoneAreaCode = document.getElementById("edit_telephoneAreaCode").value;
+				let telephoneNumber = document.getElementById("edit_telephoneNumber").value;
+				let mobileNumber = document.getElementById("edit_mobileNumber").value;
+				let facebook = document.getElementById("edit_facebook").value;
+
+				// 檢查使用者輸入的資訊
+				if (!funCheckBlank(familyName)) { // 沒有輸入或者輸入空白都視為正確，以外就進入判斷
+					if (!funCheckNameIsChinese(familyName) || !funCheckNameLength(familyName)) {
+						isFamilyNameCorrect = false;
+						// alert("姓  不行喔 or 文字太長");
+					}
+				} else {
+					familyName = DoNotModify; // Server 解析 none 代表不修改資訊
+				}
+
+				if (!funCheckBlank(givenName)) {
+					if (!funCheckNameIsChinese(givenName) || !funCheckNameLength(givenName)) {
+						isGiveNameCorrect = false;
+						// alert("名字  不行喔 or 文字太長");
+					}
+				} else {
+					givenName = DoNotModify;
+				}
+
+				if (year == "年" && month == "月" && day == "日") {
+					// alert("使用者不打算修改 出生年月日");
+					year, month, day = DoNotModify;
+				} else if (year != "年" && month != "月" && day != "日") {
+					// alert("使用者 要更改 出生年月日");
+				} else {
+					isBirthdayCorrect = false;
+					// alert("請輸入完整的出生, 年, 月, 日");
+				}
+
+				if (currentCity == "城市") {
+					currentCity = DoNotModify;
+				}
+
+				if (hometown == "城市") {
+					hometown = DoNotModify;
+				}
+
+				if (telephoneAreaCode == "區碼") {
+					telephoneAreaCode = DoNotModify;
+				}
+
+				if (!funCheckBlank(telephoneNumber)) {
+					if (funCheckTelephoneNumber(telephoneNumber)) {
+						isTelephoneNumberCorrect = false;
+					}
+				} else {
+					telephoneNumber = DoNotModify;
+				}
+
+				if (!funCheckBlank(mobileNumber)) {
+					if (funCheckMobileNumber(mobileNumber)) {
+						isMobileNumberCorrect = false;
+					}
+				} else {
+					mobileNumber = DoNotModify;
+				}
+
+				if (!funCheckBlank(facebook)) {
+					if (facebook.length > 100) {
+						isFacebookCorrect = false;
+					}
+				} else {
+					facebook = DoNotModify;
+				}
+				alert(
+					"上傳頭像:" + isUploadAvatarMaxSizeCorrect + "\n" + 
+					"姓: " + isFamilyNameCorrect + "\n" +
+					"名字: " + isGiveNameCorrect + "\n" +
+					"出生: " + isBirthdayCorrect + "\n" +
+					"市話: " + isTelephoneNumberCorrect + "\n" +
+					"手機: " + isMobileNumberCorrect + "\n" +
+					"臉書: " + isFacebookCorrect + "\n" 
+				);
+			}
 
 	</script>
 	</body>

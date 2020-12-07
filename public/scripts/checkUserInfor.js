@@ -1,12 +1,14 @@
 
 nameRule = /[^\u4e00-\u9fa5]/; // 只能輸入中文
 emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
-blankRule = /(^s*)|(s*$)/;
+blankRule = /(^s*)|(s*$)/g;
 passwordRule = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\w\s]).{8,16}$/;
+telephoneRule = /^(\d{7,8})$/;
+mobileRule = /^09[0-9]{8}$/;
 
-// 檢查是否輸入了空白
+// 檢查是否輸入了空白 (沒有輸入或輸入空白為 true，文字包含空白字符為 false)
 function checkBlank(input) {
-    if (input.replace(/(^s*)|(s*$)/g, "").length == 0) {
+    if (input.replace(blankRule, "").length == 0) {
         return true;
     }
 
@@ -16,13 +18,25 @@ function checkBlank(input) {
     return re.test(input);
 }
 
+// 檢查文字中是否包含空白
+function checkBlankInTheWord(input) {
+    let str = input.split("");
+
+    for (i = 0; i < str.length; i++) {
+        if (str[i] == " ") {
+            return true;
+        }
+    }
+    return false;
+}
+
 // 檢查姓氏與名字長度
 function checkNameLength(name) {
     if (name.length > 5) return false;
     return true;
 }
 
-// 檢查命名是否為中文
+// 檢查命名是否為中文 (沒有輸入或輸入中文為 true，不是中文或包函空白字符為 false)
 function checkNameIsChinese(name) {
     if (nameRule.test(name)) return false;
     return true;
@@ -34,13 +48,23 @@ function checkEmail(email) {
     return false;
 }
 
+function checkTelephoneNumber(telephoneNumber) {
+    if (telephoneRule.test(telephoneNumber)) return false;
+    return true;
+}
+
+function checkMobileNumber(mobileNumber) {
+    if (mobileRule.test(mobileNumber)) return false;
+    return true;
+}
+
 // AJAX
 const httpRequest = new XMLHttpRequest();
 let isEmailAvailable;
 
 httpRequest.onload = function() {
     if (httpRequest.status >= 200 && httpRequest.status < 400) {
-        var jsonObject = JSON.parse(httpRequest.responseText);
+        let jsonObject = JSON.parse(httpRequest.responseText);
 
         console.log("處理回應: " + httpRequest.responseText);
         console.log("JSON: " + jsonObject);
