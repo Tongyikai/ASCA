@@ -54,7 +54,7 @@
         </section>
         <script type="text/javascript" src="public/scripts/checkUserInfor.js"></script>
         <script>
-            var isFamilyNameCorrect, isGiveNameCorrect, isEmailCorrect, isBirthdayCorrect, isGenderCorrect;
+            var isFamilyNameCorrect, isGivenNameCorrect, isEmailCorrect, isBirthdayCorrect, isGenderCorrect;
             
             function showYear() {
                 var options = "<option>年</option>";
@@ -85,7 +85,7 @@
 
             function registerBtn() {
                 isFamilyNameCorrect = true;
-                isGiveNameCorrect = true;
+                isGivenNameCorrect = true;
                 isEmailCorrect = true;
                 isPasswordCorrect = true;
                 isBirthdayCorrect = true;
@@ -112,21 +112,21 @@
 
                 if (!funCheckNameLength(familyName) || !funCheckNameLength(givenName)) {
                     isFamilyNameCorrect = false;
-                    isGiveNameCorrect = false;
+                    isGivenNameCorrect = false;
                     safeCount -= 1;
                 }
 
                 if (funCheckBlank(familyName) || funCheckBlank(givenName)) {
                     // alert("有空白字元");
                     isFamilyNameCorrect = false;
-                    isGiveNameCorrect = false;
+                    isGivenNameCorrect = false;
                     safeCount -= 1;
                 }
 
                 if (!funCheckName(familyName)) {
                     // alert("姓名不是中文");
                     isFamilyNameCorrect = false;
-                    isGiveNameCorrect = false;
+                    isGivenNameCorrect = false;
                     safeCount -= 1;
                 }
 
@@ -154,8 +154,9 @@
 
                 //檢查安全值小於7，代表有資訊輸入錯誤
                 if (safeCount < 7) {
-                    alert("姓名: " + isFamilyNameCorrect + "\n" +
-                      "名字: " + isGiveNameCorrect + "\n" +
+                    alert(
+                      "姓名: " + isFamilyNameCorrect + "\n" +
+                      "名字: " + isGivenNameCorrect + "\n" +
                       "Email: " + (isEmailCorrect ? "可以使用" : "已註冊或錯誤的電子郵件") + "\n" +
                       "密碼: " + isPasswordCorrect + "\n" +
                       "生日: " + isBirthdayCorrect + "\n" +

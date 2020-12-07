@@ -3,8 +3,10 @@ nameRule = /[^\u4e00-\u9fa5]/; // 只能輸入中文
 emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
 blankRule = /(^s*)|(s*$)/g;
 passwordRule = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\w\s]).{8,16}$/;
+telephoneRule = /^(\d{7,8})$/;
+mobileRule = /^09[0-9]{8}$/;
 
-// 檢查是否輸入了空白 (沒有輸入或輸入空白可以正確判斷，文字包含空白失效)
+// 檢查是否輸入了空白 (沒有輸入或輸入空白為 true，文字包含空白字符為 false)
 function checkBlank(input) {
     if (input.replace(blankRule, "").length == 0) {
         return true;
@@ -34,7 +36,7 @@ function checkNameLength(name) {
     return true;
 }
 
-// 檢查命名是否為中文
+// 檢查命名是否為中文 (沒有輸入或輸入中文為 true，不是中文或包函空白字符為 false)
 function checkNameIsChinese(name) {
     if (nameRule.test(name)) return false;
     return true;
@@ -44,6 +46,16 @@ function checkNameIsChinese(name) {
 function checkEmail(email) {
     if (email.search(emailRule)!= -1) return true;
     return false;
+}
+
+function checkTelephoneNumber(telephoneNumber) {
+    if (telephoneRule.test(telephoneNumber)) return false;
+    return true;
+}
+
+function checkMobileNumber(mobileNumber) {
+    if (mobileRule.test(mobileNumber)) return false;
+    return true;
 }
 
 // AJAX
