@@ -3,18 +3,21 @@ var fs = require("fs");
 var url = require("url");
 var querystring = require("querystring");
 var memberContr = require("./controllers/memberController");
+var formidable = require("formidable");
 
 
 http.createServer(function(request, response) {
-	var params = url.parse(request.url, true).query; // parse將字符串轉成對象，request.url = "/?email=tong"， true表示params是{ email:"tong" }， false表示params是 email=tong
-	var action = url.parse(request.url, true).pathname;
-	var post = "";
+	let params = url.parse(request.url, true).query; // parse將字符串轉成對象，request.url = "/?email=tong"， true表示params是{ email:"tong" }， false表示params是 email=tong
+	let action = url.parse(request.url, true).pathname;
+	let post = "";
 	
-	console.log("**		Request URL: " + request.url); // 帶有參數的GET會顯示出來
-	console.log("**		     action: " + action); // 帶有參數的GET不會顯示
+	console.log("===============	Request URL	==============="); // 帶有參數的GET會顯示出來
+	console.log("帶有參數的GET會顯示出來: " + request.url);
+	console.log("===============	action	===============");
+	console.log("帶有參數的GET不會顯示: " + action); // 帶有參數的GET不會顯示
 
 	/* ************************************************
-	*	POST
+	*	AJAX POST
 	************************************************ */
 	request.on("data", function(chunk) {
 		post += chunk;
@@ -22,7 +25,8 @@ http.createServer(function(request, response) {
 
 	request.on("end", function() {
 		if (request.url === "/register") {
-			console.log("收到--- register --- POST 請求: " + post + " 把資料寫進資料庫.....");
+			console.log("===============	register	===============");
+			console.log("POST 請求: " + post + " 把資料寫進資料庫.....");
 			
 			post = querystring.parse(post);
 			console.log(post.familyName);
@@ -50,7 +54,9 @@ http.createServer(function(request, response) {
 			});
 			
 		} else if (request.url === "/logIn") {
-			console.log("收到--- logIn --- POST 請求: " + post + " 驗證.....");
+			console.log("===============	logIn	===============");
+			console.log("POST 請求: " + post + " 驗證.....");
+
 			post = querystring.parse(post);
 			console.log("email: " + post.email + "\n" + "password: " + post.password);
 
@@ -74,7 +80,9 @@ http.createServer(function(request, response) {
 			});
 
 		} else if (request.url === "/logInWithToken") {
-			console.log("收到--- token --- POST 請求: " + post + " 驗證.....");
+			console.log("===============	logInWithToken	===============");
+			console.log("POST 請求: " + post + " 驗證.....");
+			
 			const token = request.headers["authorization"].replace("Bearer ", "");
 			memberContr.logInWithTokenMember(token, (message) => {
 				// 回傳給Client
@@ -113,14 +121,17 @@ http.createServer(function(request, response) {
 		console.log("客戶端註冊成為會員");
 
 	} else if (request.url === "/logIn") {
-		console.log("會員沒鑰匙");
+		console.log("會員要登入但沒鑰匙，驗證完會發給會員鑰匙");
 
 	} else if (request.url === "/logInWithToken") {
-		console.log("會員帶token");
+		console.log("會員帶著鑰匙來了 (token)");
 
 	} else if (request.url === "/asca") {
 		// sendFileContent(response, "views/profile.html", "text/html");
 		sendFileContent(response, "views/asca.html", "text/html");
+
+	} else if (request.url === "/updateProfile") {
+		console.log("使用者要修改資料");
 
 	} else if (/^\/[a-zA-Z0-9\/]*.js$/.test(request.url.toString())) {
 		sendFileContent(response, request.url.toString().substring(1), "text/javascript");
@@ -138,6 +149,31 @@ http.createServer(function(request, response) {
 		console.log("找不到對應的 --- Requested URL is: " + request.url);
 		response.end();
 	}
+
+	/* ************************************************
+	*	Form Data 
+	************************************************ */
+	if (request.url == "/updateProfile" && request.method.toLowerCase() === "post") {
+		console.log("===============	updateProfile	===============");
+
+        // 實例化一個傳入表單
+        let form = formidable.IncomingForm();
+        // 設置文件存儲目錄
+        form.uploadDir = "./uploadDir";
+        
+        // 解析傳入數據
+        form.parse(request, (err, fields, files) => {
+            console.log("fields familyName: " + fields.familyName);
+            console.log("fields givenName: " + fields.givenName);
+            console.log("fields gender: " + fields.gender);
+            
+            console.log("-----------------Image Information-------------------");
+            console.log("files photo name: " + files.uploadAvatar.name);
+            console.log("files photo type: " + files.uploadAvatar.type);
+			console.log("files photo size: " + files.uploadAvatar.size);
+		});
+	}
+
 }).listen(8888);console.log("Server running at: http://127.0.0.1:8888/ \nNow time: " + new Date());
 
 /* ************************************************

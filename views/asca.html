@@ -270,7 +270,7 @@
 							<td>高雄市</td>
 						</tr>
 						<tr>
-							<td>電話</td>
+							<td>市話</td>
 							<td>07-370-5379</td>
 						</tr>
 						<tr>
@@ -297,114 +297,116 @@
 			</div>
 
 			<div class="edit_Content">
-				<table>
-					<tbody>
-						<tr>
-							<td style="width:150px">
-								<label for="avatar">上傳頭像</label>
-							</td>
-							<td style="width:200px">
-								<input type="file" id="edit_uploadAvatar" name="avatar" accept="image/png, image/jpeg" onchange="loadFile(event)">
-							</td>
-							<td>
-								<button onclick="cancelUploadAvatar()" style="width: 20px;">x</button>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<label>姓氏</label>
-							</td>
-							<td>
-								<input type="text" id="edit_familyName">
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<label>名字</label>
-							</td>
-							<td>
-								<input type="text" id="edit_givenName">
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<label>出生日期</label>
-							</td>
-							<td>
-								<select id="edit_yearBox" class="year" name="year">
-									<option value="year">年</option>
-								</select>
-								<select id="edit_monthBox" class="month" name="month">
-									<option value="month">月</option>
-								</select>
-								<select id="edit_dayBox" class="day" name="day">
-									<option value="day">日</option>
-								</select><br>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<label>性別</label>
-							</td>
-							<td>
-								<input class="female" id="edit_female" type="radio" name="gender" value="female" checked>女性
-								<input class="male" id="edit_male" type="radio" name="gender" value="male">男性
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<label>現居</label>
-							</td>
-							<td>
-								<select id="edit_currentCity">
-									<option value="livesIn">目前居住地</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<label>家鄉</label>
-							</td>
-							<td>
-								<select id="edit_hometown">
-									<option value="placeOfBirth">出生地</option>
-								</select><br>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<label>電話</label>
-							</td>
-							<td>
-								<select id="edit_telephoneAreaCode">
-									<option value="telephoneAreaCode">區碼</option>
-								</select>
-								<input type="text" id="edit_telephoneNumber">
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<label>手機</label>
-							</td>
-							<td>
-								<input type="text" id="edit_mobileNumber">
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<label>臉書</label>
-							</td>
-							<td>
-								<input type="text" id="edit_facebook" style="width: 200px;">
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+				<form action="http://127.0.0.1:8888/updateProfile" enctype="multipart/form-data" method="post" onsubmit="return changesToYourProfile()">
+					<table>
+						<tbody>
+							<tr>
+								<td style="width:150px">
+									<label for="avatar">上傳頭像</label>
+								</td>
+								<td style="width:200px">
+									<input type="file" id="edit_uploadAvatar" name="uploadAvatar" accept="image/png, image/jpeg" onchange="loadFile(event)">
+								</td>
+								<td>
+									<button onclick="cancelUploadAvatar()" style="width: 20px;">x</button>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>姓氏</label>
+								</td>
+								<td>
+									<input type="text" id="edit_familyName" name="familyName">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>名字</label>
+								</td>
+								<td>
+									<input type="text" id="edit_givenName" name="givenName">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>出生日期</label>
+								</td>
+								<td>
+									<select id="edit_yearBox" class="year" name="year">
+										<option value="year">年</option>
+									</select>
+									<select id="edit_monthBox" class="month" name="month">
+										<option value="month">月</option>
+									</select>
+									<select id="edit_dayBox" class="day" name="day">
+										<option value="day">日</option>
+									</select><br>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>性別</label>
+								</td>
+								<td>
+									<input class="female" id="edit_female" type="radio" name="gender" value="female" checked>女性
+									<input class="male" id="edit_male" type="radio" name="gender" value="male">男性
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>現居</label>
+								</td>
+								<td>
+									<select id="edit_currentCity" name="currentCity">
+										<option value="livesIn">目前居住地</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>家鄉</label>
+								</td>
+								<td>
+									<select id="edit_hometown" name="hometown">
+										<option value="placeOfBirth">出生地</option>
+									</select><br>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>電話</label>
+								</td>
+								<td>
+									<select id="edit_telephoneAreaCode" name="telephoneAreaCode">
+										<option value="telephoneAreaCode">區碼</option>
+									</select>
+									<input type="text" id="edit_telephoneNumber" name="telephoneNumber">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>手機</label>
+								</td>
+								<td>
+									<input type="text" id="edit_mobileNumber" name="mobileNumber">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>臉書</label>
+								</td>
+								<td>
+									<input type="text" id="edit_facebook" style="width: 200px;" name="facebook">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 
-			<div class="edit_Footer">
-				<button class="edit_Update_Button" onclick="changesToYourProfile()">更新</button>
-			</div>
+				<div class="edit_Footer">
+					<button class="edit_Update_Button" type="submit">更新</button>
+				</div>
+			</form>
 		</div>
 
 		<div id="footer" style="background-color:#FFA500;clear:both;text-align:center;margin-top:1200px;height:100px;">
@@ -436,7 +438,7 @@
 			let uploadAvatarMaxSize = 1*1024*1024; 
 			let errorMessage = "上傳的附件檔案不能超過 1 Mega Byte";
 			let uploadAvatar = "none";
-			let isUploadAvatarMaxSizeCorrect = true;
+			let isUploadAvatarMaxSizeCorrect = false;
 			
 			var loadFile = function(event) {
 				uploadAvatar = document.getElementById("edit_uploadAvatar");
@@ -452,7 +454,7 @@
 
 			function cancelUploadAvatar() {
 				document.getElementById("edit_uploadAvatar").value = "";
-				isUploadAvatarMaxSizeCorrect = true;
+				isUploadAvatarMaxSizeCorrect = false;
 				uploadAvatar = "none";
 			}
 
@@ -524,6 +526,7 @@
 				let funCheckDateOfBirth = checkDateOfBirth;
 				let funCheckTelephoneNumber = checkTelephoneNumber;
 				let funCheckMobileNumber = checkMobileNumber;
+				// let funUpdateForUser = updateForUser;
 
 				let familyName = document.getElementById("edit_familyName").value;
 				let givenName = document.getElementById("edit_givenName").value;
@@ -542,7 +545,6 @@
 				if (!funCheckBlank(familyName)) { // 沒有輸入或者輸入空白都視為正確，以外就進入判斷
 					if (!funCheckNameIsChinese(familyName) || !funCheckNameLength(familyName)) {
 						isFamilyNameCorrect = false;
-						// alert("姓  不行喔 or 文字太長");
 					}
 				} else {
 					familyName = DoNotModify; // Server 解析 none 代表不修改資訊
@@ -551,20 +553,19 @@
 				if (!funCheckBlank(givenName)) {
 					if (!funCheckNameIsChinese(givenName) || !funCheckNameLength(givenName)) {
 						isGiveNameCorrect = false;
-						// alert("名字  不行喔 or 文字太長");
 					}
 				} else {
 					givenName = DoNotModify;
 				}
 
 				if (year == "年" && month == "月" && day == "日") {
-					// alert("使用者不打算修改 出生年月日");
-					year, month, day = DoNotModify;
+					year = DoNotModify; 
+					month = DoNotModify;
+					day = DoNotModify;
 				} else if (year != "年" && month != "月" && day != "日") {
-					// alert("使用者 要更改 出生年月日");
-				} else {
-					isBirthdayCorrect = false;
-					// alert("請輸入完整的出生, 年, 月, 日");
+					if (!funCheckDateOfBirth(year, month, day)) {
+						isBirthdayCorrect = false;
+					}
 				}
 
 				if (currentCity == "城市") {
@@ -602,15 +603,41 @@
 				} else {
 					facebook = DoNotModify;
 				}
+
 				alert(
-					"上傳頭像:" + isUploadAvatarMaxSizeCorrect + "\n" + 
-					"姓: " + isFamilyNameCorrect + "\n" +
-					"名字: " + isGiveNameCorrect + "\n" +
-					"出生: " + isBirthdayCorrect + "\n" +
-					"市話: " + isTelephoneNumberCorrect + "\n" +
-					"手機: " + isMobileNumberCorrect + "\n" +
+					"上傳頭像:" + (isUploadAvatarMaxSizeCorrect ? uploadAvatar.files[0].name : "圖片大小錯誤或沒上傳圖片") + "\n" + 
+					"姓: " + (isFamilyNameCorrect ? familyName : "姓名錯誤") + "\n" +
+					"名字: " + (isGiveNameCorrect ? givenName : "名字錯誤") + "\n" +
+					"出生: " + (isBirthdayCorrect ? year + "年" + month + "月" + day + "日" : "出生錯誤") + "\n" +
+					"姓別: " + gender + "\n" +
+					"現居: " + currentCity + "\n" +
+					"家鄉: " + hometown + "\n" +
+					"市話: " + (isTelephoneNumberCorrect ? telephoneAreaCode + "-" + telephoneNumber : "市話錯誤") + "\n" +
+					"手機: " + (isMobileNumberCorrect ? mobileNumber : "手機錯誤") + "\n" +
 					"臉書: " + isFacebookCorrect + "\n" 
 				);
+
+				if (isUploadAvatarMaxSizeCorrect && isFamilyNameCorrect && isGiveNameCorrect && isBirthdayCorrect && isTelephoneNumberCorrect && isMobileNumberCorrect && isFacebookCorrect) {
+					alert("可以提交");
+					return true;
+					// funUpdateForUser(uploadAvatar,
+					// 				 familyName,
+					// 				 givenName,
+					// 				 year,
+					// 				 month,
+					// 				 day,
+					// 				 gender,
+					// 				 currentCity,
+					// 				 hometown,
+					// 				 telephoneAreaCode,
+					// 				 telephoneNumber,
+					// 				 mobileNumber,
+					// 				 facebook
+					// );
+				} else {
+					alert("不行提交");
+					return false;
+				}
 			}
 
 	</script>

@@ -111,7 +111,7 @@ function checkDateOfBirth(year, month, day) {
     return day <= limitInMonth[month - 1];
 }
 
-// 傳送使用者註冊的基本資料
+// 傳送使用者"註冊"的基本資料
 function registerForUser(familyName, givenName, email, password, bYear, bMonth, bDay, gender) {
     // console.log("客戶端註冊資訊準備用POST傳給伺服器");
     httpRequest.open("POST", "http://127.0.0.1:8888/register", false);
@@ -124,4 +124,36 @@ function registerForUser(familyName, givenName, email, password, bYear, bMonth, 
                      "&bMonth=" + bMonth +
                      "&bDay=" + bDay +
                      "&gender=" + gender);
+}
+
+// 傳送使用者"修改"的基本資料
+function updateForUser(uploadAvatar, familyName, givenName, bYear, bMonth, bDay, gender, currentCity, hometown, telephoneAreaCode, telephoneNumber, mobileNumber, facebook) {
+    httpRequest.open("POST", "http://127.0.0.1:8888/updateProfile", false);
+    // httpRequest.setRequestHeader("Content-type", "multipart/form-data");
+
+    const data = new FormData();
+    data.append("uploadAvatar", uploadAvatar);
+    data.append("familyName", familyName);
+
+    httpRequest.send(data);
+
+
+
+
+
+
+    // httpRequest.send("uploadAvatar=" + uploadAvatar +
+    //                  "&familyName=" + familyName +
+    //                  "&givenName=" + givenName + 
+    //                  "&bYear=" + bYear +
+    //                  "&bMonth=" + bMonth +
+    //                  "&bDay=" + bDay +
+    //                  "&gender=" + gender +
+    //                  "&currentCity=" + currentCity + 
+    //                  "&hometown=" + hometown +
+    //                  "&telephoneAreaCode=" + telephoneAreaCode +
+    //                  "&telephoneNumber=" + telephoneNumber +
+    //                  "&mobileNumber=" + mobileNumber + 
+    //                  "&facebook=" + facebook
+    // );
 }
