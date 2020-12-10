@@ -9,9 +9,11 @@ let email = require("../public/json/email.json");
 let fs = require("fs");
 
 const { json } = require('body-parser');
-const UNDEFINED = "undefined";
+const UNDEFINED = "none";
 const EMAIL_LIST_PATH = "./public/json/email.json";
 const config = require("../config/developmentConfig"); 
+const DEFAULT_AVATAR_NAME = "avatar";
+const DEFAULT_AVATAR = config.defaultAvatar;
 
 const MongoClient = require("mongodb").MongoClient;
 const uri = "mongodb://" + config.mongodb.user + ":" + config.mongodb.password + "@" + config.mongodb.host + "/" + config.mongodb.database;
@@ -88,7 +90,7 @@ function emailExist(searchEmail) {
     return false;
 }
 
-function createMember(familyName, givenName, email, password, birthYear, birthMonth, birthDay, gender, callback) {
+function createMember(familyName, givenName, email, password, yearOfBirth, monthOfBirth, dayOfBirth, gender, callback) {
     const client = new MongoClient(uri, { useUnifiedTopology: true });
 
     client.connect(err => {
@@ -103,17 +105,22 @@ function createMember(familyName, givenName, email, password, birthYear, birthMo
             var memberID = result[0].sequence_value + 1;
             console.log("count=" + memberID);
     
-            member.insertOne({ memberID: memberID, 
+            member.insertOne({ memberID: memberID,
+                                 avatar: DEFAULT_AVATAR,
+                             avatarName: DEFAULT_AVATAR_NAME,
                              familyName: familyName, 
                               givenName: givenName,
                                   email: email,
                                password: encryptionPassword,
-                              birth_year: birthYear,
-                             birth_month: birthMonth,
-                               birth_day: birthDay,
+                            yearOfBirth: yearOfBirth,
+                           monthOfBirth: monthOfBirth,
+                             dayOfBirth: dayOfBirth,
                                  gender: gender,
-                                    img: UNDEFINED,
-                               img_name: UNDEFINED,
+                            currentCity: UNDEFINED,
+                               hometown: UNDEFINED,
+                      telephoneAreaCode: UNDEFINED,
+                        telephoneNumber: UNDEFINED,
+                           mobileNumber: UNDEFINED,
                             update_date: UNDEFINED,
                             create_date: dateTime
                 }, function(err, res) {     
@@ -145,9 +152,8 @@ function logInMember(email, password, callback) {
         client.connect(err => {
             if (err) throw err;
             const member = client.db(config.mongodb.database).collection(config.mongodb.memberCollection);
-            member.find({ "memberID": userMemberID}).toArray((err, result) => {
+            member.find({ "memberID": userMemberID }).toArray((err, result) => {
                 if (err) throw err;
-                // console.log(result);
                 console.log("資料庫的密碼: " + result[0].password);
 
                 if (encryption(password) == result[0].password) {
@@ -183,9 +189,31 @@ function updateProfileMember() {
 
 }
 
+function getProfileData(token, callback) {
+    if (tokenExist(token)) {
+        console.log("取得會員的頭像");
+
+        const client = new MongoClient(uri, { useUnifiedTopology: true });
+        client.connect(err => {
+            if (err) throw err;
+            const member = client.db(config.mongodb.database).collection(config.mongodb.memberCollection);
+            member.find({ "memberID": userMemberID }).toArray((err, result) => {
+                if (err) throw err;
+                console.log("會員的頭像: " + result[0].avatar);
+                callback(result[0].avatar);
+            });
+        });
+
+    } else {
+        console.log("token錯誤");
+    }
+}
+
 module.exports = {
     emailExist,
     createMember,
     logInMember,
-    logInWithTokenMember
+    logInWithTokenMember,
+    updateProfileMember,
+    getProfileData
 }

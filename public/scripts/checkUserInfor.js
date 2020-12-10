@@ -112,7 +112,7 @@ function checkDateOfBirth(year, month, day) {
 }
 
 // 傳送使用者"註冊"的基本資料
-function registerForUser(familyName, givenName, email, password, bYear, bMonth, bDay, gender) {
+function registerForUser(familyName, givenName, email, password, yearOfBirth, monthOfBirth, dayOfBirth, gender) {
     // console.log("客戶端註冊資訊準備用POST傳給伺服器");
     httpRequest.open("POST", "http://127.0.0.1:8888/register", false);
     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -120,9 +120,9 @@ function registerForUser(familyName, givenName, email, password, bYear, bMonth, 
                      "&givenName=" + givenName +
                      "&email=" + email +
                      "&password=" + password +
-                     "&bYear=" + bYear + 
-                     "&bMonth=" + bMonth +
-                     "&bDay=" + bDay +
+                     "&yearOfBirth=" + yearOfBirth + 
+                     "&monthOfBirth=" + monthOfBirth +
+                     "&dayOfBirth=" + dayOfBirth +
                      "&gender=" + gender);
 }
 

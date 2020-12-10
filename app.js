@@ -1,9 +1,9 @@
-var http = require("http");
-var fs = require("fs");
-var url = require("url");
-var querystring = require("querystring");
-var memberContr = require("./controllers/memberController");
-var formidable = require("formidable");
+let http = require("http");
+let fs = require("fs");
+let url = require("url");
+let querystring = require("querystring");
+let memberController = require("./controllers/memberController");
+let formidable = require("formidable");
 
 
 http.createServer(function(request, response) {
@@ -11,9 +11,9 @@ http.createServer(function(request, response) {
 	let action = url.parse(request.url, true).pathname;
 	let post = "";
 	
-	console.log("===============	Request URL	==============="); // 帶有參數的GET會顯示出來
+	console.log("===============	Request URL		==============="); // 帶有參數的GET會顯示出來
 	console.log("帶有參數的GET會顯示出來: " + request.url);
-	console.log("===============	action	===============");
+	console.log("===============		action		===============");
 	console.log("帶有參數的GET不會顯示: " + action); // 帶有參數的GET不會顯示
 
 	/* ************************************************
@@ -29,22 +29,23 @@ http.createServer(function(request, response) {
 			console.log("POST 請求: " + post + " 把資料寫進資料庫.....");
 			
 			post = querystring.parse(post);
+
 			console.log(post.familyName);
 			console.log(post.givenName);
 			console.log(post.email);
 			console.log(post.password);
-			console.log(post.bYear);
-			console.log(post.bMonth);
-			console.log(post.bDay);
+			console.log(post.yearOfBirth);
+			console.log(post.monthOfBirth);
+			console.log(post.dayOfBirth);
 			console.log(post.gender);
 
-			memberContr.createMember(post.familyName,
+			memberController.createMember(post.familyName,
 									 post.givenName,
 									 post.email,
 									 post.password,
-									 post.bYear,
-									 post.bMonth,
-									 post.bDay,
+									 post.yearOfBirth,
+									 post.monthOfBirth,
+									 post.dayOfBirth,
 									 post.gender,
 									 function () {
 										console.log("資料存入資料庫");
@@ -54,13 +55,13 @@ http.createServer(function(request, response) {
 			});
 			
 		} else if (request.url === "/logIn") {
-			console.log("===============	logIn	===============");
+			console.log("===============	logIn		===============");
 			console.log("POST 請求: " + post + " 驗證.....");
 
 			post = querystring.parse(post);
 			console.log("email: " + post.email + "\n" + "password: " + post.password);
 
-			memberContr.logInMember(post.email, post.password, function(message) {
+			memberController.logInMember(post.email, post.password, function(message) {
 				// 判斷回傳的參數, message=emailIncorrect, message=passwordIncorrect, 都不是代表是一個token
 				if (message == "emailIncorrect") {
 					response.writeHead(200, { "Content-Type": "application/json" });
@@ -80,11 +81,11 @@ http.createServer(function(request, response) {
 			});
 
 		} else if (request.url === "/logInWithToken") {
-			console.log("===============	logInWithToken	===============");
+			console.log("===============	logInWithToken		===============");
 			console.log("POST 請求: " + post + " 驗證.....");
 			
 			const token = request.headers["authorization"].replace("Bearer ", "");
-			memberContr.logInWithTokenMember(token, (message) => {
+			memberController.logInWithTokenMember(token, (message) => {
 				// 回傳給Client
 				if (message == "true") {
 					response.writeHead(200, { "Content-Type": "application/json" });
@@ -97,6 +98,16 @@ http.createServer(function(request, response) {
 					response.end();
 
 				}
+			});
+
+		} else if (request.url === "/getProfileData") {
+			console.log("===============	getProfileData		===============");
+			const token = request.headers["authorization"].replace("Bearer ", "");
+			memberController.getProfileData(token, (avatarBase64) => {
+
+				response.writeHead(200, { "Content-Type": "application/json" });
+				response.write(JSON.stringify({ avatar: avatarBase64 }));
+				response.end();
 			});
 		}
 	});
@@ -115,23 +126,26 @@ http.createServer(function(request, response) {
 
 	} else if (action === "/signUp/check") { // action 只要判斷網域後面的URL，後面帶參數不需要考慮
 		checkEmail(response, params.email);
-		console.log("客戶端註冊檢查email是否能使用: " + params.email);
+		console.log("客戶端---註冊程序檢查email是否能使用: " + params.email);
 
 	} else if (request.url === "/register") {
-		console.log("客戶端註冊成為會員");
+		console.log("客戶端---註冊成為會員");
 
 	} else if (request.url === "/logIn") {
-		console.log("會員要登入但沒鑰匙，驗證完會發給會員鑰匙");
+		console.log("會員---要登入但沒鑰匙，驗證完會發給會員鑰匙");
 
 	} else if (request.url === "/logInWithToken") {
-		console.log("會員帶著鑰匙來了 (token)");
+		console.log("會員---帶著鑰匙來了 (token)");
 
 	} else if (request.url === "/asca") {
-		// sendFileContent(response, "views/profile.html", "text/html");
+		console.log("會員---正常登入，準備進入主要頁面");
 		sendFileContent(response, "views/asca.html", "text/html");
 
 	} else if (request.url === "/updateProfile") {
-		console.log("使用者要修改資料");
+		console.log("會員---要修改資料");
+
+	} else if (request.url === "/getProfileData") {
+		console.log("會員---需要個人資料");
 
 	} else if (/^\/[a-zA-Z0-9\/]*.js$/.test(request.url.toString())) {
 		sendFileContent(response, request.url.toString().substring(1), "text/javascript");
@@ -195,7 +209,7 @@ function sendFileContent(response, fileName, contentType) {
 }
 
 function checkEmail(response, email) {
-	if (memberContr.emailExist(email)) { 
+	if (memberController.emailExist(email)) { 
 		response.writeHead(200, { "Content-Type": "application/json" });
 		response.write(JSON.stringify({ emailAvailable: "false" })); // 如果電子郵件已經存在，就給 false 不能使用 
 
