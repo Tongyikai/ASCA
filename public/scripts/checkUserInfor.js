@@ -49,13 +49,13 @@ function checkEmail(email) {
 }
 
 function checkTelephoneNumber(telephoneNumber) {
-    if (telephoneRule.test(telephoneNumber)) return false;
-    return true;
+    if (telephoneRule.test(telephoneNumber)) return true;
+    return false;
 }
 
 function checkMobileNumber(mobileNumber) {
-    if (mobileRule.test(mobileNumber)) return false;
-    return true;
+    if (mobileRule.test(mobileNumber)) return true;
+    return false;
 }
 
 // AJAX
@@ -70,15 +70,24 @@ httpRequest.onload = function() {
         console.log("JSON: " + jsonObject);
         console.log("emailAvailable is: " + jsonObject.emailAvailable);
 
+        // Email是否可以使用
         if (jsonObject.emailAvailable == "true") {
             isEmailAvailable = true;
         } else {
             isEmailAvailable = false;
         }
 
+        // 成功註冊
         if (jsonObject.createMember == "success") {
             console.log("收到Server註冊成功的回應");
             window.location.href = "http://127.0.0.1:8888/index";
+        }
+
+        // 取得個人資料
+        console.log("json 裡有沒有 key 是avatar: " + jsonObject.hasOwnProperty('avatar'));
+        if (jsonObject["avatar"] != undefined) {
+            console.log("jsonObject 裡有 key = avatar");
+            getAvatar(jsonObject.avatar);
         }
     }
 }
@@ -126,34 +135,24 @@ function registerForUser(familyName, givenName, email, password, yearOfBirth, mo
                      "&gender=" + gender);
 }
 
-// 傳送使用者"修改"的基本資料
-function updateForUser(uploadAvatar, familyName, givenName, bYear, bMonth, bDay, gender, currentCity, hometown, telephoneAreaCode, telephoneNumber, mobileNumber, facebook) {
-    httpRequest.open("POST", "http://127.0.0.1:8888/updateProfile", false);
-    // httpRequest.setRequestHeader("Content-type", "multipart/form-data");
+// 使用者"取得"的基本資料
+function getProfileData() {
+    console.log("開始檢查 Authorization");
+    console.log("location.pathname: " + location.pathname);
+    
+    let cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)authorization\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    console.log("authorization: " + cookieValue);
 
-    const data = new FormData();
-    data.append("uploadAvatar", uploadAvatar);
-    data.append("familyName", familyName);
+    if (cookieValue !== "") {
+        httpRequest.open("POST", "http://127.0.0.1:8888/getProfileData", false);
+        httpRequest.setRequestHeader("Authorization", "Bearer " + cookieValue);
+        httpRequest.send();
+    }
+}
 
-    httpRequest.send(data);
-
-
-
-
-
-
-    // httpRequest.send("uploadAvatar=" + uploadAvatar +
-    //                  "&familyName=" + familyName +
-    //                  "&givenName=" + givenName + 
-    //                  "&bYear=" + bYear +
-    //                  "&bMonth=" + bMonth +
-    //                  "&bDay=" + bDay +
-    //                  "&gender=" + gender +
-    //                  "&currentCity=" + currentCity + 
-    //                  "&hometown=" + hometown +
-    //                  "&telephoneAreaCode=" + telephoneAreaCode +
-    //                  "&telephoneNumber=" + telephoneNumber +
-    //                  "&mobileNumber=" + mobileNumber + 
-    //                  "&facebook=" + facebook
-    // );
+function getAvatar(avatarBase64) {
+    let bigAvatar = document.getElementById("big_Avatar");
+    let smallAvatar = document.getElementById("small_Avatar");
+    bigAvatar.src = avatarBase64;
+    smallAvatar.src = avatarBase64;
 }

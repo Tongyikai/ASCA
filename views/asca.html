@@ -101,7 +101,7 @@
 			</div>
 
 			<div class="edit_Content">
-				<form action="http://127.0.0.1:8888/updateProfile" enctype="multipart/form-data" method="post" onsubmit="return changesToYourProfile()">
+				<form id="edit_ContentForm" action="http://127.0.0.1:8888/updateProfile" enctype="multipart/form-data" method="post" onsubmit="return changesToYourProfile()">
 					<table>
 						<tbody>
 							<tr>
@@ -109,10 +109,11 @@
 									<label for="avatar">上傳頭像</label>
 								</td>
 								<td style="width:200px">
+									<input type="hidden" id="edit_token" name="token">
 									<input type="file" id="edit_uploadAvatar" name="uploadAvatar" accept="image/png, image/jpeg" onchange="loadFile(event)">
 								</td>
 								<td>
-									<button onclick="cancelUploadAvatar()" style="width: 20px;">x</button>
+									<button type="button" onclick="cancelUploadAvatar()" style="width: 20px;">x</button>
 								</td>
 							</tr>
 							<tr>
@@ -217,7 +218,6 @@
 			版權所有 © ASCA
 		</div>
 
-	<script type="text/javascript" src="public/scripts/userProfileData.js"></script>
 	<script type="text/javascript" src="public/scripts/checkUserInfor.js"></script>
 	<script>
 			// 人像目錄
@@ -240,27 +240,25 @@
 			}
 
 			// 限制上傳圖片的大小
-			let uploadAvatarMaxSize = 1*1024*1024; 
-			let errorMessage = "上傳的附件檔案不能超過 1 Mega Byte";
-			let uploadAvatar = "none";
-			let isUploadAvatarMaxSizeCorrect = false;
+			const UPLOAD_AVATAR_MAX_SIZE = 1*1024*1024; 
+			const ERROR_MESSAGE = "上傳的附件檔案不能超過 1 Mega Byte";
+			let uploadAvatarMaxSizeCorrect = true;
 			
 			var loadFile = function(event) {
-				uploadAvatar = document.getElementById("edit_uploadAvatar");
+				let uploadAvatar = document.getElementById("edit_uploadAvatar");
 
 				// 上傳的檔案如果大於限制顯示警告
-				if (uploadAvatar.files[0].size > uploadAvatarMaxSize) {
-					isUploadAvatarMaxSizeCorrect = false;
-					alert(errorMessage);
+				if (uploadAvatar.files[0].size > UPLOAD_AVATAR_MAX_SIZE) {
+					uploadAvatarMaxSizeCorrect = false;
+					alert(ERROR_MESSAGE);
 				} else {
-					isUploadAvatarMaxSizeCorrect = true;
+					uploadAvatarMaxSizeCorrect = true;
 				}
 			}
 
 			function cancelUploadAvatar() {
 				document.getElementById("edit_uploadAvatar").value = "";
-				isUploadAvatarMaxSizeCorrect = false;
-				uploadAvatar = "none";
+				uploadAvatarMaxSizeCorrect = true;
 			}
 
 			// 出生年月日參數
@@ -292,11 +290,11 @@
 			showDay();
 			
 			// 所有城市參數
-			const city = ["台北市", "新北市", "基隆市", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "台南市", "高雄市", "屏東縣", "宜蘭縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
+			const CITY = ["台北市", "新北市", "基隆市", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "台南市", "高雄市", "屏東縣", "宜蘭縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
 			function showCity() {
 				let options = "<option>城市</option>";
 				for (var i = 0; i < 21; i++) {
-					options += ("<option>" + city[i] + "</option>");
+					options += ("<option>" + CITY[i] + "</option>");
 				}
 				document.getElementById("edit_currentCity").innerHTML = options;
 				document.getElementById("edit_hometown").innerHTML = options;
@@ -304,11 +302,11 @@
 			showCity();
 
 			// 市內電話區域參數
-			const telephoneAreaCode = ["02", "03", "037", "04", "049", "05", "06", "07", "08", "089", "082", "0826", "0836"];
+			const TELEPHONE_AREA_CODE = ["02", "03", "037", "04", "049", "05", "06", "07", "08", "089", "082", "0826", "0836"];
 			function showTelephoneAreaCode() {
 				let options = "<option>區碼</option>"
 				for (var i = 0; i < 13; i++) {
-					options += ("<option>" + telephoneAreaCode[i] + "</option>");
+					options += ("<option>" + TELEPHONE_AREA_CODE[i] + "</option>");
 				}
 				document.getElementById("edit_telephoneAreaCode").innerHTML = options;
 			}
@@ -316,22 +314,22 @@
 
 			// 您的個人資料更改
 			function changesToYourProfile() {
-				const DoNotModify = "none";
-
-				isFamilyNameCorrect = true;
-				isGiveNameCorrect = true;
-				isBirthdayCorrect = true;
-				isTelephoneNumberCorrect = true;
-				isMobileNumberCorrect = true;
-				isFacebookCorrect = true;
+				let cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)authorization\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+				document.getElementById("edit_token").value = cookieValue;
+				
+				nameCorrect = true;
+				birthdayCorrect = true;
+				telephoneNumberCorrect = true;
+				mobileNumberCorrect = true;
+				facebookCorrect = true;
 
 				let funCheckBlank = checkBlank;
+				let funCheckBlankInTheWord = checkBlankInTheWord;
 				let funCheckNameLength = checkNameLength;
 				let funCheckNameIsChinese = checkNameIsChinese;
 				let funCheckDateOfBirth = checkDateOfBirth;
 				let funCheckTelephoneNumber = checkTelephoneNumber;
 				let funCheckMobileNumber = checkMobileNumber;
-				// let funUpdateForUser = updateForUser;
 
 				let familyName = document.getElementById("edit_familyName").value;
 				let givenName = document.getElementById("edit_givenName").value;
@@ -347,98 +345,98 @@
 				let facebook = document.getElementById("edit_facebook").value;
 
 				// 檢查使用者輸入的資訊
-				if (!funCheckBlank(familyName)) { // 沒有輸入或者輸入空白都視為正確，以外就進入判斷
-					if (!funCheckNameIsChinese(familyName) || !funCheckNameLength(familyName)) {
-						isFamilyNameCorrect = false;
+				const ERROR_MESSAGE_1 = "文字不要包函空白字符";
+				const ERROR_MESSAGE_2 = "文字長度超過5個字";
+				const ERROR_MESSAGE_3 = "只限輸入中文";
+				const ERROR_MESSAGE_4 = "出生年月日不是正確的日期";
+				const ERROR_MESSAGE_5 = "請輸入完整的出生日期";
+				const ERROR_MESSAGE_6 = "市話不正確";
+				const ERROR_MESSAGE_7 = "請輸入完整的電話區碼 + 號碼";
+				const ERROR_MESSAGE_8 = "手機號碼不正確";
+				const ERROR_MESSAGE_9 = "臉書連接不正確";
+
+				const YEAR_CHARACTER = "年";
+				const MONTH_CHARACTER = "月";
+				const DAY_CHARACTER = "日";
+				const AREA_CODE = "區碼";
+
+				if (!funCheckBlank(familyName) || !funCheckBlank(givenName)) {
+					if (funCheckBlankInTheWord(familyName) || funCheckBlankInTheWord(givenName)) {
+						console.log("文字有包函空白字符");
+						alert(ERROR_MESSAGE_1);
+						nameCorrect = false;
+
+					} else if (!funCheckNameLength(familyName) || !funCheckNameLength(givenName)) {
+						console.log("文字長度超過5個字");
+						alert(ERROR_MESSAGE_2);
+						nameCorrect = false;
+
+					} else if (!funCheckNameIsChinese(familyName) || !funCheckNameIsChinese(givenName)) {
+						console.log("不是中文");
+						alert(ERROR_MESSAGE_3);
+						nameCorrect = false;
+
+					} else {
+						console.log("👌");
 					}
 				} else {
-					familyName = DoNotModify; // Server 解析 none 代表不修改資訊
+					console.log("姓名沒有輸入，或 輸入了空白");
 				}
 
-				if (!funCheckBlank(givenName)) {
-					if (!funCheckNameIsChinese(givenName) || !funCheckNameLength(givenName)) {
-						isGiveNameCorrect = false;
+				if (year != YEAR_CHARACTER && month != MONTH_CHARACTER && day != DAY_CHARACTER) {
+					console.log("輸入正確的格式 進入判斷是否正確的日期");
+					if (funCheckDateOfBirth(year, month, day)) {
+						console.log("出生正確");
+					} else {
+						console.log("出生不是正確的日期");
+						alert(ERROR_MESSAGE_4);
+						birthdayCorrect = false;
+
 					}
+				} else if (year == YEAR_CHARACTER && month == MONTH_CHARACTER && day == DAY_CHARACTER) {
+					console.log("出生沒有選, 不修改");
 				} else {
-					givenName = DoNotModify;
+					console.log("請輸入完整的出生日期");
+					alert(ERROR_MESSAGE_5);
+					birthdayCorrect = false;
 				}
 
-				if (year == "年" && month == "月" && day == "日") {
-					year = DoNotModify; 
-					month = DoNotModify;
-					day = DoNotModify;
-				} else if (year != "年" && month != "月" && day != "日") {
-					if (!funCheckDateOfBirth(year, month, day)) {
-						isBirthdayCorrect = false;
+				if (telephoneAreaCode != AREA_CODE || !funCheckBlank(telephoneNumber)) {
+					if (telephoneAreaCode != AREA_CODE && !funCheckBlank(telephoneNumber)) {
+						if (funCheckTelephoneNumber(telephoneNumber)) {
+							console.log("市話OK");
+						} else {
+							console.log("市話不正確");
+							alert(ERROR_MESSAGE_6);
+							telephoneNumberCorrect = false;
+						}
+					} else {
+						alert(ERROR_MESSAGE_7);
+						telephoneNumberCorrect = false;
 					}
-				}
-
-				if (currentCity == "城市") {
-					currentCity = DoNotModify;
-				}
-
-				if (hometown == "城市") {
-					hometown = DoNotModify;
-				}
-
-				if (telephoneAreaCode == "區碼") {
-					telephoneAreaCode = DoNotModify;
-				}
-
-				if (!funCheckBlank(telephoneNumber)) {
-					if (funCheckTelephoneNumber(telephoneNumber)) {
-						isTelephoneNumberCorrect = false;
-					}
+					
 				} else {
-					telephoneNumber = DoNotModify;
+					console.log("市話 不修改");
 				}
 
 				if (!funCheckBlank(mobileNumber)) {
-					if (funCheckMobileNumber(mobileNumber)) {
-						isMobileNumberCorrect = false;
+					if (!funCheckMobileNumber(mobileNumber)) {
+						alert(ERROR_MESSAGE_8);
+						mobileNumberCorrect = false;
 					}
-				} else {
-					mobileNumber = DoNotModify;
 				}
 
 				if (!funCheckBlank(facebook)) {
-					if (facebook.length > 100) {
-						isFacebookCorrect = false;
+					if (funCheckBlankInTheWord(facebook) || facebook.length > 50) {
+						alert(ERROR_MESSAGE_9);
+						facebookCorrect = false;
 					}
-				} else {
-					facebook = DoNotModify;
 				}
 
-				alert(
-					"上傳頭像:" + (isUploadAvatarMaxSizeCorrect ? uploadAvatar.files[0].name : "圖片大小錯誤或沒上傳圖片") + "\n" + 
-					"姓: " + (isFamilyNameCorrect ? familyName : "姓名錯誤") + "\n" +
-					"名字: " + (isGiveNameCorrect ? givenName : "名字錯誤") + "\n" +
-					"出生: " + (isBirthdayCorrect ? year + "年" + month + "月" + day + "日" : "出生錯誤") + "\n" +
-					"姓別: " + gender + "\n" +
-					"現居: " + currentCity + "\n" +
-					"家鄉: " + hometown + "\n" +
-					"市話: " + (isTelephoneNumberCorrect ? telephoneAreaCode + "-" + telephoneNumber : "市話錯誤") + "\n" +
-					"手機: " + (isMobileNumberCorrect ? mobileNumber : "手機錯誤") + "\n" +
-					"臉書: " + isFacebookCorrect + "\n" 
-				);
-
-				if (isUploadAvatarMaxSizeCorrect && isFamilyNameCorrect && isGiveNameCorrect && isBirthdayCorrect && isTelephoneNumberCorrect && isMobileNumberCorrect && isFacebookCorrect) {
+				if (uploadAvatarMaxSizeCorrect && nameCorrect && birthdayCorrect && telephoneNumberCorrect && mobileNumberCorrect && facebookCorrect) {
 					alert("可以提交");
 					return true;
-					// funUpdateForUser(uploadAvatar,
-					// 				 familyName,
-					// 				 givenName,
-					// 				 year,
-					// 				 month,
-					// 				 day,
-					// 				 gender,
-					// 				 currentCity,
-					// 				 hometown,
-					// 				 telephoneAreaCode,
-					// 				 telephoneNumber,
-					// 				 mobileNumber,
-					// 				 facebook
-					// );
+
 				} else {
 					alert("不行提交");
 					return false;

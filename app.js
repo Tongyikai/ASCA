@@ -113,6 +113,45 @@ http.createServer(function(request, response) {
 	});
 
 	/* ************************************************
+	*	Form Data 
+	************************************************ */
+	if (request.url == "/updateProfile" && request.method.toLowerCase() === "post") {
+		console.log("===============	updateProfile	===============");
+
+        // 實例化一個傳入表單
+        let form = formidable.IncomingForm();
+        // 設置文件存儲目錄
+        form.uploadDir = "./uploadDir";
+        
+        // 解析傳入數據
+        form.parse(request, (err, fields, files) => {
+			if (err) throw err;
+			
+			console.log("fields token: " + fields.token);
+            console.log("fields familyName: " + fields.familyName);
+            console.log("fields givenName: " + fields.givenName);
+			console.log("fields year: " + fields.year);
+			console.log("fields month: " + fields.month);
+			console.log("fields day: " + fields.day);
+			console.log("fields gender: " + fields.gender);
+			console.log("fields currentCity: " + fields.currentCity);
+			console.log("fields hometown: " + fields.hometown);
+			console.log("fields telephoneAreaCode: " + fields.telephoneAreaCode);
+			console.log("fields telephoneNumber: " + fields.telephoneNumber);
+			console.log("fields mobileNumber: " + fields.mobileNumber);
+			console.log("fields facebook: " + fields.facebook);
+            console.log("-----------------Image Information-------------------");
+            console.log("files photo name: " + files.uploadAvatar.name);
+            console.log("files photo type: " + files.uploadAvatar.type);
+			console.log("files photo size: " + files.uploadAvatar.size);
+			
+			memberController.updateProfileMember(files.uploadAvatar);
+			
+			sendFileContent(response, "views/back.html", "text/html");
+		});
+	}
+
+	/* ************************************************
 	*	URL 
 	************************************************ */
 	if (request.url === "/index") {
@@ -162,30 +201,6 @@ http.createServer(function(request, response) {
 	} else {
 		console.log("找不到對應的 --- Requested URL is: " + request.url);
 		response.end();
-	}
-
-	/* ************************************************
-	*	Form Data 
-	************************************************ */
-	if (request.url == "/updateProfile" && request.method.toLowerCase() === "post") {
-		console.log("===============	updateProfile	===============");
-
-        // 實例化一個傳入表單
-        let form = formidable.IncomingForm();
-        // 設置文件存儲目錄
-        form.uploadDir = "./uploadDir";
-        
-        // 解析傳入數據
-        form.parse(request, (err, fields, files) => {
-            console.log("fields familyName: " + fields.familyName);
-            console.log("fields givenName: " + fields.givenName);
-            console.log("fields gender: " + fields.gender);
-            
-            console.log("-----------------Image Information-------------------");
-            console.log("files photo name: " + files.uploadAvatar.name);
-            console.log("files photo type: " + files.uploadAvatar.type);
-			console.log("files photo size: " + files.uploadAvatar.size);
-		});
 	}
 
 }).listen(8888);console.log("Server running at: http://127.0.0.1:8888/ \nNow time: " + new Date());
