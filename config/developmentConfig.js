@@ -11,5 +11,6 @@ module.exports = {
         memberCollection: process.env.MEMBER_TABLE,
         memberCountersCollection: process.env.MEMBER_COUNTERS_TABLE
     },
-    secret: process.env.SECRET
+    secret: process.env.SECRET,
+    defaultAvatar: process.env.DEFAULT_AVATAR
 }

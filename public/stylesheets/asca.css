@@ -1,0 +1,195 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    font-family: 'Jost', sans-serif;
+}
+
+body {
+    background: #F0F2F5;
+}
+
+.navigation_bar {
+    background: #3b5998;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 50px;
+}
+
+.navigation_bar .navigation_logo a {
+    display: block;
+    text-decoration: none;
+    color: white;
+}
+
+.navigation_right > ul {
+    display: flex;
+    align-items: center;
+}
+
+.navigation_right ul li.nr_li {
+    margin-left: 25px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 20px;
+    position: relative;
+}
+
+.navigation_right ul li img {
+    border-radius: 50%;
+    width: 35px;
+    vertical-align: middle;
+}
+
+.navigation_bar .menu {
+    position: absolute;
+    right: -23px;
+    top: 48px;
+    display: flex;
+    background: #fff;
+    border-radius:  15px;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.25);
+    display: none;
+}
+
+.navigation_bar .menu .menu_item {
+    background: #fff;
+    padding: 15px 20px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    width: 95px;
+}
+
+.navigation_bar .menu li {
+    margin-bottom: 10px;
+    color: #868686;
+}
+
+.menu li { /* 處理中文 變直列的問題 */
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+} 
+
+.navigation_bar ul li:hover {
+    color: #e76208;
+}
+
+.navigation_bar .menu:before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    right: 30px;
+    border: 10px solid;
+    border-color: transparent transparent #fff transparent;
+}
+
+.navigation_bar .avatar_Menu.active .menu {
+    display: flex;
+}
+
+.profile .big_Avatar {
+    border-radius: 50%;
+    width: 160px;
+    vertical-align: middle;
+    border-color: white;
+    border-width: 3px;
+    border-style: solid;
+    margin-left: 100px;
+}
+
+/* 框框框框框 */ 
+table, th, td {
+    border: 1px solid black;
+}
+
+.edit {
+    display: none;
+    background: white;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    margin-left: 30%;
+    margin-right: 30%;
+    height: 650px;
+    width: 700px;
+    margin-top: 10px;
+
+    /* The (background) */
+    /* position: fixed; */
+    z-index: 1;
+    /* padding-top: 100px; */
+    left: 0;
+    top: 0;
+    /* width: 100%; */
+    /* height: 100%; */
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* 背景灰色的原因 */
+}
+
+.edit_Title {
+    background-color: #ff00ff;
+    height: 60px;
+    width: 80%;
+    float: left;
+    padding-left: 280px;
+}
+
+.edit_closeButtonArea {
+    background-color: #3f9197;
+    height: 60px;
+    width: 20%;
+    float: left;
+    padding-left: 10%;
+    padding-top: 1%;
+}
+
+.edit_closeButton {
+    color: #b2e43d;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    padding-right: 50%;
+}
+
+.edit_closeButton:hover,
+.edit_closeButton:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.edit_Content {
+    padding-bottom: 110px;
+}
+
+.edit_Content table {
+    /* display: table;
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: blue; */
+}
+
+.edit_Content td {
+    padding: 8px;
+}
+
+.edit_Footer {
+    background-color: #3b5998;
+    height: 50px;
+    position: relative;
+}
+
+.edit_Update_Button {
+    width: 100px;
+    height: 30px;
+    margin-left: 300px;
+    padding-bottom: 15px;
+    font-size: 14px;
+}
