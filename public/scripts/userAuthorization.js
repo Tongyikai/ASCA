@@ -58,8 +58,14 @@ function checkAuthorization() {
     // console.log("authorization: " + cookieValue);
 
     if (cookieValue !== "") { // 如果authorization有值，傳給伺服器認證
+
         httpRequest.open("POST", "http://127.0.0.1:8888/logInWithToken", false);
         httpRequest.setRequestHeader("Authorization", "Bearer " + cookieValue);
         httpRequest.send();
+
+        // 清除  cookie
+        // alert(cookieValue);
+        // document.cookie = "authorization=; expires=Thu, 01 Jan 1970 00:00:00 GMT"; 
+        
     }
 }

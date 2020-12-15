@@ -5,23 +5,24 @@ Update Operations
 Delete Operations
 */
 
+const fs = require("fs");
+const MongoClient = require("mongodb").MongoClient;
+const config = require("../config/developmentConfig"); 
+const uri = "mongodb://" + config.mongodb.user + ":" + config.mongodb.password + "@" + config.mongodb.host + "/" + config.mongodb.database;
+const encryption = require("../models/encryption");
+const jwt = require("jsonwebtoken");
+// const base64Code = require("../models/base64CodeModel");
+const modifyProfile = require("../models/modifyProfile");
+
 let email = require("../public/json/email.json");
 const { json } = require('body-parser');
 
 const UNDEFINED = "none";
 const EMAIL_LIST_PATH = "./public/json/email.json";
-const config = require("../config/developmentConfig"); 
 const DEFAULT_AVATAR_NAME = "avatar";
 const DEFAULT_AVATAR = config.defaultAvatar;
 const TRUE = "true";
 const FALSE = "false";
-
-let fs = require("fs");
-const MongoClient = require("mongodb").MongoClient;
-const uri = "mongodb://" + config.mongodb.user + ":" + config.mongodb.password + "@" + config.mongodb.host + "/" + config.mongodb.database;
-const encryption = require("../models/encryption");
-const jwt = require("jsonwebtoken");
-const base64Code = require("../models/base64CodeModel");
 
 function updateJSON() {
     fs.readFile(EMAIL_LIST_PATH, (err, fileData) => {
@@ -52,6 +53,7 @@ function writeJSON(newData) {
 }
 
 function tokenExist(token) {
+    console.log("==================================      token 驗證      ==================================  ");
     let decoded;
     let tokenCorrect;
     jwt.verify(token, config.secret, err => {
@@ -98,7 +100,7 @@ function getMemberIDFromEmail(searchEmail) {
 function emailExist(searchEmail) { 
     for (var i = 0; i < email.EmailList.length; i++) {
         if (email.EmailList[i].email == searchEmail) {
-            console.log("電子郵件已經註冊: " + email.EmailList[i].email);
+            // console.log("電子郵件已經註冊: " + email.EmailList[i].email);
             // memberIDFromEmail = email.EmailList[i].memberID; // 查尋email存在的同時也取得memberID
             return true;
         }
@@ -119,7 +121,7 @@ function createMember(familyName, givenName, email, password, yearOfBirth, month
         memberCounters.find({ _id: "memberID" }).toArray(function(err, result) {
             if (err) throw err;
             var memberID = result[0].sequence_value + 1;
-            console.log("count=" + memberID);
+            // console.log("count=" + memberID);
             member.insertOne({ memberID: memberID,
                                  avatar: DEFAULT_AVATAR,
                              avatarName: DEFAULT_AVATAR_NAME,
@@ -140,10 +142,10 @@ function createMember(familyName, givenName, email, password, yearOfBirth, month
                             create_date: dateTime
                 }, function(err, res) {     
                 if (err) throw err;
-                console.log("member insert success");
+                // console.log("member insert success");
                 memberCounters.updateOne({ _id: "memberID" }, { $set: { sequence_value: memberID } }, function(err, res) { 
                     if (err) throw err;
-                    console.log("memberCounters update success");
+                    // console.log("memberCounters update success");
                     writeJSON({ memberID: memberID, email: email });
                     client.close();
                     callback();
@@ -158,8 +160,8 @@ function logInMember(email, password, callback) {
     if (emailExist(email)) { // 判斷是否存在這組電子郵件
         // 取得memberID
         var memberID = getMemberIDFromEmail(email);
-        console.log("logInMember - 會員的ID: " + memberID);
-        console.log("logInMember - 會員的password: " + password);
+        // console.log("logInMember - 會員的ID: " + memberID);
+        // console.log("logInMember - 會員的password: " + password);
 
         // 驗證密碼
         const client = new MongoClient(uri, { useUnifiedTopology: true });
@@ -193,28 +195,35 @@ function logInWithTokenMember(token, callback) {
     }
 }
 
-function updateProfileMember(token, familyName, givenName, year, month, day, gender, currentCity, hometown, telephoneAreaCode, telephoneNumber, mobileNumber, facebook, uploadAvatar) {
-}
-
-function updateProfileMember(token, uploadAvatar) {
-    console.log("會員修改個人資料");
-
+function updateProfileMember(token, familyName, givenName, year, month, day, gender, currentCity, hometown, telephoneAreaCode, telephoneNumber, mobileNumber, facebook, avatar) {
+    var items;
+    var balls;
+   
     if (tokenExist(token)) {
         let memberID = getMemberIDFromToken(token);
+
+        modifyProfile(familyName, givenName, year, month, day, gender, currentCity, hometown, telephoneAreaCode, telephoneNumber, mobileNumber, facebook, avatar, (modifyItems, lottoBalls) => {
+            // console.log("===========================================要修改的 key ==========================================================================");
+            // console.log(lottoBalls);
+            // console.log("=====================================================================================================================");
+            // console.log(modifyItems);
+            items = modifyItems; // 包裝成好幾組的格式 { $set: { "key":"value" } }
+            balls = lottoBalls; // 要修改的 key 
+        });
 
         const client = new MongoClient(uri, { useUnifiedTopology: true });
         client.connect(err => {
             if (err) throw err;
             const member = client.db(config.mongodb.database).collection(config.mongodb.memberCollection);
-    
-            let base64 = base64Code(uploadAvatar);
             let whereStr = { "memberID": memberID };
-            let updateStr = { $set: { "avatar": base64, "familyName": "陳", "givenName": "宮" }};
 
-            member.updateOne(whereStr, updateStr, (err, result) => {
-                if (err) throw err;
-                // console.log(result);
-            });
+            for (var i = 0; i < balls.length; i++) {
+                var updateStr = items[balls[i]]; // 符合要修改的格式 { $set: { "key":"value" } }
+                member.updateOne(whereStr, updateStr, (err, result) => {
+                    if (err) throw err;
+                    // console.log(result);
+                });
+            }
         });
     } else {
         console.log("會員修改個人資料---token錯誤");
@@ -222,11 +231,11 @@ function updateProfileMember(token, uploadAvatar) {
 }
 
 function getProfileData(token, callback) {
-    console.log("取得會員的頭像");
+    // console.log("取得會員的頭像");
 
     if (tokenExist(token)) {
         let memberID = getMemberIDFromToken(token);
-        console.log(typeof memberID);
+        // console.log(typeof memberID);
 
         const client = new MongoClient(uri, { useUnifiedTopology: true });
         client.connect(err => {
@@ -235,8 +244,7 @@ function getProfileData(token, callback) {
 
             member.find({ "memberID": memberID }).toArray((err, result) => {
                 if (err) throw err;
-                // console.log("會員的頭像: " + result[0].avatar);
-                console.log("會員的頭像: " + result);
+                // console.log("會員的頭像: " + result);
                 callback(result[0].avatar);
             });
         });

@@ -2,8 +2,8 @@ let fs = require("fs");
 let path = require("path");
 let base64 = "";
 
-module.exports = function getBase64Code(uploadAvatar) { // 最終回傳 Base64 code
-    saveUploadAvatar(uploadAvatar);
+module.exports = function getBase64Code(avatar) { // 最終回傳 Base64 code
+    saveUploadAvatar(avatar);
     if (base64 == "") {
         console.log("error");
     }
@@ -11,10 +11,10 @@ module.exports = function getBase64Code(uploadAvatar) { // 最終回傳 Base64 c
 }
 
 // Client 上傳的圖片暫存在 uploadDir 文件夾
-function saveUploadAvatar(uploadAvatar) {
+function saveUploadAvatar(avatar) {
     let name = "i";
-    let extName = path.extname(uploadAvatar.name);
-    let oldPath = uploadAvatar.path;
+    let extName = path.extname(avatar.name);
+    let oldPath = avatar.path;
     let newPath = "uploadDir/" + name + extName;
 
     fs.renameSync(oldPath, newPath, (err) => {
@@ -35,3 +35,4 @@ function imagePrefix(base64code) {
     let imagePrefix = "data:image/jpeg;base64,";
     base64 = imagePrefix + base64code;    
 }
+// 把圖片轉成 Base64 

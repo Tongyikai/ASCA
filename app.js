@@ -127,29 +127,31 @@ http.createServer(function(request, response) {
 			console.log("fields telephoneNumber: " + fields.telephoneNumber);
 			console.log("fields mobileNumber: " + fields.mobileNumber);
 			console.log("fields facebook: " + fields.facebook);
-            console.log("-----------------Image Information-------------------");
-            console.log("files photo name: " + files.uploadAvatar.name);
-            console.log("files photo type: " + files.uploadAvatar.type);
-			console.log("files photo size: " + files.uploadAvatar.size);
+			console.log("-----------------	Image Information	-------------------");
+			console.log("files photo : " + files.avatar);
+            console.log("files photo name: " + files.avatar.name);
+            console.log("files photo type: " + files.avatar.type);
+			console.log("files photo size: " + files.avatar.size);
+			console.log("-----------------	Image Information End	-------------------");
 			*/
 
-			// memberController.updateProfileMember(fields.token, 
-			// 									 fields.familyName,
-			// 									 fields.givenName,
-			// 									 fields.year,
-			// 									 fields.month,
-			// 									 fields.day,
-			// 									 fields.gender,
-			// 									 fields.currentCity,
-			// 									 fields.hometown,
-			// 									 fields.telephoneAreaCode,
-			// 									 fields.telephoneNumber,
-			// 									 fields.mobileNumber,
-			// 									 fields.facebook,
-			// 									  files.uploadAvatar
-			// 									  );
+			memberController.updateProfileMember(fields.token, 
+												 fields.familyName,
+												 fields.givenName,
+												 fields.year,
+												 fields.month,
+												 fields.day,
+												 fields.gender,
+												 fields.currentCity,
+												 fields.hometown,
+												 fields.telephoneAreaCode,
+												 fields.telephoneNumber,
+												 fields.mobileNumber,
+												 fields.facebook,
+												  files.avatar
+												  );
 
-			memberController.updateProfileMember(fields.token, files.uploadAvatar);
+		
 			sendFileContent(response, "views/back.html", "text/html");
 		});
 	}
@@ -189,7 +191,7 @@ http.createServer(function(request, response) {
 		sendFileContent(response, request.url.toString().substring(1), "text/png");
 		console.log("Response File: " + request.url.toString().substring(1) + ".png");
 	} else {
-		console.log("找不到對應的 --- Requested URL is: " + request.url);
+		console.log("找不到對應的 --- Requested: " + request.url);
 		response.end();
 	}
 }).listen(8888);console.log("Server running at: http://127.0.0.1:8888/ \nNow time: " + new Date());
