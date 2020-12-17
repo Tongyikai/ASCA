@@ -93,7 +93,7 @@ body {
     display: flex;
 }
 
-.profile .big_Avatar {
+.profile .big_avatar {
     border-radius: 50%;
     width: 160px;
     vertical-align: middle;

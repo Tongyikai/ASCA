@@ -24,8 +24,6 @@ http.createServer(function(request, response) {
 
 	request.on("end", function() {
 		if (request.url === "/register") {
-			// console.log("===============	register	===============");
-			// console.log("POST 請求: " + post + " 把資料寫進資料庫.....");
 			post = querystring.parse(post);
 
 			console.log(post.familyName);
@@ -46,16 +44,12 @@ http.createServer(function(request, response) {
 									 post.dayOfBirth,
 									 post.gender,
 									 function () {
-										// console.log("資料存入資料庫");
 										response.writeHead(200, { "Content-Type": "application/json" });
 										response.write(JSON.stringify({ createMember: "success" }));
 										response.end();
 			});
 		} else if (request.url === "/logIn") {
-			// console.log("===============	logIn		===============");
-			// console.log("POST 請求: " + post + " 驗證.....");
 			post = querystring.parse(post);
-			// console.log("email: " + post.email + "\n" + "password: " + post.password);
 
 			memberController.logInMember(post.email, post.password, function(message) {
 				// 判斷回傳的參數, message=emailIncorrect, message=passwordIncorrect, 都不是代表是一個token
@@ -66,15 +60,13 @@ http.createServer(function(request, response) {
 					response.writeHead(200, { "Content-Type": "application/json" });
 					response.write(JSON.stringify({ authorization: "passwordIncorrect" }));
 				} else {
-					// console.log("發給Client token: " + message);
+					// 發給Client token
 					response.writeHead(200, { "Content-Type": "application/json" });
 					response.write(JSON.stringify({ authorization: message }));
 				}
 				response.end();
 			});
 		} else if (request.url === "/logInWithToken") {
-			// console.log("===============	logInWithToken		===============");
-			// console.log("POST 請求: " + post + " 驗證.....");
 			const token = request.headers["authorization"].replace("Bearer ", "");
 			memberController.logInWithTokenMember(token, (message) => {
 				// 回傳給Client
@@ -89,7 +81,6 @@ http.createServer(function(request, response) {
 				}
 			});
 		} else if (request.url === "/getProfileData") {
-			// console.log("===============	getProfileData		===============");
 			const token = request.headers["authorization"].replace("Bearer ", "");
 			memberController.getProfileData(token, (avatarBase64) => {
 				response.writeHead(200, { "Content-Type": "application/json" });
@@ -103,7 +94,6 @@ http.createServer(function(request, response) {
 	*	                Form Data                     *
 	************************************************ */
 	if (request.url == "/updateProfile" && request.method.toLowerCase() === "post") {
-		console.log("===============	updateProfile	===============");
 
         // 實例化一個傳入表單
         let form = formidable.IncomingForm();
@@ -133,8 +123,9 @@ http.createServer(function(request, response) {
             console.log("files photo type: " + files.avatar.type);
 			console.log("files photo size: " + files.avatar.size);
 			console.log("-----------------	Image Information End	-------------------");
-			*/
+			*/			
 
+			
 			memberController.updateProfileMember(fields.token, 
 												 fields.familyName,
 												 fields.givenName,
@@ -148,11 +139,17 @@ http.createServer(function(request, response) {
 												 fields.telephoneNumber,
 												 fields.mobileNumber,
 												 fields.facebook,
-												  files.avatar
-												  );
-
-		
-			sendFileContent(response, "views/back.html", "text/html");
+												  files.avatar,
+												  (message) => {
+													if (message == "updateProfileSuccess") {
+														response.writeHead(200, { "Content-Type": "application/json" });
+														response.write(JSON.stringify({ updateProfile: message }));
+														response.end();
+													} else {
+														sendFileContent(response, "views/errorView/error.html", "text/html");
+													}
+												  });
+			
 		});
 	}
 

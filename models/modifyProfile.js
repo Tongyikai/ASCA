@@ -4,8 +4,8 @@ const BLANK = "";
 module.exports = function availableToModify(familyName, givenName, year, month, day, gender, currentCity, hometown, telephoneAreaCode, telephoneNumber, mobileNumber, facebook, avatar, callback) {
     let fieldsVALUE = [familyName, givenName, year, month, day, gender, currentCity, hometown, telephoneAreaCode, telephoneNumber, mobileNumber, facebook, avatar];
     let fieldsKEY = ["familyName", "givenName", "year", "month", "day", "gender", "currentCity", "hometown", "telephoneAreaCode", "telephoneNumber", "mobileNumber", "facebook", "avatar"];
-    let lottoBalls = [];
 
+    let lottoBalls = [];
     let modifyItems = {
         familyName: { $set: { "familyName": "" }},
          givenName: { $set: { "givenName": "" }},

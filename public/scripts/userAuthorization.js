@@ -3,8 +3,8 @@ const httpRequest = new XMLHttpRequest();
 httpRequest.onload = function() {
     if (httpRequest.status >= 200 && httpRequest.status < 400) {
         var jsonObject = JSON.parse(httpRequest.responseText);
-        console.log("處理回應: " + httpRequest.responseText);
-        console.log("伺服器傳來: " + jsonObject);
+        // console.log("處理回應: " + httpRequest.responseText);
+        // console.log("伺服器傳來: " + jsonObject);
 
         switch(jsonObject.authorization) {
             case "emailIncorrect":
@@ -25,7 +25,7 @@ httpRequest.onload = function() {
                 break;
 
             default:
-                console.log("把token存在cookie裡");
+                // console.log("把token存在cookie裡");
                 document.cookie = "authorization=" + jsonObject.authorization;
                 // 拿到Server發的鑰匙 用鑰匙登入
                 checkAuthorization();
