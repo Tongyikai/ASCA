@@ -73,9 +73,9 @@ httpRequest.onload = function() {
 
         // 取得個人資料
         // console.log("json 裡有沒有 key 是avatar: " + jsonObject.hasOwnProperty('avatar'));
-        if (jsonObject["avatar"] != undefined) {
+        if (jsonObject["profileData"] != undefined) {
             // console.log("jsonObject 裡有 key = avatar");
-            getAvatar(jsonObject.avatar);
+            setProfileData(jsonObject.profileData);
         }
         if (jsonObject["updateProfile"] != undefined) {
             alert("onload: " + jsonObject.updateProfile);
@@ -101,28 +101,6 @@ function checkDateOfBirth(year, month, day) {
         limitInMonth[1] = 29;
     }
     return day <= limitInMonth[month - 1];
-}
-
-// 使用者"取得"的基本資料
-function getProfileData() {
-    // console.log("開始檢查 Authorization");
-    // console.log("location.pathname: " + location.pathname);
-    
-    let cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)authorization\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    // console.log("authorization: " + cookieValue);
-
-    if (cookieValue !== "") {
-        httpRequest.open("POST", "http://127.0.0.1:8888/getProfileData", false);
-        httpRequest.setRequestHeader("Authorization", "Bearer " + cookieValue);
-        httpRequest.send();
-    }
-}
-
-function getAvatar(avatarBase64) {
-    let bigAvatar = document.getElementById("big_avatar");
-    let smallAvatar = document.getElementById("small_avatar");
-    bigAvatar.src = avatarBase64;
-    smallAvatar.src = avatarBase64;
 }
 
 /* **********************************************************
@@ -258,9 +236,9 @@ let formFieldsName = [];
 let avatar;
 let familyName;
 let givenName;
-let year;
-let month;
-let day;
+let yearOfBirth;
+let monthOfBirth;
+let dayOfBirth;
 let gender;
 let currentCity;
 let hometown;
@@ -283,9 +261,9 @@ function changesToYourProfile() {
 
     familyName = document.getElementById("edit_familyName").value;
     givenName = document.getElementById("edit_givenName").value;
-    year = document.getElementById("edit_yearBox").value;
-    month = document.getElementById("edit_monthBox").value;
-    day = document.getElementById("edit_dayBox").value;
+    yearOfBirth = document.getElementById("edit_yearBox").value;
+    monthOfBirth = document.getElementById("edit_monthBox").value;
+    dayOfBirth = document.getElementById("edit_dayBox").value;
     gender = document.querySelector('input[name="gender"]:checked').value
     currentCity = document.getElementById("edit_currentCity").value;
     hometown = document.getElementById("edit_hometown").value;
@@ -352,8 +330,8 @@ function changesToYourProfile() {
         console.log("名 - 不修改");
     }
 
-    if (year != YEAR_CHARACTER && month != MONTH_CHARACTER && day != DAY_CHARACTER) {
-        if (checkDateOfBirth(year, month, day)) {
+    if (yearOfBirth != YEAR_CHARACTER && monthOfBirth != MONTH_CHARACTER && dayOfBirth != DAY_CHARACTER) {
+        if (checkDateOfBirth(yearOfBirth, monthOfBirth, dayOfBirth)) {
             console.log("出生 - 修改 可以");
             // formFieldsName.push("birthday");
         } else {
@@ -361,7 +339,7 @@ function changesToYourProfile() {
             console.log("出生 - 修改 不是正確的日期     safeCount=" + safeCount);
             alert(ERROR_MESSAGE_4);
         }
-    } else if (year == YEAR_CHARACTER && month == MONTH_CHARACTER && day == DAY_CHARACTER) {
+    } else if (yearOfBirth == YEAR_CHARACTER && monthOfBirth == MONTH_CHARACTER && dayOfBirth == DAY_CHARACTER) {
         console.log("出生 - 不修改");
     } else {
         safeCount--;
@@ -442,50 +420,84 @@ function changesToYourProfile() {
     return true;
 }
 
+userProfile = {
+    bit_avatar:   document.getElementById("big_avatar"),
+  small_avatar:   document.getElementById("small_avatar"),
+    familyName:   document.getElementById("profile_familyName"),
+     givenName:   document.getElementById("profile_givenName"),
+         email:   document.getElementById("profile_email"),
+      birthday:   document.getElementById("profile_birthday"),
+        gender:   document.getElementById("profile_gender"),
+   currentCity:   document.getElementById("profile_currentCity"),
+      hometown:   document.getElementById("profile_hometown"),
+telephoneNumber:   document.getElementById("profile_telephoneNumber"),
+  mobileNumber:   document.getElementById("profile_mobileNumber"),
+      facebook:   document.getElementById("profile_facebook"),
+};
+
 function changeFormFieldsNOW() {
-    formObj = {
-          bit_avatar:   document.getElementById("big_avatar"),
-        small_avatar:   document.getElementById("small_avatar"),
-          familyName:   document.getElementById("profile_familyName"),
-           givenName:   document.getElementById("profile_givenName"),
-            birthday:   document.getElementById("profile_birthday"),
-              gender:   document.getElementById("profile_gender"),
-         currentCity:   document.getElementById("profile_currentCity"),
-            hometown:   document.getElementById("profile_hometown"),
-     telephoneNumber:   document.getElementById("profile_telephoneNumber"),
-        mobileNumber:   document.getElementById("profile_mobileNumber"),
-            facebook:   document.getElementById("profile_facebook"),
-    };
+
     if (avatar.size > 0) {
-        formObj.bit_avatar.src = URL.createObjectURL(avatar.files[0]);
-        formObj.small_avatar.src = URL.createObjectURL(avatar.files[0]);
+        userProfile.bit_avatar.src = URL.createObjectURL(avatar.files[0]);
+        userProfile.small_avatar.src = URL.createObjectURL(avatar.files[0]);
     }
     if (familyName != BLANK) {
-        formObj.familyName.innerHTML = familyName;
+        userProfile.familyName.innerHTML = familyName;
     }
     if (givenName != BLANK) {
-        formObj.givenName.innerHTML = givenName; 
+        userProfile.givenName.innerHTML = givenName; 
     }
-    if (year != YEAR_CHARACTER && month != MONTH_CHARACTER && day != DAY_CHARACTER) {
-        formObj.birthday.innerHTML = year + "年" + month + "月" + day + "日";
+    if (yearOfBirth != YEAR_CHARACTER && monthOfBirth != MONTH_CHARACTER && dayOfBirth != DAY_CHARACTER) {
+        userProfile.birthday.innerHTML = yearOfBirth + "年" + monthOfBirth + "月" + dayOfBirth + "日";
     }
-    formObj.gender.innerHTML = gender;
+    userProfile.gender.innerHTML = gender;
     if (currentCity != CITY_NAME) {
-        formObj.currentCity.innerHTML = currentCity;
+        userProfile.currentCity.innerHTML = currentCity;
     }
     if (hometown != CITY_NAME) {
-        formObj.hometown.innerHTML = hometown;
+        userProfile.hometown.innerHTML = hometown;
     }
     if (telephoneNumber != BLANK) {
-        formObj.telephoneNumber.innerHTML = telephoneAreaCode + "-" + telephoneNumber;
+        userProfile.telephoneNumber.innerHTML = telephoneAreaCode + "-" + telephoneNumber;
     }
     if (mobileNumber != BLANK) {
-        formObj.mobileNumber.innerHTML = mobileNumber;
+        userProfile.mobileNumber.innerHTML = mobileNumber;
     }
     if (facebook != BLANK) {
-        formObj.facebook.href = facebook;
-        formObj.facebook.innerHTML = facebook;
+        userProfile.facebook.href = facebook;
+        userProfile.facebook.innerHTML = facebook;
     }
+}
+
+// 使用者"取得"的基本資料
+function getProfileData() {
+    // console.log("開始檢查 Authorization");
+    // console.log("location.pathname: " + location.pathname);
+    
+    let cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)authorization\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    // console.log("authorization: " + cookieValue);
+
+    if (cookieValue !== "") {
+        httpRequest.open("POST", "http://127.0.0.1:8888/getProfileData", false);
+        httpRequest.setRequestHeader("Authorization", "Bearer " + cookieValue);
+        httpRequest.send();
+    }
+}
+
+function setProfileData(profileData) {
+    userProfile.bit_avatar.src = profileData.avatar;
+    userProfile.small_avatar.src = profileData.avatar;
+    userProfile.familyName.innerHTML = profileData.familyName;
+    userProfile.givenName.innerHTML = profileData.givenName;
+    userProfile.email.innerHTML = profileData.email;
+    userProfile.birthday.innerHTML = profileData.yearOfBirth + "年" + profileData.monthOfBirth + "月" + profileData.dayOfBirth + "日";
+    userProfile.gender.innerHTML = profileData.gender;
+    userProfile.currentCity.innerHTML = profileData.currentCity;
+    userProfile.hometown.innerHTML = profileData.hometown;
+    userProfile.telephoneNumber.innerHTML = profileData.telephoneAreaCode + "-" + profileData.telephoneNumber;
+    userProfile.mobileNumber.innerHTML = profileData.mobileNumber;
+    userProfile.facebook.href = profileData.facebook;
+    userProfile.facebook.innerHTML = profileData.facebook;
 }
 
 showYear();

@@ -1,17 +1,17 @@
 const base64Code = require("./base64CodeModel");
 const BLANK = "";
 
-module.exports = function availableToModify(familyName, givenName, year, month, day, gender, currentCity, hometown, telephoneAreaCode, telephoneNumber, mobileNumber, facebook, avatar, callback) {
-    let fieldsVALUE = [familyName, givenName, year, month, day, gender, currentCity, hometown, telephoneAreaCode, telephoneNumber, mobileNumber, facebook, avatar];
-    let fieldsKEY = ["familyName", "givenName", "year", "month", "day", "gender", "currentCity", "hometown", "telephoneAreaCode", "telephoneNumber", "mobileNumber", "facebook", "avatar"];
+module.exports = function availableToModify(familyName, givenName, yearOfBirth, monthOfBirth, dayOfBirth, gender, currentCity, hometown, telephoneAreaCode, telephoneNumber, mobileNumber, facebook, avatar, callback) {
+    let fieldsVALUE = [familyName, givenName, yearOfBirth, monthOfBirth, dayOfBirth, gender, currentCity, hometown, telephoneAreaCode, telephoneNumber, mobileNumber, facebook, avatar];
+    let fieldsKEY = ["familyName", "givenName", "yearOfBirth", "monthOfBirth", "dayOfBirth", "gender", "currentCity", "hometown", "telephoneAreaCode", "telephoneNumber", "mobileNumber", "facebook", "avatar"];
 
     let lottoBalls = [];
     let modifyItems = {
         familyName: { $set: { "familyName": "" }},
          givenName: { $set: { "givenName": "" }},
-              year: { $set: { "year": "" }},
-             month: { $set: { "month": "" }},
-               day: { $set: { "day": "" }},
+       yearOfBirth: { $set: { "yearOfBirth": "" }},
+      monthOfBirth: { $set: { "monthOfBirth": "" }},
+        dayOfBirth: { $set: { "dayOfBirth": "" }},
             gender: { $set: { "gender": "" }},
        currentCity: { $set: { "currentCity": "" }},
           hometown: { $set: { "hometown": "" }},

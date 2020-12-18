@@ -197,13 +197,13 @@ function logInWithTokenMember(token, callback) {
     }
 }
 
-function updateProfileMember(token, familyName, givenName, year, month, day, gender, currentCity, hometown, telephoneAreaCode, telephoneNumber, mobileNumber, facebook, avatar, callback) {
+function updateProfileMember(token, familyName, givenName, yearOfBirth, monthOfBirth, dayOfBirth, gender, currentCity, hometown, telephoneAreaCode, telephoneNumber, mobileNumber, facebook, avatar, callback) {
     console.log("====================================================================      修改會員基本資料");
     var items;
     var balls;
     if (tokenExist(token)) {
         let memberID = getMemberIDFromToken(token);
-        modifyProfile(familyName, givenName, year, month, day, gender, currentCity, hometown, telephoneAreaCode, telephoneNumber, mobileNumber, facebook, avatar, (modifyItems, lottoBalls) => {
+        modifyProfile(familyName, givenName, yearOfBirth, monthOfBirth, dayOfBirth, gender, currentCity, hometown, telephoneAreaCode, telephoneNumber, mobileNumber, facebook, avatar, (modifyItems, lottoBalls) => {
             items = modifyItems; // 包裝成好幾組的格式 { $set: { "key":"value" } }
             balls = lottoBalls; // 要修改的 key 
         });
@@ -230,6 +230,23 @@ function updateProfileMember(token, familyName, givenName, year, month, day, gen
 
 function getProfileData(token, callback) {
     console.log("====================================================================      取得會員的頭像");
+    profileData = {
+            avatar: "",
+        familyName: "",
+         givenName: "",
+             email: "",
+       yearOfBirth: "",
+      monthOfBirth: "",
+        dayOfBirth: "",
+            gender: "",
+       currentCity: "",
+          hometown: "",
+ telephoneAreaCode: "",
+   telephoneNumber: "",
+      mobileNumber: "",
+          facebook: "",
+    };
+
     if (tokenExist(token)) {
         let memberID = getMemberIDFromToken(token);
         const client = new MongoClient(uri, { useUnifiedTopology: true });
@@ -238,7 +255,22 @@ function getProfileData(token, callback) {
             const member = client.db(config.mongodb.database).collection(config.mongodb.memberCollection);
             member.find({ "memberID": memberID }).toArray((err, result) => {
                 if (err) throw err;
-                callback(result[0].avatar);
+                // console.log(result);
+                profileData.avatar = result[0].avatar;
+                profileData.familyName = result[0].familyName;
+                profileData.givenName = result[0].givenName;
+                profileData.email = result[0].email;
+                profileData.yearOfBirth = result[0].yearOfBirth;
+                profileData.monthOfBirth = result[0].monthOfBirth;
+                profileData.dayOfBirth = result[0].dayOfBirth;
+                profileData.gender = result[0].gender;
+                profileData.currentCity = result[0].currentCity;
+                profileData.hometown = result[0].hometown;
+                profileData.telephoneAreaCode = result[0].telephoneAreaCode;
+                profileData.telephoneNumber = result[0].telephoneNumber;
+                profileData.mobileNumber = result[0].mobileNumber;
+                profileData.facebook = result[0].facebook;
+                callback(profileData);
             });
         });
     } else {

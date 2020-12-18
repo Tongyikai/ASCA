@@ -82,9 +82,9 @@ http.createServer(function(request, response) {
 			});
 		} else if (request.url === "/getProfileData") {
 			const token = request.headers["authorization"].replace("Bearer ", "");
-			memberController.getProfileData(token, (avatarBase64) => {
+			memberController.getProfileData(token, (profileData) => {
 				response.writeHead(200, { "Content-Type": "application/json" });
-				response.write(JSON.stringify({ avatar: avatarBase64 }));
+				response.write(JSON.stringify({ profileData: profileData }));
 				response.end();
 			});
 		}
@@ -129,9 +129,9 @@ http.createServer(function(request, response) {
 			memberController.updateProfileMember(fields.token, 
 												 fields.familyName,
 												 fields.givenName,
-												 fields.year,
-												 fields.month,
-												 fields.day,
+												 fields.yearOfBirth,
+												 fields.monthOfBirth,
+												 fields.dayOfBirth,
 												 fields.gender,
 												 fields.currentCity,
 												 fields.hometown,
