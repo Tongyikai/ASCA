@@ -15,15 +15,15 @@
 			<div class="navigation_right">
 				<ul>
 					<li class="nr_li avatar_Menu">
-						<img class="small_Avatar" id="small_Avatar" alt="avatarImg">
+						<img class="small_avatar" id="small_avatar" alt="avatarImg">
 
 						<div class="menu">
 							<div class="menu_item">
 								<ul>
-									<li id= "edit_profile_btn" class="edit_profile">編輯</li>
+									<li id="edit_profile_btn" class="edit_profile">編輯</li>
 									<li>好友</li>
 									<li>設定</li>
-									<li>登出</li>
+									<li id="logout" class="logout">登出</li>
 								</ul>
 							</div>
 						</div>
@@ -34,7 +34,7 @@
 		</div>
 
 		<div class="profile" id="container" style="width:360px;float:left">
-			<img class="big_Avatar" id="big_Avatar" alt="avatarImg">
+			<img class="big_avatar" id="big_avatar" alt="avatarImg">
 
 			<div class="profile_Details" id="header" style="background-color: white; border-radius: 10px;">
 				<table>
@@ -47,43 +47,43 @@
 					<tbody>
 						<tr>
 							<td>姓氏</td>
-							<td></td>
+							<td><p id="profile_familyName"></p></td>
 						</tr>
 						<tr>
 							<td>名字</td>
-							<td></td>
+							<td><p id="profile_givenName"></p></td>
 						</tr>
 						<tr>
 							<td>E-mail</td>
-							<td></td>
+							<td><p id="profile_email"></p></td>
 						</tr>
 						<tr>
 							<td>出生日期</td>
-							<td></td>
+							<td><p id="profile_birthday"></p></td>
 						</tr>
 						<tr>
 							<td>性別</td>
-							<td></td>
+							<td><p id="profile_gender"></p></td>
 						</tr>
 						<tr>
 							<td>現居</td>
-							<td>高雄市</td>
+							<td><p id="profile_currentCity"></p></td>
 						</tr>
 						<tr>
 							<td>家鄉</td>
-							<td>高雄市</td>
+							<td><p id="profile_hometown"></p></td>
 						</tr>
 						<tr>
 							<td>市話</td>
-							<td>07-370-5379</td>
+							<td><p id="profile_telephoneNumber"></p></td>
 						</tr>
 						<tr>
 							<td>手機</td>
-							<td>0421-803-694</td>
+							<td><p id="profile_mobileNumber"></p></td>
 						</tr>
 						<tr>
 							<td>臉書</td>
-							<td><a href="https://www.facebook.com/tongyikai/">tongyikai</a></td>
+							<td><a id="profile_facebook" href="https://www.facebook.com/tongyikai/"></a></td>
 						</tr>
 					</tbody>
 				</table>
@@ -101,7 +101,8 @@
 			</div>
 
 			<div class="edit_Content">
-				<form id="edit_ContentForm" action="http://127.0.0.1:8888/updateProfile" enctype="multipart/form-data" method="post" onsubmit="return changesToYourProfile()">
+				<!-- <form id="edit_ContentForm" action="http://127.0.0.1:8888/updateProfile" enctype="multipart/form-data" method="post" onsubmit="return changesToYourProfile()"> -->
+					<form id="edit_ContentForm">
 					<table>
 						<tbody>
 							<tr>
@@ -137,13 +138,13 @@
 									<label>出生日期</label>
 								</td>
 								<td>
-									<select id="edit_yearBox" class="year" name="year">
+									<select id="edit_yearBox" class="year" name="yearOfBirth">
 										<option value="year">年</option>
 									</select>
-									<select id="edit_monthBox" class="month" name="month">
+									<select id="edit_monthBox" class="month" name="monthOfBirth">
 										<option value="month">月</option>
 									</select>
-									<select id="edit_dayBox" class="day" name="day">
+									<select id="edit_dayBox" class="day" name="dayOfBirth">
 										<option value="day">日</option>
 									</select><br>
 								</td>
@@ -179,7 +180,7 @@
 							</tr>
 							<tr>
 								<td>
-									<label>電話</label>
+									<label>市話</label>
 								</td>
 								<td>
 									<select id="edit_telephoneAreaCode" name="telephoneAreaCode">
@@ -209,7 +210,7 @@
 				</div>
 
 				<div class="edit_Footer">
-					<button class="edit_Update_Button" type="submit">更新</button>
+					<input class="edit_Update_Button" type="submit" value="修改">&nbsp<input type="reset" value="重新">
 				</div>
 			</form>
 		</div>
@@ -218,233 +219,8 @@
 			版權所有 © ASCA
 		</div>
 
-	<script type="text/javascript" src="public/scripts/checkUserInfor.js"></script>
+	<script type="text/javascript" src="public/scripts/ascaCheck.js"></script>
 	<script>
-			// 人像目錄
-			let avatarMenu = document.querySelector(".avatar_Menu");
-			avatarMenu.addEventListener("click", function() {
-				this.classList.toggle("active");
-			});
-
-			// 編輯視窗，開啟"編輯視窗"按鈕，關閉"編輯視窗"按鈕
-			let edit = document.getElementById("edit");
-			let editProfileButton = document.getElementById("edit_profile_btn");
-			let editCloseButton = document.getElementsByClassName("edit_closeButton")[0];
-
-			editProfileButton.onclick = function() {
-				edit.style.display = "block";
-			}
-
-			editCloseButton.onclick = function() {
-				edit.style.display = "none";
-			}
-
-			// 限制上傳圖片的大小
-			const UPLOAD_AVATAR_MAX_SIZE = 1*1024*1024; 
-			const ERROR_MESSAGE = "上傳的附件檔案不能超過 1 Mega Byte";
-			let uploadAvatarMaxSizeCorrect = true;
-			
-			var loadFile = function(event) {
-				let uploadAvatar = document.getElementById("edit_uploadAvatar");
-
-				// 上傳的檔案如果大於限制顯示警告
-				if (uploadAvatar.files[0].size > UPLOAD_AVATAR_MAX_SIZE) {
-					uploadAvatarMaxSizeCorrect = false;
-					alert(ERROR_MESSAGE);
-				} else {
-					uploadAvatarMaxSizeCorrect = true;
-				}
-			}
-
-			function cancelUploadAvatar() {
-				document.getElementById("edit_uploadAvatar").value = "";
-				uploadAvatarMaxSizeCorrect = true;
-			}
-
-			// 出生年月日參數
-			function showYear() {
-                let options = "<option>年</option>";
-                for (var i = 1900; i <= 2020; i++) {
-                    options += ("<option>" + i + "</option>");
-                }
-                document.getElementById("edit_yearBox").innerHTML = options;
-            }
-
-            function showMonth() {
-                let options = "<option>月</option>";
-                for (var i = 1; i <= 12; i++) {
-                    options += ("<option>" + i + "</option>");
-                }
-                document.getElementById("edit_monthBox").innerHTML = options;
-            }
-
-            function showDay() {
-                let options = "<option>日</option>";
-                for (var i = 1; i <= 31; i++) {
-                    options += ("<option>" + i + "</option>");
-                }
-                document.getElementById("edit_dayBox").innerHTML = options;
-			}
-			showYear();
-            showMonth();
-			showDay();
-			
-			// 所有城市參數
-			const CITY = ["台北市", "新北市", "基隆市", "桃園市", "新竹市", "新竹縣", "苗栗縣", "台中市", "彰化縣", "南投縣", "雲林縣", "嘉義市", "台南市", "高雄市", "屏東縣", "宜蘭縣", "花蓮縣", "台東縣", "澎湖縣", "金門縣", "連江縣"];
-			function showCity() {
-				let options = "<option>城市</option>";
-				for (var i = 0; i < 21; i++) {
-					options += ("<option>" + CITY[i] + "</option>");
-				}
-				document.getElementById("edit_currentCity").innerHTML = options;
-				document.getElementById("edit_hometown").innerHTML = options;
-			}
-			showCity();
-
-			// 市內電話區域參數
-			const TELEPHONE_AREA_CODE = ["02", "03", "037", "04", "049", "05", "06", "07", "08", "089", "082", "0826", "0836"];
-			function showTelephoneAreaCode() {
-				let options = "<option>區碼</option>"
-				for (var i = 0; i < 13; i++) {
-					options += ("<option>" + TELEPHONE_AREA_CODE[i] + "</option>");
-				}
-				document.getElementById("edit_telephoneAreaCode").innerHTML = options;
-			}
-			showTelephoneAreaCode();
-
-			// 您的個人資料更改
-			function changesToYourProfile() {
-				let cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)authorization\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-				document.getElementById("edit_token").value = cookieValue;
-				
-				nameCorrect = true;
-				birthdayCorrect = true;
-				telephoneNumberCorrect = true;
-				mobileNumberCorrect = true;
-				facebookCorrect = true;
-
-				let funCheckBlank = checkBlank;
-				let funCheckBlankInTheWord = checkBlankInTheWord;
-				let funCheckNameLength = checkNameLength;
-				let funCheckNameIsChinese = checkNameIsChinese;
-				let funCheckDateOfBirth = checkDateOfBirth;
-				let funCheckTelephoneNumber = checkTelephoneNumber;
-				let funCheckMobileNumber = checkMobileNumber;
-
-				let familyName = document.getElementById("edit_familyName").value;
-				let givenName = document.getElementById("edit_givenName").value;
-				let year = document.getElementById("edit_yearBox").value;
-				let month = document.getElementById("edit_monthBox").value;
-				let day = document.getElementById("edit_dayBox").value;
-				let gender = document.querySelector('input[name="gender"]:checked').value;
-				let currentCity = document.getElementById("edit_currentCity").value;
-				let hometown = document.getElementById("edit_hometown").value;
-				let telephoneAreaCode = document.getElementById("edit_telephoneAreaCode").value;
-				let telephoneNumber = document.getElementById("edit_telephoneNumber").value;
-				let mobileNumber = document.getElementById("edit_mobileNumber").value;
-				let facebook = document.getElementById("edit_facebook").value;
-
-				// 檢查使用者輸入的資訊
-				const ERROR_MESSAGE_1 = "文字不要包函空白字符";
-				const ERROR_MESSAGE_2 = "文字長度超過5個字";
-				const ERROR_MESSAGE_3 = "只限輸入中文";
-				const ERROR_MESSAGE_4 = "出生年月日不是正確的日期";
-				const ERROR_MESSAGE_5 = "請輸入完整的出生日期";
-				const ERROR_MESSAGE_6 = "市話不正確";
-				const ERROR_MESSAGE_7 = "請輸入完整的電話區碼 + 號碼";
-				const ERROR_MESSAGE_8 = "手機號碼不正確";
-				const ERROR_MESSAGE_9 = "臉書連接不正確";
-
-				const YEAR_CHARACTER = "年";
-				const MONTH_CHARACTER = "月";
-				const DAY_CHARACTER = "日";
-				const AREA_CODE = "區碼";
-
-				if (!funCheckBlank(familyName) || !funCheckBlank(givenName)) {
-					if (funCheckBlankInTheWord(familyName) || funCheckBlankInTheWord(givenName)) {
-						console.log("文字有包函空白字符");
-						alert(ERROR_MESSAGE_1);
-						nameCorrect = false;
-
-					} else if (!funCheckNameLength(familyName) || !funCheckNameLength(givenName)) {
-						console.log("文字長度超過5個字");
-						alert(ERROR_MESSAGE_2);
-						nameCorrect = false;
-
-					} else if (!funCheckNameIsChinese(familyName) || !funCheckNameIsChinese(givenName)) {
-						console.log("不是中文");
-						alert(ERROR_MESSAGE_3);
-						nameCorrect = false;
-
-					} else {
-						console.log("👌");
-					}
-				} else {
-					console.log("姓名沒有輸入，或 輸入了空白");
-				}
-
-				if (year != YEAR_CHARACTER && month != MONTH_CHARACTER && day != DAY_CHARACTER) {
-					console.log("輸入正確的格式 進入判斷是否正確的日期");
-					if (funCheckDateOfBirth(year, month, day)) {
-						console.log("出生正確");
-					} else {
-						console.log("出生不是正確的日期");
-						alert(ERROR_MESSAGE_4);
-						birthdayCorrect = false;
-
-					}
-				} else if (year == YEAR_CHARACTER && month == MONTH_CHARACTER && day == DAY_CHARACTER) {
-					console.log("出生沒有選, 不修改");
-				} else {
-					console.log("請輸入完整的出生日期");
-					alert(ERROR_MESSAGE_5);
-					birthdayCorrect = false;
-				}
-
-				if (telephoneAreaCode != AREA_CODE || !funCheckBlank(telephoneNumber)) {
-					if (telephoneAreaCode != AREA_CODE && !funCheckBlank(telephoneNumber)) {
-						if (funCheckTelephoneNumber(telephoneNumber)) {
-							console.log("市話OK");
-						} else {
-							console.log("市話不正確");
-							alert(ERROR_MESSAGE_6);
-							telephoneNumberCorrect = false;
-						}
-					} else {
-						alert(ERROR_MESSAGE_7);
-						telephoneNumberCorrect = false;
-					}
-					
-				} else {
-					console.log("市話 不修改");
-				}
-
-				if (!funCheckBlank(mobileNumber)) {
-					if (!funCheckMobileNumber(mobileNumber)) {
-						alert(ERROR_MESSAGE_8);
-						mobileNumberCorrect = false;
-					}
-				}
-
-				if (!funCheckBlank(facebook)) {
-					if (funCheckBlankInTheWord(facebook) || facebook.length > 50) {
-						alert(ERROR_MESSAGE_9);
-						facebookCorrect = false;
-					}
-				}
-
-				if (uploadAvatarMaxSizeCorrect && nameCorrect && birthdayCorrect && telephoneNumberCorrect && mobileNumberCorrect && facebookCorrect) {
-					alert("可以提交");
-					return true;
-
-				} else {
-					alert("不行提交");
-					return false;
-				}
-			}
-
-			let funGetProfileData = getProfileData;
-			funGetProfileData();
 
 	</script>
 	</body>
