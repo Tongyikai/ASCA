@@ -1,13 +1,13 @@
-const crypto = require("crypto");
+const crypto = require( "crypto" );
 
-module.exports = function getRePassword(password) {
+module.exports = function getRePassword( password ) {
     //加密
-    let hashPassword = crypto.createHash("sha1");
-    hashPassword.update(password);
-    const rePassword = hashPassword.digest("hex");
+    let hashPassword = crypto.createHash( "sha1" );
+    hashPassword.update( password );
+    const rePassword = hashPassword.digest( "hex" );
     
-    console.log("hashPassword: " + hashPassword);
-    console.log("rePassword: " + rePassword);
+    console.log( "hashPassword: " + hashPassword );
+    console.log( "rePassword: " + rePassword );
 
     return rePassword;
 }

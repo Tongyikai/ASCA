@@ -38,7 +38,7 @@
             <p>Pure CSS Sticky Header - Navbar Fixed Top After Scrolling - No Javascript</p>
         </section>
 
-        <script type="text/javascript" src="public/scripts/userAuthorization.js"></script>
+        <script type="text/javascript" src="public/scripts/indexCheck.js"></script>
         <script>
             var funLogIn = logInForUser;
             let funToken = checkAuthorization;
@@ -50,15 +50,15 @@
             }
             
             function logIn() {
-                var userEmail = document.getElementById("email").value;
-                var userPassword = document.getElementById("password").value;
-                funLogIn(userEmail, userPassword);
+                var userEmail = document.getElementById( "email" ).value;
+                var userPassword = document.getElementById( "password" ).value;
+                funLogIn( userEmail, userPassword );
             }
 
             //Test function
             function resetToken() {
                 document.cookie = "authorization=";
-                alert(document.cookie);
+                alert( document.cookie );
             }
 
             // 清除  cookie   

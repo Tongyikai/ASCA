@@ -52,32 +52,32 @@
             <h2>1234567890</h2>
             <p>Pure CSS Sticky Header - Navbar Fixed Top After Scrolling - No Javascript</p>
         </section>
-        <script type="text/javascript" src="public/scripts/registrationCheck.js"></script>
+        <script type="text/javascript" src="public/scripts/signupCheck.js"></script>
         <script>
             var isFamilyNameCorrect, isGivenNameCorrect, isEmailCorrect, isBirthdayCorrect, isGenderCorrect;
             
             function showYear() {
                 var options = "<option>年</option>";
-                for (var i = 1900; i <= 2020; i++) {
-                    options += ("<option>" + i + "</option>");
+                for ( var i = 1900; i <= 2020; i++ ) {
+                    options += ( "<option>" + i + "</option>" );
                 }
-                document.getElementById("yearBox").innerHTML = options;
+                document.getElementById( "yearBox" ).innerHTML = options;
             }
 
             function showMonth() {
                 var options = "<option>月</option>";
-                for (var i = 1; i <= 12; i++) {
-                    options += ("<option>" + i + "</option>");
+                for ( var i = 1; i <= 12; i++ ) {
+                    options += ( "<option>" + i + "</option>" );
                 }
-                document.getElementById("monthBox").innerHTML = options;
+                document.getElementById( "monthBox" ).innerHTML = options;
             }
 
             function showDay() {
                 var options = "<option>日</option>";
-                for (var i = 1; i <= 31; i++) {
-                    options += ("<option>" + i + "</option>");
+                for ( var i = 1; i <= 31; i++ ) {
+                    options += ( "<option>" + i + "</option>" );
                 }
-                document.getElementById("dayBox").innerHTML = options;
+                document.getElementById( "dayBox" ).innerHTML = options;
             }
             showYear();
             showMonth();
@@ -99,31 +99,31 @@
                 let funCheckDate = checkDateOfBirth;
                 let funRegister = registerForUser;
 
-                let familyName = document.getElementById("familyName").value;
-                let givenName = document.getElementById("givenName").value;
-                let email = document.getElementById("email").value;
-                let password = document.getElementById("password").value;
-                let year = document.getElementById("yearBox").value;
-                let month = document.getElementById("monthBox").value;
-                let day = document.getElementById("dayBox").value;
-                let gender = document.querySelector('input[name="gender"]:checked').value
+                let familyName = document.getElementById( "familyName" ).value;
+                let givenName = document.getElementById( "givenName" ).value;
+                let email = document.getElementById( "email" ).value;
+                let password = document.getElementById( "password" ).value;
+                let year = document.getElementById( "yearBox" ).value;
+                let month = document.getElementById( "monthBox" ).value;
+                let day = document.getElementById( "dayBox" ).value;
+                let gender = document.querySelector( 'input[name="gender"]:checked' ).value
 
                 safeCount = 7;
 
-                if (!funCheckNameLength(familyName) || !funCheckNameLength(givenName)) {
+                if ( !funCheckNameLength( familyName ) || !funCheckNameLength( givenName ) ) {
                     isFamilyNameCorrect = false;
                     isGivenNameCorrect = false;
                     safeCount -= 1;
                 }
 
-                if (funCheckBlank(familyName) || funCheckBlank(givenName)) {
+                if ( funCheckBlank( familyName ) || funCheckBlank( givenName ) ) {
                     // alert("有空白字元");
                     isFamilyNameCorrect = false;
                     isGivenNameCorrect = false;
                     safeCount -= 1;
                 }
 
-                if (!funCheckName(familyName)) {
+                if ( !funCheckName ( familyName ) ) {
                     // alert("姓名不是中文");
                     isFamilyNameCorrect = false;
                     isGivenNameCorrect = false;
@@ -131,49 +131,49 @@
                 }
 
                 //密碼必須包含至少 8 個字元，可以混合使用英文字母、數字和符號 (僅限 ASCII 標準字元)
-                if (!funCheckPassword(password)) {
+                if ( !funCheckPassword( password ) ) {
                     isPasswordCorrect = false;
                     safeCount -= 1;
                 }
 
-                if (!funCheckEmail(email)) {
+                if ( !funCheckEmail( email ) ) {
                     isEmailCorrect = false;
                     safeCount -= 1;
                 }
 
                 //檢查email是否存在
-                if (!funCheckEmailAvailable(email)) {
+                if ( !funCheckEmailAvailable( email ) ) {
                     isEmailCorrect = false;
                     safeCount -= 1;
                 }
 
-                if (!funCheckDate(year, month, day)) {
+                if ( !funCheckDate( year, month, day ) ) {
                     isBirthdayCorrect = false;
                     safeCount -= 1;
                 }
 
                 //檢查安全值小於7，代表有資訊輸入錯誤
-                if (safeCount < 7) {
+                if ( safeCount < 7 ) {
                     alert(
                       "姓名: " + isFamilyNameCorrect + "\n" +
                       "名字: " + isGivenNameCorrect + "\n" +
-                      "Email: " + (isEmailCorrect ? "可以使用" : "已註冊或錯誤的電子郵件") + "\n" +
+                      "Email: " + ( isEmailCorrect ? "可以使用" : "已註冊或錯誤的電子郵件" ) + "\n" +
                       "密碼: " + isPasswordCorrect + "\n" +
                       "生日: " + isBirthdayCorrect + "\n" +
                       "性別: " + gender + "\n"
                     );
                 } else {
-                    let yes = confirm("確認加入");
-                    if (yes) {
+                    let yes = confirm( "確認加入" );
+                    if ( yes ) {
                         //確認
-                        funRegister(familyName,
-                                    givenName,
-                                    email,
-                                    password,
-                                    year,
-                                    month,
-                                    day,
-                                    gender
+                        funRegister( familyName,
+                                      givenName,
+                                          email,
+                                       password,
+                                           year,
+                                          month,
+                                            day,
+                                         gender
                         );
                     } else {
                         //取消
