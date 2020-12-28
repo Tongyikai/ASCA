@@ -1,4 +1,3 @@
-
 nameRule = /[^\u4e00-\u9fa5]/; // 只能輸入中文
 emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
 blankRule = /(^s*)|(s*$)/g;
@@ -72,7 +71,7 @@ httpRequest.onload = function() {
 
 
         // 取得個人資料
-        // console.log("json 裡有沒有 key 是avatar: " + jsonObject.hasOwnProperty('avatar'));
+        // console.log("json 裡有沒有 key 是avatar: " + jsonObject.hasOwnProperty( "avatar" ));
         if ( jsonObject[ "profileData" ] != undefined ) {
             // console.log("jsonObject 裡有 key = avatar");
             setProfileData( jsonObject.profileData );
@@ -106,7 +105,7 @@ function checkDateOfBirth( year, month, day ) {
 /* **********************************************************
                        AJAX Send Form                       *
 *********************************************************** */
-window.addEventListener( 'load', function() {
+window.addEventListener( "load", function() {
     console.log( "window.addEventListener" );
 
     function sendData() {
@@ -115,13 +114,13 @@ window.addEventListener( 'load', function() {
             alert( "Server: " + event.target.responseText );
         });
         httpRequest.addEventListener( "error", function( event ) {
-            alert( 'Oops! Something went wrong.' );
+            alert( "Oops! Something went wrong." );
         });
         httpRequest.open( "POST", "http://127.0.0.1:8888/updateProfile" );
         httpRequest.send( FD );
     }
 
-    const form = document.getElementById( "edit_ContentForm" );
+    const form = document.getElementById( "edit_contentForm" );
     form.addEventListener( "submit", function ( event ) {
         event.preventDefault();
         if ( changesToYourProfile() ) sendData();
@@ -129,7 +128,7 @@ window.addEventListener( 'load', function() {
 });
 
 // 人像目錄
-let avatarMenu = document.querySelector( ".avatar_Menu" );
+let avatarMenu = document.querySelector( ".avatar_menu" );
 avatarMenu.addEventListener( "click", function() {
     this.classList.toggle( "active" );
 });
@@ -138,9 +137,13 @@ avatarMenu.addEventListener( "click", function() {
 let edit = document.getElementById( "edit" );
 let editProfileButton = document.getElementById( "edit_profile_btn" );
 let editCloseButton = document.getElementsByClassName( "edit_closeButton" )[0];
+
+// 開啟編輯個人檔案
 editProfileButton.onclick = function() {
     edit.style.display = "block";
+    document.getElementById( "showTable_area" ).style.display = "none";
 }
+
 editCloseButton.onclick = function() {
     edit.style.display = "none";
 }
@@ -499,6 +502,41 @@ function setProfileData( profileData ) {
     userProfile.facebook.innerHTML          = profileData.facebook;
 }
 
+/* **********************************************************
+                       創建一個新的標會 按鈕功能                *
+*********************************************************** */
+const createGangButton = document.getElementById( "createGangButton" );
+createGangButton.onmousemove = function() {
+    createGangButton.style.boxShadow = "0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)";
+}
+
+createGangButton.onmouseout = function() {
+    createGangButton.style.boxShadow = "none";
+}
+
+function createGang() {
+    alert( "起一個新的標會" );
+}
+
+const creatClubButton = document.getElementById( "createClubButton" );
+creatClubButton.onmouseover = function() {
+    creatClubButton.style.backgroundColor = "#008CBA";
+    creatClubButton.style.color = "#ffffff";
+}
+
+creatClubButton.onmouseout = function() {
+    creatClubButton.style.backgroundColor = "#ffffff";
+    creatClubButton.style.color = "#000000";
+    creatClubButton.style.border = "2px solid #008CBA";
+}
+
+function createClub() {
+    alert( "創立俱樂部" );
+}
+
+/* **********************************************************
+                       畫面載入執行的功能                      *
+*********************************************************** */
 showYear();
 showMonth();
 showDay();

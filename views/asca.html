@@ -14,7 +14,7 @@
 
 			<div class="navigation_right">
 				<ul>
-					<li class="nr_li avatar_Menu">
+					<li class="nr_li avatar_menu">
 						<img class="small_avatar" id="small_avatar" alt="avatarImg">
 
 						<div class="menu">
@@ -33,10 +33,10 @@
 			</div>
 		</div>
 
-		<div class="profile" id="container" style="width:360px;float:left">
+		<div class="profile" id="profile" style="width:360px;float:left">
 			<img class="big_avatar" id="big_avatar" alt="avatarImg">
 
-			<div class="profile_Details" id="header" style="background-color: white; border-radius: 10px;">
+			<div class="profile_details" id="profile_details" style="background-color: white; border-radius: 10px;">
 				<table>
 					<thead>
 						<tr>
@@ -90,9 +90,9 @@
 			</div>
 		</div>
 
-		<div id="edit" class="edit">
+		<div class="edit" id="edit">
 
-			<div class="edit_Title">
+			<div class="edit_title">
 				<a><h2>編輯個人檔案</h2></a>
 			</div>
 
@@ -100,9 +100,9 @@
 				<span class="edit_closeButton">&times;</span>
 			</div>
 
-			<div class="edit_Content">
+			<div class="edit_content">
 				<!-- <form id="edit_ContentForm" action="http://127.0.0.1:8888/updateProfile" enctype="multipart/form-data" method="post" onsubmit="return changesToYourProfile()"> -->
-					<form id="edit_ContentForm">
+					<form id="edit_contentForm">
 					<table>
 						<tbody>
 							<tr>
@@ -209,13 +209,55 @@
 					</table>
 				</div>
 
-				<div class="edit_Footer">
-					<input class="edit_Update_Button" type="submit" value="修改">&nbsp<input type="reset" value="重新">
+				<div class="edit_footer">
+					<input class="edit_update_button" type="submit" value="修改">&nbsp<input type="reset" value="重新">
 				</div>
 			</form>
 		</div>
 
-		<div id="footer" style="background-color:#FFA500;clear:both;text-align:center;margin-top:1200px;height:100px;">
+		<div class="button_area" id="button_area" style="background-color: rgb(243, 230, 230);height: 160px;width: 70%;float: left;">
+			按鈕區
+			<button class="createGangButton" id="createGangButton" onclick="createGang()">起會</button>
+			<button class="createClubButton" id="createClubButton" onclick="createClub()">建立俱樂部</button>
+		</div>
+
+		<div class="showTable_area" id="showTable_area" style="background-color: rgb(91, 113, 160);height: 1140px;width: 70%;float: left;">
+			集會區
+			<div class="create_gangTable" id="create_gang">
+				<table style="width: 100%;">
+					<thead>
+						<tr>
+							<td>起會會名: <input type="text"></td>
+							<td>建立日期: <input placeholder="2020/12/26" disabled="disabled"></td>
+							<td>開始日期: <input placeholder="等待中.." disabled="disabled"></td>
+							<td>成立標會: <input type="button" value="創立此會" onclick="createGang()"></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>每期會費: <input type="text" style="width: 50px;"></td>
+							<td>繳費週期: <input type="radio" value="1" name="cycle" checked>1週<input type="radio" value="2" name="cycle">2週<input type="radio" value="3" name="cycle">3週<input type="radio" value="4" name="cycle">4週</td>
+							<td>預估人數: <input type="text" style="width: 20px;"></td>
+							<td>條件限制: </td>
+						</tr>
+						<tr>
+							<td>Rolls-2, Columns-1</td>
+							<td>Rolls-2, Columns-2</td>
+							<td>Rolls-2, Columns-3</td>
+							<td>Rolls-2, Columns-4</td>
+						</tr>
+						<tr>
+							<td>Rolls-3, Columns-1</td>
+							<td>Rolls-3, Columns-2></td>
+							<td>Rolls-3, Columns-3</td>
+							<td>邀請會員: <input type="button" value="加入此會" onclick="invite()"></input>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="footer" id="footer" style="background-color:#FFA500;clear:both;text-align:center;margin-top:1200px;height:100px;">
 			版權所有 © ASCA
 		</div>
 

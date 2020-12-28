@@ -21,7 +21,7 @@
     width: 170px;
   }
 
-  select.year, .month, .day {
+  select.yearBox, .monthBox, .dayBox {
     position: relative;
     top: -20px;
   }

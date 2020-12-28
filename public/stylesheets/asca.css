@@ -89,7 +89,7 @@ body {
     border-color: transparent transparent #fff transparent;
 }
 
-.navigation_bar .avatar_Menu.active .menu {
+.navigation_bar .avatar_menu.active .menu {
     display: flex;
 }
 
@@ -133,7 +133,7 @@ table, th, td {
     background-color: rgba(0, 0, 0, 0.4); /* 背景灰色的原因 */
 }
 
-.edit_Title {
+.edit_title {
     background-color: #ff00ff;
     height: 60px;
     width: 80%;
@@ -165,31 +165,82 @@ table, th, td {
     cursor: pointer;
 }
 
-.edit_Content {
+.edit_content {
     padding-bottom: 110px;
 }
 
-.edit_Content table {
+.edit_content table {
     /* display: table;
     border-collapse: separate;
     border-spacing: 2px;
     border-color: blue; */
 }
 
-.edit_Content td {
+.edit_content td {
     padding: 8px;
 }
 
-.edit_Footer {
+.edit_footer {
     background-color: #3b5998;
     height: 50px;
     position: relative;
 }
 
-.edit_Update_Button {
+.edit_update_button {
     width: 100px;
     height: 30px;
     margin-left: 300px;
     padding-bottom: 15px;
     font-size: 14px;
+}
+
+/* **********************************************************
+                       創建一個新的標會 按鈕功能                *
+*********************************************************** */
+.createGangButton {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+}
+
+.createClubButton {
+    background-color: white;
+    border: 2px solid #008CBA;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;margin: 4px 2px;
+    cursor: pointer;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+}
+
+/* **********************************************************
+                            起會標格                         *
+*********************************************************** */
+.create_gangTable {
+    background: white;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    /* height: 150px; */
+    height: 10vmax;
+    margin-top: 10px;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* 背景灰色的原因 */
 }
