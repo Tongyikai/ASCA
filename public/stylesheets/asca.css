@@ -142,7 +142,7 @@ table, th, td {
 }
 
 .edit_closeButtonArea {
-    background-color: #3f9197;
+    background-color: #453cc4;
     height: 60px;
     width: 20%;
     float: left;
@@ -227,9 +227,16 @@ table, th, td {
 }
 
 /* **********************************************************
-                            起會標格                         *
+                            起會表格                         *
 *********************************************************** */
-.create_gangTable {
+.showTable_area {
+    background-color: rgb(91, 113, 160);
+    height: 1140px;
+    width: 70%;
+    float: left;
+}
+
+.create_gang {
     background: white;
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
@@ -243,4 +250,8 @@ table, th, td {
     top: 0;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.4); /* 背景灰色的原因 */
+}
+
+.create_gang .inhibit::placeholder {
+    color:#be1942;
 }

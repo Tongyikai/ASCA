@@ -20,7 +20,7 @@
 						<div class="menu">
 							<div class="menu_item">
 								<ul>
-									<li id="edit_profile_btn" class="edit_profile">編輯</li>
+									<li id="edit_profileButton" class="edit_profileButton">編輯</li>
 									<li>好友</li>
 									<li>設定</li>
 									<li id="logout" class="logout">登出</li>
@@ -215,30 +215,30 @@
 			</form>
 		</div>
 
-		<div class="button_area" id="button_area" style="background-color: rgb(243, 230, 230);height: 160px;width: 70%;float: left;">
+		<div class="buttonFeature_area" id="buttonFeature_area" style="background-color: rgb(243, 230, 230);height: 160px;width: 70%;float: left;">
 			按鈕區
 			<button class="createGangButton" id="createGangButton" onclick="createGang()">起會</button>
 			<button class="createClubButton" id="createClubButton" onclick="createClub()">建立俱樂部</button>
 		</div>
 
-		<div class="showTable_area" id="showTable_area" style="background-color: rgb(91, 113, 160);height: 1140px;width: 70%;float: left;">
+		<div class="showTable_area" id="showTable_area">
 			集會區
-			<div class="create_gangTable" id="create_gang">
-				<table style="width: 100%;">
+			<div class="create_gang" id="create_gang">
+				<table id="createGangTable" style="width: 100%;">
 					<thead>
 						<tr>
-							<td>起會會名: <input type="text"></td>
-							<td>建立日期: <input placeholder="2020/12/26" disabled="disabled"></td>
-							<td>開始日期: <input placeholder="等待中.." disabled="disabled"></td>
+							<td>起會會名: <input type="text" placeholder="輸入名稱"></td>
+							<td>建立日期: <input class="inhibit" id="createGangTableDate" placeholder="" disabled="disabled"></td>
+							<td>開始日期: <input class="inhibit" placeholder="等待中.." disabled="disabled"></td>
 							<td>成立標會: <input type="button" value="創立此會" onclick="createGang()"></td>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td>每期會費: <input type="text" style="width: 50px;"></td>
-							<td>繳費週期: <input type="radio" value="1" name="cycle" checked>1週<input type="radio" value="2" name="cycle">2週<input type="radio" value="3" name="cycle">3週<input type="radio" value="4" name="cycle">4週</td>
-							<td>預估人數: <input type="text" style="width: 20px;"></td>
-							<td>條件限制: </td>
+							<td>每期會費: <input id="semesterFee" placeholder="輸入會費" type="text" maxlength="6" style="width: 60px;" onblur="calculateTheAmount()"></td>
+							<td>預估人數: <input id="numberOfPeople" placeholder="人數" type="text" maxlength="3" style="width: 60px;" onblur="calculateTheAmount()"></td>
+							<td>最大得標金額: <input class="inhibit" id="amountOfMoney" placeholder="$0" disabled="disabled"></td></td>
+							<td>繳費週期: <input type="radio" value="1" name="cycle" checked>1週 <input type="radio" value="2" name="cycle">2週 <input type="radio" value="3" name="cycle">3週 <input type="radio" value="4" name="cycle">4週</td>
 						</tr>
 						<tr>
 							<td>Rolls-2, Columns-1</td>
@@ -249,15 +249,17 @@
 						<tr>
 							<td>Rolls-3, Columns-1</td>
 							<td>Rolls-3, Columns-2></td>
-							<td>Rolls-3, Columns-3</td>
-							<td>邀請會員: <input type="button" value="加入此會" onclick="invite()"></input>
+							<td colspan="2">
+								<input type="text" placeholder="abc123@gmail.com" style="width: 200px;">
+								<input type="button" value="邀請加入" onclick="invite()"></input>
+							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
 
-		<div class="footer" id="footer" style="background-color:#FFA500;clear:both;text-align:center;margin-top:1200px;height:100px;">
+		<div class="footer" id="footer" style="background-color:#FFA500;clear:both;text-align:center;margin-top:1300px;height:100px;">
 			版權所有 © ASCA
 		</div>
 

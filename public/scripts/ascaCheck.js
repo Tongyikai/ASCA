@@ -127,7 +127,9 @@ window.addEventListener( "load", function() {
     });
 });
 
-// 人像目錄
+/* **********************************************************
+                        人像目錄                             *
+*********************************************************** */
 let avatarMenu = document.querySelector( ".avatar_menu" );
 avatarMenu.addEventListener( "click", function() {
     this.classList.toggle( "active" );
@@ -135,17 +137,20 @@ avatarMenu.addEventListener( "click", function() {
 
 // 編輯視窗
 let edit = document.getElementById( "edit" );
-let editProfileButton = document.getElementById( "edit_profile_btn" );
+let editProfileButton = document.getElementById( "edit_profileButton" );
 let editCloseButton = document.getElementsByClassName( "edit_closeButton" )[0];
 
 // 開啟編輯個人檔案
 editProfileButton.onclick = function() {
     edit.style.display = "block";
     document.getElementById( "showTable_area" ).style.display = "none";
+    document.getElementById( "buttonFeature_area" ).style.display = "none";
 }
 
 editCloseButton.onclick = function() {
     edit.style.display = "none";
+    document.getElementById( "showTable_area" ).style.display = "block";
+    document.getElementById( "buttonFeature_area" ).style.display = "block";
 }
 
 //登出
@@ -157,6 +162,9 @@ logoutButton.onclick = () => {
     window.location.href = "http://127.0.0.1:8888/index";
 }
 
+/* **********************************************************
+                        編輯視窗裡的功能                       *
+*********************************************************** */
 // 限制上傳圖片的大小
 const UPLOAD_AVATAR_MAX_SIZE = 1*1024*1024; 
 const ERROR_MESSAGE = "上傳的附件檔案不能超過 1 Mega Byte";
@@ -234,7 +242,6 @@ function showTelephoneAreaCode() {
 }
 
 let formFieldsName = [];    
-// let formFieldsValue = [];
 let avatar;
 let familyName;
 let givenName;
@@ -248,12 +255,14 @@ let telephoneAreaCode;
 let telephoneNumber;
 let mobileNumber;
 let facebook;
+
 const YEAR_CHARACTER = "年";
 const MONTH_CHARACTER = "月";
 const DAY_CHARACTER = "日";
 const CITY_NAME = "城市";
 const AREA_CODE = "區碼";
 const BLANK = "";
+
 // 您的個人資料更改
 function changesToYourProfile() {
     let cookieValue = document.cookie.replace( /(?:(?:^|.*;\s*)authorization\s*\=\s*([^;]*).*$)|^.*$/, "$1" );
@@ -535,6 +544,48 @@ function createClub() {
 }
 
 /* **********************************************************
+                       起會表單裡的功能                        *
+*********************************************************** */
+function invite() {
+    var table = document.getElementById( "createGangTable" );
+    var tr = table.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "<span class=red>" + tr.rowIndex + "</span>";
+
+    var inputText = document.createElement( "input" );
+    inputText.setAttribute( "type", "text" );
+    inputText.setAttribute( "placeholder", "會員email" );
+    var td = tr.insertCell(-1);
+    td.appendChild( inputText );
+}
+
+function calculateTheAmount() { // 輸入 "會費" 與 "人數" 計算最大得標金額 
+    var x =  document.getElementById( "semesterFee" ).value.match( /[\d]/g );
+    var str = "";
+    for ( var i = 0; i < x.length; i++ ) {
+        str += x[i];
+    }
+    // 用正則去掉其他符號只取數字，再轉成Number
+    var semesterFee = Number( str ); 
+    var numberOfPeople = Number( document.getElementById( "numberOfPeople" ).value.match( /\d+/g ) );
+    var amountOfMoney = document.getElementById( "amountOfMoney" );
+    amountOfMoney.placeholder = "$" + numberWithCommas( semesterFee * numberOfPeople );
+    document.getElementById( "semesterFee" ).value = "$" + numberWithCommas( semesterFee );
+}
+
+function createGangTableDate() {
+    n =  new Date();
+    y = n.getFullYear();
+    m = n.getMonth() + 1;
+    d = n.getDate();
+    document.getElementById( "createGangTableDate" ).placeholder = y + "/" + m + "/" + d;
+}
+
+function numberWithCommas( x ) { // 輸入金額時,將之轉為每三個數字逗號
+    return x.toString().replace( /\B(?=(\d{3})+(?!\d))/g, "," );
+}
+
+/* **********************************************************
                        畫面載入執行的功能                      *
 *********************************************************** */
 showYear();
@@ -543,3 +594,4 @@ showDay();
 showCity();
 showTelephoneAreaCode();
 getProfileData();
+createGangTableDate();
