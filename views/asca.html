@@ -6,13 +6,13 @@
 		<link rel="stylesheet" type="text/css" href="public/stylesheets/asca.css">
 	</head>
 	<body>
-		<div class="navigation_bar">
+		<div class="navigation">
 			
 			<div class="navigation_logo">
 				<a href="http://google.com">互助會PLUS</a>
 			</div>
 
-			<div class="navigation_right">
+			<div class="navigation_menu">
 				<ul>
 					<li class="nr_li avatar_menu">
 						<img class="small_avatar" id="small_avatar" alt="avatarImg">
@@ -215,7 +215,7 @@
 			</form>
 		</div>
 
-		<div class="buttonFeature_area" id="buttonFeature_area" style="background-color: rgb(243, 230, 230);height: 160px;width: 70%;float: left;">
+		<div class="buttonFeature_area" id="buttonFeature_area" style="background-color: rgb(243, 230, 230);height: 160px;width: 60%;float: left;">
 			按鈕區
 			<button class="createGangButton" id="createGangButton" onclick="createGang()">起會</button>
 			<button class="createClubButton" id="createClubButton" onclick="createClub()">建立俱樂部</button>
@@ -227,6 +227,10 @@
 				<table id="createGangTable" style="width: 100%;">
 					<thead>
 						<tr>
+							<th colspan="3">新創一個會</th>
+							<th><span class="createGangTable_closeButton">&times;</span></th>
+						</tr>
+						<tr>
 							<td>起會會名: <input type="text" placeholder="輸入名稱"></td>
 							<td>建立日期: <input class="inhibit" id="createGangTableDate" placeholder="" disabled="disabled"></td>
 							<td>開始日期: <input class="inhibit" placeholder="等待中.." disabled="disabled"></td>
@@ -236,7 +240,7 @@
 					<tbody>
 						<tr>
 							<td>每期會費: <input id="semesterFee" placeholder="輸入會費" type="text" maxlength="6" style="width: 60px;" onblur="calculateTheAmount()"></td>
-							<td>預估人數: <input id="numberOfPeople" placeholder="人數" type="text" maxlength="3" style="width: 60px;" onblur="calculateTheAmount()"></td>
+							<td>預估人數: <input id="numberOfPeople" placeholder="輸入人數" type="text" maxlength="3" style="width: 60px;" onblur="calculateTheAmount()"></td>
 							<td>最大得標金額: <input class="inhibit" id="amountOfMoney" placeholder="$0" disabled="disabled"></td></td>
 							<td>繳費週期: <input type="radio" value="1" name="cycle" checked>1週 <input type="radio" value="2" name="cycle">2週 <input type="radio" value="3" name="cycle">3週 <input type="radio" value="4" name="cycle">4週</td>
 						</tr>
@@ -248,18 +252,23 @@
 						</tr>
 						<tr>
 							<td>Rolls-3, Columns-1</td>
-							<td>Rolls-3, Columns-2></td>
-							<td colspan="2">
-								<input type="text" placeholder="abc123@gmail.com" style="width: 200px;">
+							<td>Rolls-3, Columns-2</td>
+							<td>Rolls-3, Columns-3</td>
+							<td>
+								<input type="text" placeholder="輸入email" style="width: 200px;">
 								<input type="button" value="邀請加入" onclick="invite()"></input>
 							</td>
 						</tr>
 					</tbody>
 				</table>
+				<label class="createNewGangMember stacked">
+					<span>新增成員: </span>
+					<textarea onInput="this.parentNode.dataset.value = this.value" rows="1"></textarea>
+				</label>
 			</div>
 		</div>
 
-		<div class="footer" id="footer" style="background-color:#FFA500;clear:both;text-align:center;margin-top:1300px;height:100px;">
+		<div class="footer" id="footer" style="background-color:#FFA500;clear:both;text-align:center;margin-top:810px;height:100px;">
 			版權所有 © ASCA
 		</div>
 

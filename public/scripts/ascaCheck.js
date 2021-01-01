@@ -525,6 +525,7 @@ createGangButton.onmouseout = function() {
 
 function createGang() {
     alert( "起一個新的標會" );
+    document.getElementById( "create_gang" ).style.display = "block";
 }
 
 const creatClubButton = document.getElementById( "createClubButton" );
@@ -583,6 +584,12 @@ function createGangTableDate() {
 
 function numberWithCommas( x ) { // 輸入金額時,將之轉為每三個數字逗號
     return x.toString().replace( /\B(?=(\d{3})+(?!\d))/g, "," );
+}
+
+// 起會的視窗關閉按鈕
+let createGangTableCloseButton = document.getElementsByClassName( "createGangTable_closeButton" )[0];
+createGangTableCloseButton.onclick = function() {
+    document.getElementById( "create_gang" ).style.display = "none";
 }
 
 /* **********************************************************
