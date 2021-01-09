@@ -20,8 +20,8 @@
 						<div class="menu">
 							<div class="menu_item">
 								<ul>
-									<li id="edit_profileButton" class="edit_profileButton">編輯</li>
-									<li>好友</li>
+									<li class="edit_windowButton" id="edit_windowButton" >編輯</li>
+									<li class= "friends_windowButton" id="friends_windowButton">好友</li>
 									<li>設定</li>
 									<li id="logout" class="logout">登出</li>
 								</ul>
@@ -215,13 +215,28 @@
 			</form>
 		</div>
 
-		<div class="buttonFeature_area" id="buttonFeature_area" style="background-color: rgb(243, 230, 230);height: 160px;width: 60%;float: left;">
+		<div class="friends" id="friends">
+
+			<div class="friends_title">
+				<a><h2>好友</h2></a>
+			</div>
+
+			<div class="friends_closeButtonArea">
+				<span class="friends_closeButton">&times;</span>
+			</div>
+
+			<div class="friends_content">
+			</div>
+
+		</div>
+
+		<div class="centreButton" id="centreButton" style="background-color: rgb(243, 230, 230);height: 160px;width: 60%;float: left;">
 			按鈕區
 			<button class="createGangButton" id="createGangButton" onclick="createGang()">起會</button>
 			<button class="createClubButton" id="createClubButton" onclick="createClub()">建立俱樂部</button>
 		</div>
 
-		<div class="showTable_area" id="showTable_area">
+		<div class="assemblyHall" id="assemblyHall">
 			集會區
 			<div class="create_gang" id="create_gang">
 				<table id="createGangTable" style="width: 100%;">

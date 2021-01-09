@@ -58,7 +58,7 @@ function checkMobileNumber( mobileNumber ) {
 }
 
 /* **********************************************************
-                            AJAX                            *
+    AJAX                            
 *********************************************************** */
 const httpRequest = new XMLHttpRequest();
 
@@ -103,7 +103,7 @@ function checkDateOfBirth( year, month, day ) {
 }
 
 /* **********************************************************
-                       AJAX Send Form                       *
+    AJAX Send Form                       
 *********************************************************** */
 window.addEventListener( "load", function() {
     console.log( "window.addEventListener" );
@@ -128,29 +128,48 @@ window.addEventListener( "load", function() {
 });
 
 /* **********************************************************
-                        人像目錄                             *
+    人像目錄                             
 *********************************************************** */
 let avatarMenu = document.querySelector( ".avatar_menu" );
 avatarMenu.addEventListener( "click", function() {
     this.classList.toggle( "active" );
 });
 
-// 編輯視窗
-let edit = document.getElementById( "edit" );
-let editProfileButton = document.getElementById( "edit_profileButton" );
+// 編輯個人檔案視窗
+let editWindow = document.getElementById( "edit" );
+let editWindowButton = document.getElementById( "edit_windowButton" );
 let editCloseButton = document.getElementsByClassName( "edit_closeButton" )[0];
 
 // 開啟編輯個人檔案
-editProfileButton.onclick = function() {
-    edit.style.display = "block";
-    document.getElementById( "showTable_area" ).style.display = "none";
-    document.getElementById( "buttonFeature_area" ).style.display = "none";
+editWindowButton.onclick = function() {
+    editWindow.style.display = "block";
+    document.getElementById( "assemblyHall" ).style.display = "none";
+    document.getElementById( "centreButton" ).style.display = "none";
+    friendsWindow.style.display = "none";
 }
 
 editCloseButton.onclick = function() {
-    edit.style.display = "none";
-    document.getElementById( "showTable_area" ).style.display = "block";
-    document.getElementById( "buttonFeature_area" ).style.display = "block";
+    editWindow.style.display = "none";
+    document.getElementById( "assemblyHall" ).style.display = "block";
+    document.getElementById( "centreButton" ).style.display = "block";
+}
+
+// 好友視窗
+let friendsWindow = document.getElementById( "friends" );
+let friendsWindowButton = document.getElementById( "friends_windowButton" );
+let friendsCloseButton = document.getElementsByClassName( "friends_closeButton" )[0];
+
+friendsWindowButton.onclick = () => {
+    friendsWindow.style.display = "block";
+    document.getElementById( "assemblyHall" ).style.display = "none";
+    document.getElementById( "centreButton" ).style.display = "none";
+    editWindow.style.display = "none";
+}
+
+friendsCloseButton.onclick = () => {
+    friendsWindow.style.display = "none";
+    document.getElementById( "assemblyHall" ).style.display = "block";
+    document.getElementById( "centreButton" ).style.display = "block";
 }
 
 //登出
@@ -163,7 +182,7 @@ logoutButton.onclick = () => {
 }
 
 /* **********************************************************
-                        編輯視窗裡的功能                       *
+    編輯視窗裡的功能                       
 *********************************************************** */
 // 限制上傳圖片的大小
 const UPLOAD_AVATAR_MAX_SIZE = 1*1024*1024; 
@@ -512,7 +531,7 @@ function setProfileData( profileData ) {
 }
 
 /* **********************************************************
-                       創建一個新的標會 按鈕功能                *
+    創建一個新的標會 按鈕功能                
 *********************************************************** */
 const createGangButton = document.getElementById( "createGangButton" );
 createGangButton.onmousemove = function() {
@@ -545,7 +564,7 @@ function createClub() {
 }
 
 /* **********************************************************
-                       起會表單裡的功能                        *
+    起會表單裡的功能                        
 *********************************************************** */
 function invite() {
     var table = document.getElementById( "createGangTable" );
@@ -593,7 +612,7 @@ createGangTableCloseButton.onclick = function() {
 }
 
 /* **********************************************************
-                       畫面載入執行的功能                      *
+    畫面載入執行的功能                      
 *********************************************************** */
 showYear();
 showMonth();
