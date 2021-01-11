@@ -238,6 +238,40 @@ table, th, td {
     cursor: pointer;
 }
 
+/* 新增好友 */
+#addFriends { 
+    background-image: url( "../images/addFriendsIcon.png" );
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
+    width: 80%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid rgb(196, 69, 69);
+    margin-bottom: 12px;
+    margin-top: 10px;
+}
+
+#myFriendsList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#myFriendsList li a {
+    border: 1px solid #ddd;
+    margin-top: -1px; /* Prevent double borders */
+    background-color: #f6f6f6;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block
+}
+
+#myFriendsList li a:hover:not(.header) {
+    background-color: #eee;
+}
+
 /* **********************************************************
     創建標會 按鈕功能                       
 *********************************************************** */

@@ -172,7 +172,7 @@ friendsCloseButton.onclick = () => {
     document.getElementById( "centreButton" ).style.display = "block";
 }
 
-//登出
+// 登出
 let logoutButton = document.getElementById( "logout" );
 logoutButton.onclick = () => {
     alert( document.cookie );

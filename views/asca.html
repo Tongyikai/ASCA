@@ -35,7 +35,6 @@
 
 		<div class="profile" id="profile" style="width:360px;float:left">
 			<img class="big_avatar" id="big_avatar" alt="avatarImg">
-
 			<div class="profile_details" id="profile_details" style="background-color: white; border-radius: 10px;">
 				<table>
 					<thead>
@@ -91,15 +90,12 @@
 		</div>
 
 		<div class="edit" id="edit">
-
 			<div class="edit_title">
 				<a><h2>編輯個人檔案</h2></a>
 			</div>
-
 			<div class="edit_closeButtonArea">
 				<span class="edit_closeButton">&times;</span>
 			</div>
-
 			<div class="edit_content">
 				<!-- <form id="edit_ContentForm" action="http://127.0.0.1:8888/updateProfile" enctype="multipart/form-data" method="post" onsubmit="return changesToYourProfile()"> -->
 					<form id="edit_contentForm">
@@ -208,7 +204,6 @@
 						</tbody>
 					</table>
 				</div>
-
 				<div class="edit_footer">
 					<input class="edit_update_button" type="submit" value="修改">&nbsp<input type="reset" value="重新">
 				</div>
@@ -216,18 +211,46 @@
 		</div>
 
 		<div class="friends" id="friends">
-
 			<div class="friends_title">
 				<a><h2>好友</h2></a>
 			</div>
-
 			<div class="friends_closeButtonArea">
 				<span class="friends_closeButton">&times;</span>
 			</div>
-
 			<div class="friends_content">
-			</div>
+				<input id="addFriends" type="text" placeholder="新增好友 輸入email">
+				<input type="button" value="邀請加入" onclick="invite()"></input>
 
+				<ul id="myFriendsList">
+					<li><a href="#">Spider man</a></li>
+					<li><a href="#">Agnes</a></li>
+				  
+					<li><a href="#">Billy</a></li>
+					<li><a href="#">Bob</a></li>
+				  
+					<li><a href="#">Calvin</a></li>
+					<li><a href="#">Christina</a></li>
+					<li><a href="#">Cindy</a></li>
+					<li><a href="#">Adele</a></li>
+					<li><a href="#">Agnes</a></li>
+				  
+					<li><a href="#">Billy</a></li>
+					<li><a href="#">Bob</a></li>
+				  
+					<li><a href="#">Calvin</a></li>
+					<li><a href="#">Christina</a></li>
+					<li><a href="#">Cindy</a></li>
+					<li><a href="#">Adele</a></li>
+					<li><a href="#">Agnes</a></li>
+				  
+					<li><a href="#">Billy</a></li>
+					<li><a href="#">Bob</a></li>
+				  
+					<li><a href="#">Calvin</a></li>
+					<li><a href="#">Christina</a></li>
+					<li><a href="#">Cindy</a></li>
+				</ul>
+			</div>
 		</div>
 
 		<div class="centreButton" id="centreButton" style="background-color: rgb(243, 230, 230);height: 160px;width: 60%;float: left;">
