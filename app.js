@@ -161,7 +161,7 @@ http.createServer( function( request, response ) {
 		sendFileContent( response, "views/index.html", "text/html" );
 	} else if ( request.url === "/signUp" ) {
 		sendFileContent( response, "views/signUp.html", "text/html" );
-	} else if ( action === "/signUp/check" ) { // action 只要判斷網域後面的URL，後面帶參數不需要考慮
+	} else if ( action === "/signUp/check" ) { // action 只會判斷網域後面的URL，?後面帶參數不需要考慮
 		checkEmail( response, params.email );
 		console.log( "客戶端---註冊程序檢查email是否能使用: " + params.email );
 	} else if ( request.url === "/register" ) {
@@ -177,6 +177,10 @@ http.createServer( function( request, response ) {
 		console.log( "會員---要修改資料" );
 	} else if ( request.url === "/getProfileData" ) {
 		console.log( "會員---需要個人資料" );
+	} else if ( action === "/addNewFriend" ) { // action 只會判斷網域後面的URL，?後面帶參數不需要考慮
+		console.log( "會員---要新增好友" );
+		console.log("addNewFriend email: " + params.newFriendEmail);
+		console.log("addNewFriend authorization: " + params.authorization)
 	} else if ( /^\/[a-zA-Z0-9\/]*.js$/.test( request.url.toString() )) {
 		sendFileContent( response, request.url.toString().substring(1), "text/javascript" );
 		console.log("Response File: " + request.url.toString().substring(1) + " .js");

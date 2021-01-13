@@ -57,8 +57,24 @@ function checkMobileNumber( mobileNumber ) {
     return false;
 }
 
+// 檢查密碼必須包含至少 8 個字元，可以混合使用英文字母、數字和符號 (僅限 ASCII 標準字元)
+function checkPassword( password ) {
+    return passwordRule.test( password );
+}
+
+// 檢查出生年月日是否正確
+function checkDateOfBirth( year, month, day ) {
+    let limitInMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+    let isLeap = new Date( year, 1, 29 ).getDate() === 29;
+
+    if ( isLeap ) {
+        limitInMonth[ 1 ] = 29;
+    }
+    return day <= limitInMonth[ month - 1 ];
+}
+
 /* **********************************************************
-    AJAX                            
+    AJAX receive                            
 *********************************************************** */
 const httpRequest = new XMLHttpRequest();
 
@@ -84,22 +100,6 @@ httpRequest.onload = function() {
 
 httpRequest.onerror = function() {
     alert( "Can't connect to this network." );
-}
-
-// 檢查密碼必須包含至少 8 個字元，可以混合使用英文字母、數字和符號 (僅限 ASCII 標準字元)
-function checkPassword( password ) {
-    return passwordRule.test( password );
-}
-
-// 檢查出生年月日是否正確
-function checkDateOfBirth( year, month, day ) {
-    let limitInMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
-    let isLeap = new Date( year, 1, 29 ).getDate() === 29;
-
-    if ( isLeap ) {
-        limitInMonth[ 1 ] = 29;
-    }
-    return day <= limitInMonth[ month - 1 ];
 }
 
 /* **********************************************************
@@ -182,7 +182,7 @@ logoutButton.onclick = () => {
 }
 
 /* **********************************************************
-    編輯視窗裡的功能                       
+    編輯個人檔案 視窗裡的功能                       
 *********************************************************** */
 // 限制上傳圖片的大小
 const UPLOAD_AVATAR_MAX_SIZE = 1*1024*1024; 
@@ -609,6 +609,19 @@ function numberWithCommas( x ) { // 輸入金額時,將之轉為每三個數字�
 let createGangTableCloseButton = document.getElementsByClassName( "createGangTable_closeButton" )[0];
 createGangTableCloseButton.onclick = function() {
     document.getElementById( "create_gang" ).style.display = "none";
+}
+
+
+/* **********************************************************
+    好友 視窗裡的功能                
+*********************************************************** */
+function newFriendInvite() {
+    alert( document.getElementById( "addFriends" ).value );
+    let newFriendEmail = document.getElementById( "addFriends" ).value;
+    let cookieValue = document.cookie.replace( /(?:(?:^|.*;\s*)authorization\s*\=\s*([^;]*).*$)|^.*$/, "$1" );
+
+    httpRequest.open( "GET", "http://127.0.0.1:8888/addNewFriend?newFriendEmail=" + newFriendEmail + "&authorization=" + cookieValue, true );
+    httpRequest.send();
 }
 
 /* **********************************************************
