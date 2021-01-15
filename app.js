@@ -4,6 +4,7 @@ let url = require( "url" );
 let querystring = require( "querystring" );
 let memberController = require( "./controllers/memberController" );
 let formidable = require( "formidable" );
+let friendsController = require( "./controllers/friendsController" );
 
 http.createServer( function( request, response ) {
 	let params = url.parse( request.url, true ).query; // parse將字符串轉成對象，request.url = "/?email=tong"， true表示params是{ email:"tong" }， false表示params是 email=tong
@@ -180,7 +181,8 @@ http.createServer( function( request, response ) {
 	} else if ( action === "/addNewFriend" ) { // action 只會判斷網域後面的URL，?後面帶參數不需要考慮
 		console.log( "會員---要新增好友" );
 		console.log("addNewFriend email: " + params.newFriendEmail);
-		console.log("addNewFriend authorization: " + params.authorization)
+		console.log("addNewFriend authorization: " + params.authorization);
+		friendsController.addNewFriendsToMyself( params.newFriendEmail );
 	} else if ( /^\/[a-zA-Z0-9\/]*.js$/.test( request.url.toString() )) {
 		sendFileContent( response, request.url.toString().substring(1), "text/javascript" );
 		console.log("Response File: " + request.url.toString().substring(1) + " .js");

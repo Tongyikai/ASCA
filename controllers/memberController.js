@@ -99,7 +99,7 @@ function getMemberIDFromEmail( searchEmail ) {
 }
 
 /* ************************************************
-*	              exports methods                 *
+    exports methods                 
 ************************************************* */
 function emailExist( searchEmail ) { 
     console.log( "====================================================================      查尋email是否存在" );
