@@ -66,12 +66,12 @@ function getMemberIDFromEmail( searchEmail ) {
     return "0";
 }
 
-function getMemberEmailFromToken( token ) {
+function getMemberEmailFromToken( token, callback ) {
     let decoded;
+
     jwt.verify( token, config.secret, err => {
         if ( err ) {
             console.log( "err: " + err );
-            return "";
         } else {   
             decoded = jwt.verify( token, config.secret );
             console.log( decoded );
@@ -83,11 +83,10 @@ function getMemberEmailFromToken( token ) {
                 const member = client.db( config.mongodb.data ).collection( config.mongodb.memberCollection );
                 member.find( { memberID: decoded.memberID } ).toArray( function( err, result ) {
                     if ( err ) throw err;
-                    console.log( "****** ***** ** " + result[0].email );
-                    
+                    console.log( "用 token 拿到的 memberID 取得資料庫使用者自己的email: " + result[0].email );
+                    callback( result[0].email );
                 });
             });
-            return "";
         }
     });
 }
@@ -116,9 +115,14 @@ function addNewFriendsToMyself( token, email ) {
     if ( tokenExist( token ) ) {
         if ( checkEmail( email ) && emailExist( email ) ) {
             console.log( "增加成為好友的email存在，表示可以加好友" );
-            if ( getMemberEmailFromToken( token ) == email ) {
-                console.log( "使用者輸入的是自己的email" );
-            }
+            getMemberEmailFromToken( token, ( e ) => {
+                console.log( "拿到自己的email: " + e );
+            });
+
+            // let myselfEmail = getMemberEmailFromToken( token );
+            // if ( myselfEmail == email ) {
+            //     console.log( "使用者輸入的是自己的email" );
+            // }
             // addFriend( token, email );
         } else {
             console.log( ERROR_MESSAGE_1 );
