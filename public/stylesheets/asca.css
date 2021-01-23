@@ -10,7 +10,7 @@ body {
     background: #F0F2F5;
 }
 
-.navigation_bar {
+.navigation {
     background: #3b5998;
     width: 100%;
     height: 60px;
@@ -20,18 +20,18 @@ body {
     padding: 0 50px;
 }
 
-.navigation_bar .navigation_logo a {
+.navigation .navigation_logo a {
     display: block;
     text-decoration: none;
     color: white;
 }
 
-.navigation_right > ul {
+.navigation_menu > ul {
     display: flex;
     align-items: center;
 }
 
-.navigation_right ul li.nr_li {
+.navigation_menu ul li.nr_li {
     margin-left: 25px;
     cursor: pointer;
     color: #fff;
@@ -39,13 +39,13 @@ body {
     position: relative;
 }
 
-.navigation_right ul li img {
+.navigation_menu ul li img {
     border-radius: 50%;
     width: 35px;
     vertical-align: middle;
 }
 
-.navigation_bar .menu {
+.navigation .menu {
     position: absolute;
     right: -23px;
     top: 48px;
@@ -56,7 +56,7 @@ body {
     display: none;
 }
 
-.navigation_bar .menu .menu_item {
+.navigation .menu .menu_item {
     background: #fff;
     padding: 15px 20px;
     border-top-left-radius: 15px;
@@ -66,7 +66,7 @@ body {
     width: 95px;
 }
 
-.navigation_bar .menu li {
+.navigation .menu li {
     margin-bottom: 10px;
     color: #868686;
 }
@@ -76,11 +76,11 @@ body {
     text-orientation: upright;
 } 
 
-.navigation_bar ul li:hover {
+.navigation ul li:hover {
     color: #e76208;
 }
 
-.navigation_bar .menu:before {
+.navigation .menu:before {
     content: "";
     position: absolute;
     top: -20px;
@@ -89,7 +89,7 @@ body {
     border-color: transparent transparent #fff transparent;
 }
 
-.navigation_bar .avatar_Menu.active .menu {
+.navigation .avatar_menu.active .menu {
     display: flex;
 }
 
@@ -108,6 +108,9 @@ table, th, td {
     border: 1px solid black;
 }
 
+/* **********************************************************
+    編輯個人檔案                                              
+*********************************************************** */
 .edit {
     display: none;
     background: white;
@@ -120,20 +123,14 @@ table, th, td {
     height: 650px;
     width: 700px;
     margin-top: 10px;
-
-    /* The (background) */
-    /* position: fixed; */
     z-index: 1;
-    /* padding-top: 100px; */
     left: 0;
     top: 0;
-    /* width: 100%; */
-    /* height: 100%; */
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4); /* 背景灰色的原因 */
+    background-color: rgba(0, 0, 0, 0.4); /*背景灰色的原因*/
 }
 
-.edit_Title {
+.edit_title {
     background-color: #ff00ff;
     height: 60px;
     width: 80%;
@@ -142,7 +139,7 @@ table, th, td {
 }
 
 .edit_closeButtonArea {
-    background-color: #3f9197;
+    background-color: #453cc4;
     height: 60px;
     width: 20%;
     float: left;
@@ -165,31 +162,280 @@ table, th, td {
     cursor: pointer;
 }
 
-.edit_Content {
+.edit_content {
     padding-bottom: 110px;
 }
 
-.edit_Content table {
-    /* display: table;
-    border-collapse: separate;
-    border-spacing: 2px;
-    border-color: blue; */
-}
-
-.edit_Content td {
+.edit_content td {
     padding: 8px;
 }
 
-.edit_Footer {
+.edit_footer {
     background-color: #3b5998;
     height: 50px;
     position: relative;
 }
 
-.edit_Update_Button {
+.edit_update_button {
     width: 100px;
     height: 30px;
     margin-left: 300px;
     padding-bottom: 15px;
     font-size: 14px;
+}
+
+/* **********************************************************
+    好友                                                     
+*********************************************************** */
+.friends {
+    display: none;
+    background: white;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    margin-left: 30%;
+    margin-right: 30%;
+    height: 650px;
+    width: 700px;
+    margin-top: 10px;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* 背景灰色的原因 */
+}
+
+.friends_title {
+    background-color: #ff00ff;
+    height: 60px;
+    width: 80%;
+    float: left;
+    padding-left: 280px;
+}
+
+.friends_closeButtonArea {
+    background-color: #453cc4;
+    height: 60px;
+    width: 20%;
+    float: left;
+    padding-left: 10%;
+    padding-top: 1%;
+}
+
+.friends_closeButton {
+    color: #b2e43d;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    padding-right: 50%;
+}
+
+.friends_closeButton:hover,
+.friends_closeButton:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 新增好友 */
+#addFriends { 
+    background-image: url( "../images/addFriendsIcon.png" );
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
+    width: 80%;
+    font-size: 16px;
+    padding: 12px 20px 12px 40px;
+    border: 1px solid rgb(196, 69, 69);
+    margin-bottom: 12px;
+    margin-top: 10px;
+}
+
+#myFriendsList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#myFriendsList li a {
+    border: 1px solid #ddd;
+    margin-top: -1px; /* Prevent double borders */
+    background-color: #f6f6f6;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block
+}
+
+#myFriendsList li a:hover:not(.header) {
+    background-color: #eee;
+}
+
+/* **********************************************************
+    創建標會 按鈕功能                       
+*********************************************************** */
+.createGangButton {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+}
+
+.createClubButton {
+    background-color: white;
+    border: 2px solid #008CBA;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;margin: 4px 2px;
+    cursor: pointer;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+}
+
+/* **********************************************************
+    起會表格                         
+*********************************************************** */
+.assemblyHall {
+    background-color: rgb(91, 113, 160);
+    height: 750px;
+    width: 60%;
+    float: left;
+}
+
+.create_gang {
+    background: white;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    /* height: 15vmax; */
+    height: 500px;
+    margin-top: 10px;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* 背景灰色的原因 */
+    display: none;
+}
+
+.create_gang .inhibit::placeholder {
+    color:#be1942;
+}
+
+.createGangTable_closeButton {
+    color: #b2e43d;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    padding-right: 50%;
+}
+
+.createGangTable_closeButton:hover,
+.createGangTable_closeButton:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* **********************************************************
+    起會表格 新增成員                      
+*********************************************************** */
+.createNewGangMember::before,
+.createNewGangMember::after {
+    box-sizing: border-box;
+}
+.createNewGangMember {
+    display: inline-grid;
+    vertical-align: top;
+    align-items: center;
+    position: relative;
+    border: solid 1px;
+    padding: 0.25em 0.5em;
+    margin: 5px;
+    width: 95%;
+}
+.createNewGangMember.stacked {
+    padding: 0.5em;
+    align-items: stretch;
+}
+.createNewGangMember.stacked::after,
+.createNewGangMember.stacked input,
+.createNewGangMember.stacked textarea {
+    grid-area: 2/1;
+}
+.createNewGangMember::after,
+.createNewGangMember input,
+.createNewGangMember textarea {
+    width: auto;
+    min-width: 1em;
+    grid-area: 1/2;
+    font: inherit;
+    padding: 0.25em;
+    margin: 0;
+    resize: none;
+    background: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+}
+.createNewGangMember span {
+    padding: 0.25em;
+}
+.createNewGangMember::after {
+    content: attr(data-value) " ";
+    visibility: hidden;
+    white-space: pre-wrap;
+}
+.createNewGangMember:focus-within { /* 停用編輯功能 此效果無效 */
+    outline: solid 1px #e96e27;
+    box-shadow: 4px 4px 0px #13e02e;
+}
+.createNewGangMember:focus-within > span { /* 停用編輯功能 此效果無效 */
+    color: #3b5998;
+}
+.createNewGangMember:focus-within textarea:focus,
+.createNewGangMember:focus-within input:focus {
+    outline: none;
+}
+.createNewGangMember {
+    box-shadow: 4px 4px 0px #000;
+}
+.createNewGangMember > span {
+    text-transform: uppercase;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+}
+
+/* **********************************************************
+    起會表格 測式元件                      
+*********************************************************** */
+.testComponent {
+    background-color: rgb(125, 111, 204);
+    border: none;
+    color: rgb(134, 28, 28);
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 9999px;
+} 
+.testComponent:hover {
+    background-color: #f1f1f1;
 }

@@ -1,4 +1,3 @@
-
 nameRule = /[^\u4e00-\u9fa5]/; // 只能輸入中文
 emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
 blankRule = /(^s*)|(s*$)/g;
@@ -58,35 +57,6 @@ function checkMobileNumber( mobileNumber ) {
     return false;
 }
 
-/* **********************************************************
-                            AJAX                            *
-*********************************************************** */
-const httpRequest = new XMLHttpRequest();
-
-httpRequest.onload = function() {
-    if ( httpRequest.status >= 200 && httpRequest.status < 400 ) {
-        let jsonObject = JSON.parse( httpRequest.responseText );
-
-        // console.log("處理回應: " + httpRequest.responseText);
-        // console.log("JSON: " + jsonObject);
-
-
-        // 取得個人資料
-        // console.log("json 裡有沒有 key 是avatar: " + jsonObject.hasOwnProperty('avatar'));
-        if ( jsonObject[ "profileData" ] != undefined ) {
-            // console.log("jsonObject 裡有 key = avatar");
-            setProfileData( jsonObject.profileData );
-        }
-        if ( jsonObject[ "updateProfile" ] != undefined ) {
-            alert( "onload: " + jsonObject.updateProfile );
-        }
-    }
-}
-
-httpRequest.onerror = function() {
-    alert( "Can't connect to this network." );
-}
-
 // 檢查密碼必須包含至少 8 個字元，可以混合使用英文字母、數字和符號 (僅限 ASCII 標準字元)
 function checkPassword( password ) {
     return passwordRule.test( password );
@@ -104,9 +74,38 @@ function checkDateOfBirth( year, month, day ) {
 }
 
 /* **********************************************************
-                       AJAX Send Form                       *
+    AJAX receive                            
 *********************************************************** */
-window.addEventListener( 'load', function() {
+const httpRequest = new XMLHttpRequest();
+
+httpRequest.onload = function() {
+    if ( httpRequest.status >= 200 && httpRequest.status < 400 ) {
+        let jsonObject = JSON.parse( httpRequest.responseText );
+
+        // console.log("處理回應: " + httpRequest.responseText);
+        // console.log("JSON: " + jsonObject);
+
+
+        // 取得個人資料
+        // console.log("json 裡有沒有 key 是avatar: " + jsonObject.hasOwnProperty( "avatar" ));
+        if ( jsonObject[ "profileData" ] != undefined ) {
+            // console.log("jsonObject 裡有 key = avatar");
+            setProfileData( jsonObject.profileData );
+        }
+        if ( jsonObject[ "updateProfile" ] != undefined ) {
+            alert( "onload: " + jsonObject.updateProfile );
+        }
+    }
+}
+
+httpRequest.onerror = function() {
+    alert( "Can't connect to this network." );
+}
+
+/* **********************************************************
+    AJAX Send Form                       
+*********************************************************** */
+window.addEventListener( "load", function() {
     console.log( "window.addEventListener" );
 
     function sendData() {
@@ -115,37 +114,65 @@ window.addEventListener( 'load', function() {
             alert( "Server: " + event.target.responseText );
         });
         httpRequest.addEventListener( "error", function( event ) {
-            alert( 'Oops! Something went wrong.' );
+            alert( "Oops! Something went wrong." );
         });
         httpRequest.open( "POST", "http://127.0.0.1:8888/updateProfile" );
         httpRequest.send( FD );
     }
 
-    const form = document.getElementById( "edit_ContentForm" );
+    const form = document.getElementById( "edit_contentForm" );
     form.addEventListener( "submit", function ( event ) {
         event.preventDefault();
         if ( changesToYourProfile() ) sendData();
     });
 });
 
-// 人像目錄
-let avatarMenu = document.querySelector( ".avatar_Menu" );
+/* **********************************************************
+    人像目錄                             
+*********************************************************** */
+let avatarMenu = document.querySelector( ".avatar_menu" );
 avatarMenu.addEventListener( "click", function() {
     this.classList.toggle( "active" );
 });
 
-// 編輯視窗
-let edit = document.getElementById( "edit" );
-let editProfileButton = document.getElementById( "edit_profile_btn" );
+// 編輯個人檔案視窗
+let editWindow = document.getElementById( "edit" );
+let editWindowButton = document.getElementById( "edit_windowButton" );
 let editCloseButton = document.getElementsByClassName( "edit_closeButton" )[0];
-editProfileButton.onclick = function() {
-    edit.style.display = "block";
-}
-editCloseButton.onclick = function() {
-    edit.style.display = "none";
+
+// 開啟編輯個人檔案
+editWindowButton.onclick = function() {
+    editWindow.style.display = "block";
+    document.getElementById( "assemblyHall" ).style.display = "none";
+    document.getElementById( "centreButton" ).style.display = "none";
+    friendsWindow.style.display = "none";
 }
 
-//登出
+editCloseButton.onclick = function() {
+    editWindow.style.display = "none";
+    document.getElementById( "assemblyHall" ).style.display = "block";
+    document.getElementById( "centreButton" ).style.display = "block";
+}
+
+// 好友視窗
+let friendsWindow = document.getElementById( "friends" );
+let friendsWindowButton = document.getElementById( "friends_windowButton" );
+let friendsCloseButton = document.getElementsByClassName( "friends_closeButton" )[0];
+
+friendsWindowButton.onclick = () => {
+    friendsWindow.style.display = "block";
+    document.getElementById( "assemblyHall" ).style.display = "none";
+    document.getElementById( "centreButton" ).style.display = "none";
+    editWindow.style.display = "none";
+}
+
+friendsCloseButton.onclick = () => {
+    friendsWindow.style.display = "none";
+    document.getElementById( "assemblyHall" ).style.display = "block";
+    document.getElementById( "centreButton" ).style.display = "block";
+}
+
+// 登出
 let logoutButton = document.getElementById( "logout" );
 logoutButton.onclick = () => {
     alert( document.cookie );
@@ -154,6 +181,9 @@ logoutButton.onclick = () => {
     window.location.href = "http://127.0.0.1:8888/index";
 }
 
+/* **********************************************************
+    編輯個人檔案 視窗裡的功能                       
+*********************************************************** */
 // 限制上傳圖片的大小
 const UPLOAD_AVATAR_MAX_SIZE = 1*1024*1024; 
 const ERROR_MESSAGE = "上傳的附件檔案不能超過 1 Mega Byte";
@@ -231,7 +261,6 @@ function showTelephoneAreaCode() {
 }
 
 let formFieldsName = [];    
-// let formFieldsValue = [];
 let avatar;
 let familyName;
 let givenName;
@@ -245,12 +274,14 @@ let telephoneAreaCode;
 let telephoneNumber;
 let mobileNumber;
 let facebook;
+
 const YEAR_CHARACTER = "年";
 const MONTH_CHARACTER = "月";
 const DAY_CHARACTER = "日";
 const CITY_NAME = "城市";
 const AREA_CODE = "區碼";
 const BLANK = "";
+
 // 您的個人資料更改
 function changesToYourProfile() {
     let cookieValue = document.cookie.replace( /(?:(?:^|.*;\s*)authorization\s*\=\s*([^;]*).*$)|^.*$/, "$1" );
@@ -499,9 +530,107 @@ function setProfileData( profileData ) {
     userProfile.facebook.innerHTML          = profileData.facebook;
 }
 
+/* **********************************************************
+    創建一個新的標會 按鈕功能                
+*********************************************************** */
+const createGangButton = document.getElementById( "createGangButton" );
+createGangButton.onmousemove = function() {
+    createGangButton.style.boxShadow = "0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)";
+}
+
+createGangButton.onmouseout = function() {
+    createGangButton.style.boxShadow = "none";
+}
+
+function createGang() {
+    alert( "起一個新的標會" );
+    document.getElementById( "create_gang" ).style.display = "block";
+}
+
+const creatClubButton = document.getElementById( "createClubButton" );
+creatClubButton.onmouseover = function() {
+    creatClubButton.style.backgroundColor = "#008CBA";
+    creatClubButton.style.color = "#ffffff";
+}
+
+creatClubButton.onmouseout = function() {
+    creatClubButton.style.backgroundColor = "#ffffff";
+    creatClubButton.style.color = "#000000";
+    creatClubButton.style.border = "2px solid #008CBA";
+}
+
+function createClub() {
+    alert( "創立俱樂部" );
+}
+
+/* **********************************************************
+    起會表單裡的功能                        
+*********************************************************** */
+function invite() {
+    var table = document.getElementById( "createGangTable" );
+    var tr = table.insertRow(-1);
+    var td = tr.insertCell(-1);
+    td.innerHTML = "<span class=red>" + tr.rowIndex + "</span>";
+
+    var inputText = document.createElement( "input" );
+    inputText.setAttribute( "type", "text" );
+    inputText.setAttribute( "placeholder", "會員email" );
+    var td = tr.insertCell(-1);
+    td.appendChild( inputText );
+}
+
+function calculateTheAmount() { // 輸入 "會費" 與 "人數" 計算最大得標金額 
+    var x =  document.getElementById( "semesterFee" ).value.match( /[\d]/g );
+    var str = "";
+    for ( var i = 0; i < x.length; i++ ) {
+        str += x[i];
+    }
+    // 用正則去掉其他符號只取數字，再轉成Number
+    var semesterFee = Number( str ); 
+    var numberOfPeople = Number( document.getElementById( "numberOfPeople" ).value.match( /\d+/g ) );
+    var amountOfMoney = document.getElementById( "amountOfMoney" );
+    amountOfMoney.placeholder = "$" + numberWithCommas( semesterFee * numberOfPeople );
+    document.getElementById( "semesterFee" ).value = "$" + numberWithCommas( semesterFee );
+}
+
+function createGangTableDate() {
+    n =  new Date();
+    y = n.getFullYear();
+    m = n.getMonth() + 1;
+    d = n.getDate();
+    document.getElementById( "createGangTableDate" ).placeholder = y + "/" + m + "/" + d;
+}
+
+function numberWithCommas( x ) { // 輸入金額時,將之轉為每三個數字逗號
+    return x.toString().replace( /\B(?=(\d{3})+(?!\d))/g, "," );
+}
+
+// 起會的視窗關閉按鈕
+let createGangTableCloseButton = document.getElementsByClassName( "createGangTable_closeButton" )[0];
+createGangTableCloseButton.onclick = function() {
+    document.getElementById( "create_gang" ).style.display = "none";
+}
+
+
+/* **********************************************************
+    好友 視窗裡的功能                
+*********************************************************** */
+function newFriendInvite() {
+    alert( document.getElementById( "addFriends" ).value );
+    let newFriendEmail = document.getElementById( "addFriends" ).value;
+    let cookieValue = document.cookie.replace( /(?:(?:^|.*;\s*)authorization\s*\=\s*([^;]*).*$)|^.*$/, "$1" );
+
+    httpRequest.open( "GET", "http://127.0.0.1:8888/addNewFriend?newFriendEmail=" + newFriendEmail + "&authorization=" + cookieValue, true );
+    httpRequest.send();
+}
+
+/* **********************************************************
+    畫面載入執行的功能                      
+*********************************************************** */
 showYear();
 showMonth();
 showDay();
 showCity();
 showTelephoneAreaCode();
 getProfileData();
+createGangTableDate();

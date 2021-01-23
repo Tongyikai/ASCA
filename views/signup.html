@@ -14,21 +14,21 @@
         <section class="sec1">
             <div class="formProfile">
                 <form>
-                    <input class="familyName" type="text" name="familyName" id="familyName" placeholder="姓氏" onchange="if(this.value.match(/[^\u4e00-\u9fa5]/)){alert('請輸入中文姓名');}">
-                    <input class="givenName" type="text" name="givenName" id="givenName" placeholder="名字" onchange="if(this.value.match(/[^\u4e00-\u9fa5]/)){alert('請輸入中文姓名');}"><p>
-                    <input class="email" type="email" name="email" id="email" placeholder="E-mail"><p>
-                    <input class="password" type="password" name="password" id="password" placeholder="設定密碼"><p>
+                    <input class="familyName" id="familyName" type="text" name="familyName" placeholder="姓氏" onchange="if(this.value.match(/[^\u4e00-\u9fa5]/)){alert('請輸入中文姓名');}">
+                    <input class="givenName" id="givenName" type="text" name="givenName" placeholder="名字" onchange="if(this.value.match(/[^\u4e00-\u9fa5]/)){alert('請輸入中文姓名');}"><p>
+                    <input class="email" id="email" type="email" name="email" placeholder="E-mail"><p>
+                    <input class="password" id="password" type="password" name="password" placeholder="密碼長度8-16字元"><p>
                     <h5>出生日期</h5>
                     <div id="birthday">
-                        <select id="yearBox" class="year" name="year">
+                        <select class="yearBox" id="yearBox"  name="year">
                             <option value="year">年</option>
                         </select>
 
-                        <select id="monthBox" class="month" name="month">
+                        <select class="monthBox" id="monthBox"  name="month">
                             <option value="month">月</option>
                         </select>
 
-                        <select id="dayBox" class="day" name="day">
+                        <select class="dayBox" id="dayBox"  name="day">
                             <option value="day">日</option>
                         </select>
                     </div>
