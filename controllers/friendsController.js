@@ -91,6 +91,16 @@ function getMemberEmailFromToken( token, callback ) {
     });
 }
 
+function sameEmail( email1, email2 ) {
+    if ( email1 == email2 ) return true;
+    return false;
+}
+
+// 查詢好友名單是否有這組email
+function searchEmailExistFormFriends( email ) {
+
+}
+
 function addFriend( token, email ) {
     let memberID = getMemberIDFromToken( token );
     // let addNewFriendMemberID = getMemberIDFromEmail( email );
@@ -117,6 +127,9 @@ function addNewFriendsToMyself( token, email ) {
             console.log( "增加成為好友的email存在，表示可以加好友" );
             getMemberEmailFromToken( token, ( e ) => {
                 console.log( "拿到自己的email: " + e );
+                if ( sameEmail( email, e ) ) {
+                    console.log( "這組email是你自己");
+                }
             });
 
             // let myselfEmail = getMemberEmailFromToken( token );
