@@ -97,8 +97,31 @@ function sameEmail( email1, email2 ) {
 }
 
 // 查詢好友名單是否有這組email
-function searchEmailExistFormFriends( email ) {
+function searchEmailExistInFriends( token, email ) {
+    let memberID = getMemberIDFromToken( token );
+    let addNewFriendMemberID = getMemberIDFromEmail( email );
+    console.log(addNewFriendMemberID);
 
+    const client = new MongoClient( uri, { useUnifiedTopology: true } );
+    client.connect( err => {
+        if ( err ) throw err;
+        const friendsList = client.db( config.mongodb.data ).collection( config.mongodb.friendsListCollection ); 
+
+        friendsList.find( { memberID: memberID } ).toArray( function( err, result ) {
+            if ( err ) throw err;
+            console.log( "---------------查詢好友名單是否有這組email----------------" );
+            console.log( result );
+            if ( result == "" ) {
+                console.log( "空集合   創立一個好友名單" );
+                friendsList.insertOne( { memberID: memberID, friends: [] } );
+                console.log( "* 加到好友清單裡" );
+                friendsList.updateOne( { memberID: memberID }, { $push: { friends: addNewFriendMemberID } } );
+            } else {
+                console.log( "已經有好友名單" );
+                
+            }
+        });
+    });
 }
 
 function addFriend( token, email ) {
@@ -108,7 +131,7 @@ function addFriend( token, email ) {
     const client = new MongoClient( uri, { useUnifiedTopology: true } );
     client.connect( err => {
         if ( err ) throw err;
-        const friends = client.db( config.mongodb.data ).collection( config.mongodb.friendsCollection ); 
+        const friends = client.db( config.mongodb.data ).collection( config.mongodb.friendsListCollection ); 
 
         friends.find( { memberID: memberID } ).toArray( function( err, result ) {
             if ( err ) throw err;
@@ -129,6 +152,8 @@ function addNewFriendsToMyself( token, email ) {
                 console.log( "拿到自己的email: " + e );
                 if ( sameEmail( email, e ) ) {
                     console.log( "這組email是你自己");
+                } else {
+                    searchEmailExistInFriends( token, email );
                 }
             });
 
