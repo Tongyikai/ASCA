@@ -112,13 +112,14 @@ function searchEmailExistInFriends( token, email ) {
             console.log( "---------------查詢好友名單是否有這組email----------------" );
             console.log( result );
             if ( result == "" ) {
-                console.log( "空集合   創立一個好友名單" );
+                console.log( "空集合---創立一個好友名單" );
                 friendsList.insertOne( { memberID: memberID, friends: [] } );
                 console.log( "* 加到好友清單裡" );
                 friendsList.updateOne( { memberID: memberID }, { $push: { friends: addNewFriendMemberID } } );
             } else {
-                console.log( "已經有好友名單" );
-                
+                console.log( "已經有好友名單---找出名單中的好友memberIB" );
+                let array = result[0].friends;
+                console.log( array );
             }
         });
     });
