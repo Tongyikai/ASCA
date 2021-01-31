@@ -100,7 +100,6 @@ function sameEmail( email1, email2 ) {
 function searchEmailExistInFriends( token, email ) {
     let memberID = getMemberIDFromToken( token );
     let addNewFriendMemberID = getMemberIDFromEmail( email );
-    console.log(addNewFriendMemberID);
 
     const client = new MongoClient( uri, { useUnifiedTopology: true } );
     client.connect( err => {
@@ -109,17 +108,27 @@ function searchEmailExistInFriends( token, email ) {
 
         friendsList.find( { memberID: memberID } ).toArray( function( err, result ) {
             if ( err ) throw err;
-            console.log( "---------------查詢好友名單是否有這組email----------------" );
-            console.log( result );
+                console.log( "---------------查詢好友名單是否有這組email----------------" );
+                console.log( result );
             if ( result == "" ) {
                 console.log( "空集合---創立一個好友名單" );
                 friendsList.insertOne( { memberID: memberID, friends: [] } );
                 console.log( "* 加到好友清單裡" );
                 friendsList.updateOne( { memberID: memberID }, { $push: { friends: addNewFriendMemberID } } );
             } else {
-                console.log( "已經有好友名單---找出名單中的好友memberIB" );
+                console.log( "已經有好友名單---並顯示出所有好友memberID" );
                 let array = result[0].friends;
                 console.log( array );
+                console.log( "檢查: " + email + " 是不是己經是好友" );
+                // console.log( array.indexOf( addNewFriendMemberID ) );
+
+                switch( array.indexOf( addNewFriendMemberID ) ) {
+                    case -1:
+                        console.log( "找不到" );
+                        break;
+                    default:
+                        console.log( "已經是好友" );    
+                }
             }
         });
     });
@@ -164,7 +173,7 @@ function addNewFriendsToMyself( token, email ) {
             // }
             // addFriend( token, email );
         } else {
-            console.log( ERROR_MESSAGE_1 );
+            console.log( "function addNewFriendsToMyself====================================================================" + ERROR_MESSAGE_1 );
         }
     }
 }
