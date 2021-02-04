@@ -182,7 +182,11 @@ http.createServer( function( request, response ) {
 		console.log( "會員---要新增好友" );
 		console.log("addNewFriend email: " + params.newFriendEmail);
 		console.log("addNewFriend authorization: " + params.authorization);
-		friendsController.addNewFriendsToMyself( params.authorization, params.newFriendEmail );
+		friendsController.addNewFriendsToMyself( params.authorization, params.newFriendEmail, ( message ) => {
+			response.writeHead( 200, { "Content-Type": "application/json" } );
+			response.write( JSON.stringify( { addNewFriendsMessage: message } ) );
+			response.end();
+		});
 	} else if ( /^\/[a-zA-Z0-9\/]*.js$/.test( request.url.toString() )) {
 		sendFileContent( response, request.url.toString().substring(1), "text/javascript" );
 		console.log("Response File: " + request.url.toString().substring(1) + " .js");

@@ -92,8 +92,13 @@ httpRequest.onload = function() {
             // console.log("jsonObject 裡有 key = avatar");
             setProfileData( jsonObject.profileData );
         }
+
         if ( jsonObject[ "updateProfile" ] != undefined ) {
             alert( "onload: " + jsonObject.updateProfile );
+        }
+
+        if ( jsonObject[ "addNewFriendsMessage" ] != undefined ) {
+            alert( "onload: " + jsonObject.addNewFriendsMessage );
         }
     }
 }

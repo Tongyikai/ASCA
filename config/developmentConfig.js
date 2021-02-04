@@ -10,7 +10,7 @@ module.exports = {
                 database:   process.env.DATABASE,
         memberCollection:   process.env.MEMBER_TABLE,
 memberCountersCollection:   process.env.MEMBER_COUNTERS_TABLE,
-   friendsListCollection:   process.env.FRIENDS_LIST
+   friendListCollection:   process.env.FRIEND_LIST
     },
            secret:  process.env.SECRET,
     defaultAvatar:  process.env.DEFAULT_AVATAR

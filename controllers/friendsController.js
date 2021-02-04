@@ -68,6 +68,7 @@ function getMemberIDFromEmail( searchEmail ) {
 
 function getMemberEmailFromToken( token, callback ) {
     let decoded;
+    // let email;
 
     jwt.verify( token, config.secret, err => {
         if ( err ) {
@@ -85,6 +86,7 @@ function getMemberEmailFromToken( token, callback ) {
                     if ( err ) throw err;
                     console.log( "用 token 拿到的 memberID 取得資料庫使用者自己的email: " + result[0].email );
                     callback( result[0].email );
+                    // email = result[0].email;
                 });
             });
         }
@@ -96,38 +98,43 @@ function sameEmail( email1, email2 ) {
     return false;
 }
 
+// $addToSet：向陣列中新增元素，若陣列本身含有該元素，則不新增，否則，新增，這樣就避免了陣列中的元素重複現象；
+// $push：向陣列尾部新增元素，但它不管陣列中有沒有該元素，都會新增。
 // 查詢好友名單是否有這組email
-function searchEmailExistInFriends( token, email ) {
+function searchEmailExistInFriends( token, email, callback ) {
     let memberID = getMemberIDFromToken( token );
     let addNewFriendMemberID = getMemberIDFromEmail( email );
 
     const client = new MongoClient( uri, { useUnifiedTopology: true } );
     client.connect( err => {
         if ( err ) throw err;
-        const friendsList = client.db( config.mongodb.data ).collection( config.mongodb.friendsListCollection ); 
+        const friendList = client.db( config.mongodb.data ).collection( config.mongodb.friendListCollection ); 
 
-        friendsList.find( { memberID: memberID } ).toArray( function( err, result ) {
+        friendList.find( { memberID: memberID } ).toArray( function( err, result ) {
             if ( err ) throw err;
                 console.log( "---------------查詢好友名單是否有這組email----------------" );
                 console.log( result );
             if ( result == "" ) {
-                console.log( "空集合---創立一個好友名單" );
-                friendsList.insertOne( { memberID: memberID, friends: [] } );
-                console.log( "* 加到好友清單裡" );
-                friendsList.updateOne( { memberID: memberID }, { $push: { friends: addNewFriendMemberID } } );
+                console.log( "-----創立好友名單" );
+                friendList.insertOne( { memberID: memberID, friends: [] } );
+                console.log( "-----" + email + " 加到好友名單裡" );
+                friendList.updateOne( { memberID: memberID }, { $push: { friends: addNewFriendMemberID } } );
+                callback( "加為好友!" );
             } else {
-                console.log( "已經有好友名單---並顯示出所有好友memberID" );
+                console.log( "-----存在-----好友名單---並顯示出所有好友memberID" );
                 let array = result[0].friends;
                 console.log( array );
-                console.log( "檢查: " + email + " 是不是己經是好友" );
-                // console.log( array.indexOf( addNewFriendMemberID ) );
+                console.log( "-----檢查: " + email + " 是不是己經是好友" );
 
                 switch( array.indexOf( addNewFriendMemberID ) ) {
                     case -1:
-                        console.log( "找不到" );
+                        console.log( "-----找不到 不是好友, 增加到好友名單中" );
+                        friendList.updateOne( { memberID: memberID }, { $push: { friends: addNewFriendMemberID } } );
+                        callback( "+加為好友!" );
                         break;
                     default:
-                        console.log( "已經是好友" );    
+                        console.log( "-----已經是好友" );
+                        callback( "已經存在您的好友名單!" );
                 }
             }
         });
@@ -141,7 +148,7 @@ function addFriend( token, email ) {
     const client = new MongoClient( uri, { useUnifiedTopology: true } );
     client.connect( err => {
         if ( err ) throw err;
-        const friends = client.db( config.mongodb.data ).collection( config.mongodb.friendsListCollection ); 
+        const friends = client.db( config.mongodb.data ).collection( config.mongodb.friendListCollection ); 
 
         friends.find( { memberID: memberID } ).toArray( function( err, result ) {
             if ( err ) throw err;
@@ -154,27 +161,27 @@ function addFriend( token, email ) {
 /* ************************************************
     加好友
 ************************************************* */
-function addNewFriendsToMyself( token, email ) {
+function addNewFriendsToMyself( token, email, callback ) {
     if ( tokenExist( token ) ) {
         if ( checkEmail( email ) && emailExist( email ) ) {
-            console.log( "增加成為好友的email存在，表示可以加好友" );
+            console.log( "*1.   增加成為好友的email存在，表示可以加好友" );
             getMemberEmailFromToken( token, ( e ) => {
-                console.log( "拿到自己的email: " + e );
+                console.log( "*2.   拿到自己的email: " + e );
                 if ( sameEmail( email, e ) ) {
                     console.log( "這組email是你自己");
                 } else {
-                    searchEmailExistInFriends( token, email );
+                    searchEmailExistInFriends( token, email, function( message ) {
+                        console.log( "*3.   檢查朋友");
+                        callback( message );
+                    });
                 }
             });
-
-            // let myselfEmail = getMemberEmailFromToken( token );
-            // if ( myselfEmail == email ) {
-            //     console.log( "使用者輸入的是自己的email" );
-            // }
-            // addFriend( token, email );
         } else {
-            console.log( "function addNewFriendsToMyself====================================================================" + ERROR_MESSAGE_1 );
+            console.log( "email格式有問題或可能不是會員成員" );
+            callback( "email格式有問題或可能不是會員成員" );
         }
+    } else {
+        console.log( "驗證沒有過" );
     }
 }
 
