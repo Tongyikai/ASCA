@@ -620,12 +620,19 @@ createGangTableCloseButton.onclick = function() {
 /* **********************************************************
     好友 視窗裡的功能                
 *********************************************************** */
-function newFriendInvite() {
-    alert( document.getElementById( "addFriends" ).value );
-    let newFriendEmail = document.getElementById( "addFriends" ).value;
+function loadingFriendList() {
     let cookieValue = document.cookie.replace( /(?:(?:^|.*;\s*)authorization\s*\=\s*([^;]*).*$)|^.*$/, "$1" );
 
-    httpRequest.open( "GET", "http://127.0.0.1:8888/addNewFriend?newFriendEmail=" + newFriendEmail + "&authorization=" + cookieValue, true );
+    httpRequest.open( "GET", "http://127.0.0.1:8888/loadingFriendList?authorization=" + cookieValue, true );
+    httpRequest.send();
+}
+
+function newFriendInvite() {
+    alert( document.getElementById( "addFriend" ).value );
+    let newFriendEmail = document.getElementById( "addFriend" ).value;
+    let cookieValue = document.cookie.replace( /(?:(?:^|.*;\s*)authorization\s*\=\s*([^;]*).*$)|^.*$/, "$1" );
+
+    httpRequest.open( "GET", "http://127.0.0.1:8888/addFriend?newFriendEmail=" + newFriendEmail + "&authorization=" + cookieValue, true );
     httpRequest.send();
 }
 
@@ -639,3 +646,4 @@ showCity();
 showTelephoneAreaCode();
 getProfileData();
 createGangTableDate();
+loadingFriendList();

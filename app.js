@@ -158,47 +158,67 @@ http.createServer( function( request, response ) {
 	************************************************ */
 	if ( request.url === "/index" ) {
 		sendFileContent( response, "views/index.html", "text/html" );
+
 	} else if ( request.url === "/" ) {
 		sendFileContent( response, "views/index.html", "text/html" );
+
 	} else if ( request.url === "/signUp" ) {
 		sendFileContent( response, "views/signUp.html", "text/html" );
+
 	} else if ( action === "/signUp/check" ) { // action 只會判斷網域後面的URL，?後面帶參數不需要考慮
 		checkEmail( response, params.email );
 		console.log( "客戶端---註冊程序檢查email是否能使用: " + params.email );
+
 	} else if ( request.url === "/register" ) {
 		console.log( "客戶端---註冊成為會員" );
+
 	} else if ( request.url === "/logIn" ) {
 		console.log( "會員---要登入但沒鑰匙，驗證完會發給會員鑰匙" );
+
 	} else if ( request.url === "/logInWithToken" ) {
 		console.log( "會員---帶著鑰匙來了 (token)" );
+
 	} else if ( request.url === "/asca" ) {
 		console.log( "會員---正常登入，準備進入主要頁面" );
 		sendFileContent( response, "views/asca.html", "text/html" );
+
 	} else if ( request.url === "/updateProfile" ) {
 		console.log( "會員---要修改資料" );
+
 	} else if ( request.url === "/getProfileData" ) {
 		console.log( "會員---需要個人資料" );
-	} else if ( action === "/addNewFriend" ) { // action 只會判斷網域後面的URL，?後面帶參數不需要考慮
+
+	} else if ( action === "/addFriend" ) { // action 只會判斷網域後面的URL，?後面帶參數不需要考慮
 		console.log( "會員---要新增好友" );
 		console.log("addNewFriend email: " + params.newFriendEmail);
-		console.log("addNewFriend authorization: " + params.authorization);
-		friendsController.addNewFriendsToMyself( params.authorization, params.newFriendEmail, ( message ) => {
+		console.log("client authorization: " + params.authorization);
+		friendsController.addFriend( params.authorization, params.newFriendEmail, ( message ) => {
 			response.writeHead( 200, { "Content-Type": "application/json" } );
 			response.write( JSON.stringify( { addNewFriendsMessage: message } ) );
 			response.end();
 		});
+
+	} else if ( action === "/loadingFriendList" ) {
+		console.log( "會員---需要好友名單資料" );
+		console.log("client authorization: " + params.authorization);
+		friendsController.loadingFriendList();
+
 	} else if ( /^\/[a-zA-Z0-9\/]*.js$/.test( request.url.toString() )) {
 		sendFileContent( response, request.url.toString().substring(1), "text/javascript" );
 		console.log("Response File: " + request.url.toString().substring(1) + " .js");
+
 	} else if ( /^\/[a-zA-Z0-9\/]*.css$/.test( request.url.toString() )) {
 		sendFileContent( response, request.url.toString().substring(1), "text/css" );
 		console.log( "Response File: " + request.url.toString().substring(1) + ".css" );
+
 	} else if ( /^\/[a-zA-Z0-9\/]*.png$/.test( request.url.toString() )) {
 		sendFileContent( response, request.url.toString().substring(1), "text/png" );
 		console.log( "Response File: " + request.url.toString().substring(1) + ".png" );
+
 	} else {
 		console.log( "找不到對應的 --- Requested: " + request.url );
 		response.end();
+
 	}
 }).listen( 8888 );console.log( "Server running at: http://127.0.0.1:8888/ \nNow time: " + new Date() );
 

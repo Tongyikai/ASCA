@@ -98,8 +98,6 @@ function sameEmail( email1, email2 ) {
     return false;
 }
 
-// $addToSet：向陣列中新增元素，若陣列本身含有該元素，則不新增，否則，新增，這樣就避免了陣列中的元素重複現象；
-// $push：向陣列尾部新增元素，但它不管陣列中有沒有該元素，都會新增。
 // 查詢好友名單是否有這組email
 function searchEmailExistInFriends( token, email, callback ) {
     let memberID = getMemberIDFromToken( token );
@@ -118,6 +116,9 @@ function searchEmailExistInFriends( token, email, callback ) {
                 console.log( "-----創立好友名單" );
                 friendList.insertOne( { memberID: memberID, friends: [] } );
                 console.log( "-----" + email + " 加到好友名單裡" );
+
+                // $addToSet：向陣列中新增元素，若陣列本身含有該元素，則不新增，否則，新增，這樣就避免了陣列中的元素重複現象；
+                // $push：向陣列尾部新增元素，但它不管陣列中有沒有該元素，都會新增。
                 friendList.updateOne( { memberID: memberID }, { $push: { friends: addNewFriendMemberID } } );
                 callback( "加為好友!" );
             } else {
@@ -141,27 +142,10 @@ function searchEmailExistInFriends( token, email, callback ) {
     });
 }
 
-function addFriend( token, email ) {
-    let memberID = getMemberIDFromToken( token );
-    // let addNewFriendMemberID = getMemberIDFromEmail( email );
-
-    const client = new MongoClient( uri, { useUnifiedTopology: true } );
-    client.connect( err => {
-        if ( err ) throw err;
-        const friends = client.db( config.mongodb.data ).collection( config.mongodb.friendListCollection ); 
-
-        friends.find( { memberID: memberID } ).toArray( function( err, result ) {
-            if ( err ) throw err;
-            console.log( result );
-            console.log( "-------------------------------" );
-        });
-    });
-}
-
 /* ************************************************
     加好友
 ************************************************* */
-function addNewFriendsToMyself( token, email, callback ) {
+function addFriend( token, email, callback ) {
     if ( tokenExist( token ) ) {
         if ( checkEmail( email ) && emailExist( email ) ) {
             console.log( "*1.   增加成為好友的email存在，表示可以加好友" );
@@ -185,6 +169,22 @@ function addNewFriendsToMyself( token, email, callback ) {
     }
 }
 
+/* ************************************************
+    刪除好友
+************************************************* */
+function removeFriend() {
+
+}
+
+/* ************************************************
+    載入好友名單
+************************************************* */
+function loadingFriendList() {
+    console.log( "會員要求好友名單" );
+}
+
 module.exports = {
-    addNewFriendsToMyself
+    addFriend,
+    removeFriend,
+    loadingFriendList
 }
