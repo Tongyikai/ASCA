@@ -179,8 +179,23 @@ function removeFriend() {
 /* ************************************************
     載入好友名單
 ************************************************* */
-function loadingFriendList() {
-    console.log( "會員要求好友名單" );
+function loadingFriendList( token ) {
+    let memberID = getMemberIDFromToken( token );
+    const client = new MongoClient( uri, { useUnifiedTopology: true } );
+    client.connect( err => {
+        if ( err ) throw err;
+        const friendList = client.db( config.mongodb.data ).collection( config.mongodb.friendListCollection );
+        friendList.find( { memberID: memberID } ).toArray( function( err, result ) {
+            if ( err ) throw err;
+            if ( result == "" ) {
+                console.log( "沒有好友名單" );
+            } else {
+                console.log( "-----存在-----好友名單---並顯示出所有好友memberID" );
+                let array = result[0].friends;
+                console.log( array );
+            }
+        }); 
+    });
 }
 
 module.exports = {

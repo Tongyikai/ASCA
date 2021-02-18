@@ -190,30 +190,30 @@ http.createServer( function( request, response ) {
 
 	} else if ( action === "/addFriend" ) { // action 只會判斷網域後面的URL，?後面帶參數不需要考慮
 		console.log( "會員---要新增好友" );
-		console.log("addNewFriend email: " + params.newFriendEmail);
-		console.log("client authorization: " + params.authorization);
+		console.log( "addNewFriend email: " + params.newFriendEmail );
+		console.log( "client authorization: " + params.authorization );
 		friendsController.addFriend( params.authorization, params.newFriendEmail, ( message ) => {
 			response.writeHead( 200, { "Content-Type": "application/json" } );
 			response.write( JSON.stringify( { addNewFriendsMessage: message } ) );
 			response.end();
 		});
 
-	} else if ( action === "/loadingFriendList" ) {
+	} else if ( action === "/loadingFriendList" ) { // action 只會判斷網域後面的URL，?後面帶參數不需要考慮
 		console.log( "會員---需要好友名單資料" );
-		console.log("client authorization: " + params.authorization);
-		friendsController.loadingFriendList();
+		console.log("client authorization: " + params.authorization );
+		friendsController.loadingFriendList( params.authorization );
 
-	} else if ( /^\/[a-zA-Z0-9\/]*.js$/.test( request.url.toString() )) {
-		sendFileContent( response, request.url.toString().substring(1), "text/javascript" );
-		console.log("Response File: " + request.url.toString().substring(1) + " .js");
+	} else if ( /^\/[a-zA-Z0-9\/]*.js$/.test( request.url.toString() ) ) {
+		sendFileContent( response, request.url.toString().substring( 1 ), "text/javascript" );
+		console.log("Response File: " + request.url.toString().substring( 1 ) + " .js");
 
-	} else if ( /^\/[a-zA-Z0-9\/]*.css$/.test( request.url.toString() )) {
-		sendFileContent( response, request.url.toString().substring(1), "text/css" );
-		console.log( "Response File: " + request.url.toString().substring(1) + ".css" );
+	} else if ( /^\/[a-zA-Z0-9\/]*.css$/.test( request.url.toString() ) ) {
+		sendFileContent( response, request.url.toString().substring( 1 ), "text/css" );
+		console.log( "Response File: " + request.url.toString().substring( 1 ) + ".css" );
 
-	} else if ( /^\/[a-zA-Z0-9\/]*.png$/.test( request.url.toString() )) {
-		sendFileContent( response, request.url.toString().substring(1), "text/png" );
-		console.log( "Response File: " + request.url.toString().substring(1) + ".png" );
+	} else if ( /^\/[a-zA-Z0-9\/]*.png$/.test( request.url.toString() ) ) {
+		sendFileContent( response, request.url.toString().substring( 1 ), "text/png" );
+		console.log( "Response File: " + request.url.toString().substring( 1 ) + ".png" );
 
 	} else {
 		console.log( "找不到對應的 --- Requested: " + request.url );
