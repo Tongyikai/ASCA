@@ -142,6 +142,23 @@ function searchEmailExistInFriends( token, email, callback ) {
     });
 }
 
+// 給memberID, 回傳memberID的名字, 拿取好友名單裡的頭像與名字
+function getAvatarAndName( array ) {
+    for ( i in array ) {
+        console.log( "把memberID=" + array[ i ] + "的頭像與名字取出來" );
+        const client = new MongoClient( uri, { useUnifiedTopology: true } );
+        client.connect( err => {
+            if ( err ) throw err;
+            const m = client.db( config.mongodb.data ).collection( config.mongodb.memberCollection );
+            m.find( { memberID: array[ i ] } ).toArray( ( err, result ) => {
+                if ( err ) throw err;
+                // console.log( "頭像: " + result[0].avatar );
+                console.log( "名字: " + result[0].familyName + "-" + result[0].givenName);
+            });
+        });
+    }
+}
+
 /* ************************************************
     加好友
 ************************************************* */
@@ -193,6 +210,7 @@ function loadingFriendList( token ) {
                 console.log( "-----存在-----好友名單---並顯示出所有好友memberID" );
                 let array = result[0].friends;
                 console.log( array );
+                getAvatarAndName( array );
             }
         }); 
     });
